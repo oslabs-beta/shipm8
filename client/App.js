@@ -1,6 +1,7 @@
 // hooks might be used in future 
 import React, { useState, useEffect } from 'react';
 import { View, Text, KeyboardAvoidingView, Image, StyleSheet } from 'react-native';
+import { Header } from 'react-native-elements';
 
 
 import LoginForm from "./loginForm";
@@ -28,7 +29,7 @@ export default React.memo(App)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'blue',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center'
   },

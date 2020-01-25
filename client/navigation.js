@@ -10,23 +10,23 @@ import MainPage from "./mainPage";
 
 
 const MainNavigator = createStackNavigator(
-    {
-        ShipM8: App, // Login Page
-        MainPage: MainPage, // Landing Page
-    },
-    {
-        initialRouteName: 'ShipM8',
+  {
+    ShipM8: App, // Login Page
+    MainPage: MainPage, // Landing Page
+  },
+  {
+    initialRouteName: 'ShipM8',
 
-        defaultNavigationOptions: {
-            headerStyle: {
-                backgroundColor: 'magenta',
-            },
-            headerTintColor: 'black',
-            headerTitleStyle: {
-                fontWeight: 'bold',
-            },
-        },
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: 'pink',
+      },
+      headerTintColor: 'black',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
     },
+  },
 );
 
 const AppContainer = createAppContainer(MainNavigator);

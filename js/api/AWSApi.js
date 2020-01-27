@@ -56,8 +56,18 @@ class AWSApi {
     })
       .fetch('GET', url, authHeader)
       .then(res => res.json())
-      .then(res => console.log(res))
       .catch(err => console.log(err));
+  }
+
+  static getNamespaces = url => {
+    const namespacesURL = `/api/v1/namespaces/`;
+    const requestURL = url + namespacesURL;
+
+    this.apiFetch(requestURL)
+      .then(namespacesObj => {
+        return namespacesObj.items.map(namespace => namespace.metadata.name);
+      })
+      .catch(err => console.log('err: ', err))
   }
 }
 

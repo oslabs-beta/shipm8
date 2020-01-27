@@ -16,22 +16,22 @@ const appReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case types.ADD_CLUSTER:
-      // increment lastMarketId and totalMarkets counters
+
       totalCluster = state.totalCluster + 1;
       clusterName = action.payload.clusterName;
 
-      // create the new market object from provided data
+
       const newCluster = {
-        // what goes in here?
+
         clusterName: clusterName,
         totalCluster: state.totalCluster,
       };
 
-      // push the new market onto a copy of the market list
+
       clusterList = state.clusterList.slice();
       clusterList.push(newCluster);
 
-      // return updated state
+
       return {
         ...state,
         clusterList,

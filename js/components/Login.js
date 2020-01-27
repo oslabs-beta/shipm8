@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import {Input} from 'react-native-elements';
+import React, { useState } from 'react';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {withNavigation} from 'react-navigation';
+import { withNavigation } from 'react-navigation';
 
 // Load FontAwesome icons
 Icon.loadFont();
 
 // state for the changing input fields
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   const [loginState, setLoginState] = useState({
     validIP: '',
     validAPI: '',
@@ -25,8 +25,8 @@ const Login = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Input
-        onChangeText={text => setLoginState({...loginState, validIP: text})}
-        style={{marginBottom: 20}}
+        onChangeText={text => setLoginState({ ...loginState, validIP: text })}
+        style={{ marginBottom: 20 }}
         label="Cluster Info"
         placeholder="Enter Cluster Info Here"
         leftIcon={{
@@ -37,19 +37,19 @@ const Login = ({navigation}) => {
         }}
       />
       <Input
-        onChangeText={text => setLoginState({...loginState, validAPI: text})}
-        style={{marginTop: 20}}
+        onChangeText={text => setLoginState({ ...loginState, validAPI: text })}
+        style={{ marginTop: 20 }}
         label="Api Key"
         placeholder="Enter API Key Here"
         leftIcon={
           <Icon
             name="lock"
             size={24}
-            style={{marginRight: 10, color: 'gray'}}
+            style={{ marginRight: 10, color: 'gray' }}
           />
         }
       />
-      <View style={{paddingTop: 30}}>
+      <View style={{ paddingTop: 30 }}>
         <TouchableOpacity style={styles.buttonContainer} onPress={checkLogin}>
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>

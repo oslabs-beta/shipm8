@@ -8,7 +8,7 @@ import { withNavigation } from 'react-navigation';
 Icon.loadFont();
 
 // state for the changing input fields
-const LoginForm = ({ navigation }) => {
+const Login = ({ navigation }) => {
   const [loginState, setLoginState] = useState({
     validIP: '',
     validAPI: '',
@@ -62,7 +62,7 @@ const LoginForm = ({ navigation }) => {
   )
 }
 
-export default withNavigation(LoginForm);
+export default withNavigation(Login);
 
 const styles = StyleSheet.create({
   container: {

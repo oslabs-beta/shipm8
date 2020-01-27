@@ -9,9 +9,15 @@ import {
 import AWSApi from './api/AWSApi';
 import Login from './components/Login';
 
-AWSApi.apiFetch(
-  'https://64A4A753714D2EBFF419B6C287DDE8C9.yl4.us-west-2.eks.amazonaws.com/api/v1/namespaces',
-);
+/***********************
+   Development Testing
+     **** Start ****
+************************/
+const url = 'https://64A4A753714D2EBFF419B6C287DDE8C9.yl4.us-west-2.eks.amazonaws.com';
+AWSApi.getNamespaces(url);
+/********
+ * End
+********/
 
 const App = props => {
   return (

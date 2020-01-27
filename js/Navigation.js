@@ -4,13 +4,22 @@ import { View } from 'react-native';
 // import navigation tools so we can render new pages (Container: Used to bundle and set Nav settings, Stack: Used to build Nav settings)
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import { createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { Provider } from 'react-redux';
+import reducers from './reducers/index';
 
-import App from './App';
+import LandingPage from './components/LandingPage';
 import Main from './components/Main';
+
+const store = createStore(
+  reducers,
+  composeWithDevTools()
+);
 
 const MainNavigator = createStackNavigator(
   {
-    ShipM8: App, // Login Page
+    ShipM8: LandingPage, // Login Page
     Main: Main, // Landing Page
   },
   {
@@ -28,7 +37,16 @@ const MainNavigator = createStackNavigator(
     },
   },
 );
-
 const AppContainer = createAppContainer(MainNavigator);
 
-export default AppContainer;
+const App = () => {
+  return (
+    <Provider store={store}>
+      <AppContainer />
+    </Provider>
+  )
+}
+
+
+
+export default App;

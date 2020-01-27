@@ -1,34 +1,34 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { Input } from 'react-native-elements';
+import React, {useState} from 'react';
+import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {Input} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { withNavigation } from 'react-navigation';
+import {withNavigation} from 'react-navigation';
 
 // Load FontAwesome icons
 Icon.loadFont();
 
 // state for the changing input fields
-const LoginForm = ({ navigation }) => {
+const LoginForm = ({navigation}) => {
   const [loginState, setLoginState] = useState({
     validIP: '',
     validAPI: '',
   });
 
-  // this will be verifying the login obviously logic will change (currently any input will login) 
+  // this will be verifying the login obviously logic will change (currently any input will login)
   const checkLogin = () => {
     if (loginState.validIP !== '' && loginState.validAPI !== '') {
-      navigation.navigate('Main')
+      navigation.navigate('Main');
+    } else {
+      alert('Invalid Cluster and/or API Token');
     }
-    else {
-      alert('Invalid Cluster and/or API Token')
-    }
-  }
+  };
   return (
     <View style={styles.container}>
       <Input
-        onChangeText={(text) => setLoginState({ ...loginState, validIP: text })}
-        label='Cluster Info'
-        placeholder='Enter Cluster Info Here'
+        onChangeText={text => setLoginState({...loginState, validIP: text})}
+        style={{marginBottom: 20}}
+        label="Cluster Info"
+        placeholder="Enter Cluster Info Here"
         leftIcon={{
           type: 'font-awesome',
           name: 'chevron-right',
@@ -37,30 +37,33 @@ const LoginForm = ({ navigation }) => {
         }}
       />
       <Input
-        onChangeText={(text) => setLoginState({ ...loginState, validAPI: text })}
-        style={{ marginTop: 20 }}
-        label='Api Key'
-        placeholder='Enter API Key Here'
+        onChangeText={text => setLoginState({...loginState, validAPI: text})}
+        style={{marginTop: 20}}
+        label="Api Key"
+        placeholder="Enter API Key Here"
         leftIcon={
           <Icon
-            name='lock'
+            name="lock"
             size={24}
-            style={{ marginRight: 10, color: 'gray' }}
+            style={{marginRight: 10, color: 'gray'}}
           />
         }
       />
-      <View style={{ paddingTop: 30 }} >
+      <View style={{paddingTop: 30}}>
         <TouchableOpacity style={styles.buttonContainer} onPress={checkLogin}>
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.awsButton}>
-          <Text style={styles.buttonText} onPress={() => alert('AWS Server is Currently Inactive')}  >Sign in w/ AWS</Text>
+          <Text
+            style={styles.buttonText}
+            onPress={() => alert('AWS Server is Currently Inactive')}>
+            Sign in w/ AWS
+          </Text>
         </TouchableOpacity>
       </View>
-
     </View>
-  )
-}
+  );
+};
 
 export default withNavigation(LoginForm);
 
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 80,
-    paddingTop: 50,
+    paddingTop: 35,
   },
   input: {
     height: 40,
@@ -82,19 +85,23 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   buttonContainer: {
-    backgroundColor: "green",
+    backgroundColor: '#1589FF',
     paddingVertical: 15,
+    borderRadius: 5,
+    marginTop: 10,
   },
   buttonText: {
     textAlign: 'center',
     color: 'white',
-    fontWeight: '700'
+    fontWeight: '700',
+    fontSize: 16,
   },
   awsButton: {
-    paddingTop: 10,
-    backgroundColor: 'black',
-    paddingVertical: 15,
+    paddingTop: 13,
+    backgroundColor: '#151B54',
+    borderRadius: 5,
     marginTop: 10,
-    width: 200
-  }
+    width: 200,
+    height: 45,
+  },
 });

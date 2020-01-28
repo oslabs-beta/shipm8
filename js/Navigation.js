@@ -12,20 +12,19 @@ import reducers from './reducers/index';
 import LandingPage from './components/LandingPage';
 import Main from './components/Main';
 import Launch from './components/Launch';
+import Pods from './components/Pods';
 
-const store = createStore(
-  reducers,
-  composeWithDevTools()
-);
+const store = createStore(reducers, composeWithDevTools());
 
 const MainNavigator = createStackNavigator(
   {
-    Launch: Launch,
-    ShipM8: LandingPage, // Login Page
+    ShipM8: Launch,
+    Login: LandingPage, // Login Page
     Main: Main, // Landing Page
+    Pods: Pods,
   },
   {
-    initialRouteName: 'Launch',
+    initialRouteName: 'ShipM8',
 
     defaultNavigationOptions: {
       headerStyle: {
@@ -46,9 +45,7 @@ const App = () => {
     <Provider store={store}>
       <AppContainer />
     </Provider>
-  )
-}
-
-
+  );
+};
 
 export default App;

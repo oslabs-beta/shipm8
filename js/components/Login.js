@@ -17,7 +17,7 @@ const Login = ({ navigation }) => {
   // this will be verifying the login obviously logic will change (currently any input will login)
   const checkLogin = () => {
     if (loginState.validIP !== '' && loginState.validAPI !== '') {
-      navigation.navigate('Main');
+      navigation.navigate('Pods');
     } else {
       alert('Invalid Cluster and/or API Token');
     }

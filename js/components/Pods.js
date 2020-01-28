@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 mapStateToProps = state => ({});
 
-const Pods = () => {
+const Pods = props => {
   let namespaces = [
     {
       value: 'default',
@@ -43,14 +43,9 @@ const Pods = () => {
 
         <Text style={styles.test}>Pods Page</Text>
         <Button
-          style={{
-            flex: 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'red',
-          }}
+          style={styles.button}
           title="Sign Out"
-          onPress={() => props.navigation.goBack()}
+          onPress={() => props.navigation.navigate('ShipM8')}
         />
       </ScrollView>
     </SafeAreaView>
@@ -79,6 +74,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
+  },
+  button: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

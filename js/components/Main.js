@@ -9,7 +9,6 @@ mapStateToProps = state => ({
   totalCluster: state.app.totalCluster,
   clusterName: state.app.clusterName,
   pods: state.app.totalPods,
-
 });
 
 const Main = props => {
@@ -20,9 +19,11 @@ const Main = props => {
         style={styles.clusterButton}
         behavior="padding"
         enabled
-      // onPress={() => props.navigation.navigate("Pods")}
-      >
-        <Text> Cluster: {props.clusterName} Pods: {props.totalPods}  </Text>
+        onPress={() => props.navigation.navigate('Pods')}>
+        <Text>
+          {' '}
+          Cluster: {props.clusterName} Pods: {props.totalPods}{' '}
+        </Text>
       </TouchableOpacity>
       {/* <TouchableOpacity
         style={styles.buttonsContainer}
@@ -48,9 +49,9 @@ const Main = props => {
           backgroundColor: 'red',
         }}
         title="Sign Out"
-        onPress={() => props.navigation.navigate('Launch')}
+        onPress={() => props.navigation.navigate('ShipM8')}
       />
-    </View >
+    </View>
   );
   return content;
 };
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   buttonsContainer: {
     backgroundColor: 'blue',
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   buttonsText: {
     textAlign: 'center',

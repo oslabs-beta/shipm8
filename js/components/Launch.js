@@ -19,11 +19,16 @@ const Launch = ({ navigation }) => {
         style={styles.logo}
       />
       <View style={styles.logoContainer}>
-        <Text style={styles.textStyle}>Monitor Your K8s Clusters Anywhere!</Text>
-        <View style={styles.formContainer}>
-        </View>
+        <Text style={styles.textStyle}>
+          Monitor Your K8s Clusters Anywhere!
+        </Text>
+        <View style={styles.formContainer} />
         <View style={{ paddingTop: 5 }}>
-          <TouchableOpacity style={styles.buttonContainer} behavior="padding" enabled onPress={getStarted}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            behavior="padding"
+            enabled
+            onPress={getStarted}>
             <Text style={styles.buttonText}>Get Started</Text>
           </TouchableOpacity>
         </View>

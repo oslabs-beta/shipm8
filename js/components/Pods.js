@@ -6,15 +6,40 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
+import { Dropdown } from 'react-native-material-dropdown';
 import { connect } from 'react-redux';
 
 mapStateToProps = state => ({});
 
-const Pods = props => {
-  let content = (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <DropdownMenu data={data} />
+const Pods = () => {
+  let namespaces = [
+    {
+      value: 'default',
+    },
+    {
+      value: 'namespace1',
+    },
+    {
+      value: 'namespace2',
+    },
+    {
+      value: 'namespace3',
+    },
+  ];
+
+  return (
+    <SafeAreaView style={styles.scrollView}>
+      <ScrollView style={{ marginHorizontal: 20, marginTop: 80 }}>
+        {/* <Text style={styles.namespacePickText}>Pick a Namespace</Text> */}
+        <Dropdown
+          label="Select Namespace"
+          data={namespaces}
+          style={{
+            textAlign: 'center',
+            alignItems: 'center',
+            width: 20,
+          }}
+        />
 
         <Text style={styles.test}>Pods Page</Text>
         <Button
@@ -30,12 +55,11 @@ const Pods = props => {
       </ScrollView>
     </SafeAreaView>
   );
-  return content;
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
@@ -46,8 +70,15 @@ const styles = StyleSheet.create({
     marginTop: 300,
   },
   scrollView: {
-    backgroundColor: 'red',
-    marginHorizontal: 5,
+    backgroundColor: 'white',
+    marginHorizontal: 30,
+    height: '100%',
+  },
+  namespacePickText: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
 });
 

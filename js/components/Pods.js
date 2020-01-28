@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 mapStateToProps = state => ({});
 
-const Main = props => {
+const Pods = () => {
   let namespaces = [
     {
       value: 'default',
@@ -49,8 +49,8 @@ const Main = props => {
             alignItems: 'center',
             backgroundColor: 'red',
           }}
-          title="Next Page"
-          onPress={() => props.navigation.navigate('Pods')}
+          title="Sign Out"
+          onPress={() => props.navigation.goBack()}
         />
       </ScrollView>
     </SafeAreaView>
@@ -82,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps)(React.memo(Main));
+export default connect(mapStateToProps)(React.memo(Pods));

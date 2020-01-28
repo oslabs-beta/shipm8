@@ -12,6 +12,7 @@ import reducers from './reducers/index';
 import LandingPage from './components/LandingPage';
 import Main from './components/Main';
 import Launch from './components/Launch';
+import AddCluster from './components/AddCluster';
 
 const store = createStore(
   reducers,
@@ -23,6 +24,7 @@ const MainNavigator = createStackNavigator(
     Launch: Launch,
     ShipM8: LandingPage, // Login Page
     Main: Main, // Landing Page
+    Add: AddCluster
   },
   {
     initialRouteName: 'Launch',

@@ -3,11 +3,12 @@ import * as types from '../constants/actions';
 
 //our state
 const initialState = {
-  clusterName: '',
+  clusterName: 'Test',
   clusterList: [],
   totalCluster: 0,
   pods: [],
   totalPods: 0,
+  clusterId: ''
 };
 
 const appReducer = (state = initialState, action) => {

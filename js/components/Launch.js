@@ -10,10 +10,12 @@ Icon.loadFont();
 const Launch = ({ navigation }) => {
   // this will be the launch function
   const getStarted = () => {
-    navigation.navigate('ShipM8');
+    navigation.navigate('Login');
   };
   return (
     <View style={styles.container} behavior="padding" enabled>
+      <Text style={styles.banner}>WELCOME</Text>
+
       <Image
         source={require('../../assets/shipm8_logo.png')}
         style={styles.logo}
@@ -45,12 +47,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 40,
   },
   buttonContainer: {
     backgroundColor: '#1589FF',
     paddingVertical: 15,
     borderRadius: 5,
     marginTop: 10,
+  },
+  banner: {
+    fontSize: 50,
+    marginBottom: 50,
+    fontWeight: 'bold',
+    color: '#151B54',
   },
   buttonText: {
     textAlign: 'center',

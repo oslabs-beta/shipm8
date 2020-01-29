@@ -12,7 +12,6 @@ mapStateToProps = state => ({
   totalCluster: state.app.totalCluster,
   clusterName: state.app.clusterName,
   pods: state.app.totalPods,
-
 });
 
 // where <Badge> is created we need to determine the error cases for clusters
@@ -131,24 +130,24 @@ const Main = props => {
 const styles = StyleSheet.create({
           clusterButton: {
           backgroundColor: 'grey',
-      paddingVertical: 15,
-      borderRadius: 5,
-      marginTop: 10,
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
+        paddingVertical: 15,
+        borderRadius: 5,
+        marginTop: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
   buttonsContainer: {
           backgroundColor: 'blue',
-      paddingVertical: 15,
-      borderRadius: 5,
-      marginTop: 10,
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
+        paddingVertical: 15,
+        borderRadius: 5,
+        marginTop: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
   buttonsText: {
           textAlign: 'center',
-      color: 'white',
-      fontWeight: '700',
-      fontSize: 16,
-    },
-  });
+        color: 'white',
+        fontWeight: '700',
+        fontSize: 16,
+      },
+    });

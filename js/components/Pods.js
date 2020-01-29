@@ -45,7 +45,7 @@ const Pods = props => {
   ];
 
   let podList = [
-    'pod1',
+    'pod1sslasdjflkajsdflkjsdlfkjlsdkfjlksjdflkjsdf',
     'pod2',
     'pod3',
     'pod4',
@@ -70,7 +70,9 @@ const Pods = props => {
         style={styles.podContainer}
         activeOpacity={0.7}
         onPress={() => props.navigation.navigate('Details')}>
-        <Text style={styles.podText}>{pod}</Text>
+        <Text style={styles.podText} ellipsizeMode="tail">
+          {pod}
+        </Text>
         <Text style={styles.statusText}>Status:</Text>
         <Badge status="success" badgeStyle={{ marginLeft: 13, marginTop: 6 }} />
       </TouchableOpacity>,
@@ -150,7 +152,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     backgroundColor: 'white',
     flexDirection: 'row',
-    flexWrap: 'wrap',
     marginBottom: 6,
     marginLeft: 6,
     height: 48,
@@ -168,6 +169,7 @@ const styles = StyleSheet.create({
     marginRight: 24,
     width: 200,
     backgroundColor: 'white',
+    overflow: 'scroll',
   },
   statusText: {
     fontSize: 16,

@@ -3,96 +3,107 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { Base64 } from 'js-base64';
 
 class AWSApi {
-  /*
+
+  /**
+   * 
    * AWS Kubernetes API Authorization from Outside a Cluster:
    * https://github.com/kubernetes-sigs/aws-iam-authenticator#api-authorization-from-outside-a-cluster
    *
    */
 
-  static getAuthToken() {
+  static getAuthToken(clusterId) {
     /* Declare options for STS API Query */
     const queryOptions = {
       host: 'sts.amazonaws.com',
       service: 'sts',
       path: `/?Action=GetCallerIdentity&Version=2011-06-15&X-Amz-Expires=60`,
       headers: {
-        'x-k8s-aws-id': 'newClusterOne',
+        'x-k8s-aws-id': clusterId,
       },
       signQuery: true,
     };
-
     /* Hard coded credentials during development */
     const CREDENTIALS = {
-      accessKeyId: `AKIA4V7DDZOOX5SEMB7A`,
-      secretAccessKey: `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`,
+      accessKeyId: ``,
+      secretAccessKey: ``,
     };
-
     /* Sign STS API Query with AWS4 Signature */
     const signedQuery = sign(queryOptions, CREDENTIALS);
-
     /* Pull out signed host & path */
     const signedURL = `https://${signedQuery.host}${signedQuery.path}`;
-
     /* Base64 encode signed URL */
     const encodedURL = Base64.encodeURI(signedURL);
-
     /* Remove any Base64 encoding padding */
     const token = encodedURL.replace(/=+$/, ``);
-
     /* Prepend result with required string */
     const authToken = `k8s-aws-v1.${token}`;
-
     return authToken;
-  }
+  };
 
-  static apiFetch(url) {
+  static apiFetch = (url, clusterId) => {
     const authHeader = {
-      Authorization: `Bearer ${this.getAuthToken()}`,
+      Authorization: `Bearer ${this.getAuthToken(clusterId)}`,
     };
     return RNFetchBlob.config({
-      trusty: true /* prevents self-signed certificate rejection */,
+      trusty: true, /* prevents self-signed certificate rejection */
     })
       .fetch('GET', url, authHeader)
       .then(res => res.json())
       .catch(err => console.log(err));
-  }
+  };
 
-  static getNamespaces = url => {
-    const namespacesURL = `/api/v1/namespaces/`;
-    const requestURL = url + namespacesURL;
-
-    this.apiFetch(requestURL)
-      .then(namespacesObj => {
-        const namespaces = namespacesObj.items.map(
-          namespace => namespace.metadata.name,
-        );
-        return namespaces;
-      })
+  static eksFetch = (region, method, path) => {
+    const queryOptions = {
+      host: `eks.${region}.amazonaws.com`,
+      path: path,
+    };
+    /* Hard coded credentials during development */
+    const CREDENTIALS = {
+      accessKeyId: ``,
+      secretAccessKey: ``,
+    };
+    const query = sign(queryOptions, CREDENTIALS);
+    return fetch(`https://eks.${region}.amazonaws.com${path}`, {
+      method: method,
+      headers: query.headers,
+    })
+      .then(res => res.json())
       .catch(err => console.log('err: ', err));
   };
 
-  static getPodsInNamespace = (url, namespace) => {
-    const podsURL = `/api/v1/namespaces/${namespace}/pods`;
-    const requestURL = url + podsURL;
+  // step 1, retrieve list of all AWS clusters in the selected region
+  static getEksClusters = region => {
+    return this.eksFetch(region, `GET`, `/clusters`)
+      .then(clustersObj => clustersObj.clusters)
+      .catch(err => console.log('err: ', err))
+  };
 
-    this.apiFetch(requestURL)
-      .then(podsObj => {
-        const pods = podsObj.items.map(pod => pod.metadata.name);
-        return pods;
-      })
+  // step 2, retrieve all info about the selected cluster, need to pull out the api URL
+  static describeEksCluster = (region, clusterName) => {
+    return this.eksFetch(region, `GET`, `/clusters/${clusterName}`)
+      .then(res => res.json())
+      .then(clusterObj => clusterObj)
       .catch(err => console.log('err: ', err));
   };
 
-  static getPodInfo = (url, namespace, pod) => {
-    const podInfoURL = `/api/v1/namespaces/${namespace}/pods/${pod}`;
-    const requestURL = url + podInfoURL;
+  // step 3, get all namespaces for the selected cluster
+  static fetchNamespaces = url => {
+    return this.apiFetch(`${url}/api/v1/namespaces`)
+      .then(namespacesObj => namespacesObj.items.map(namespace => namespace.metadata.name))
+      .catch(err => console.log('err: ', err));
+  };
 
-    this.apiFetch(requestURL)
-      .then(podObj => {
-        console.log(podObj);
-        // const podInfo = podObj.items.map(pod => pod.metadata.name);
-        // return podInfo;
-      })
+  // step 4, get a list of pods for the selected cluster & namespace
+  static fetchPods = (url, namespace) => {
+    return this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods`)
+      .then(podsObj => podsObj.items.map(pod => pod.metadata.name))
+      .catch(err => console.log('err: ', err));
+  };
+
+  // step 5, when a pod is clicked, retrive info about that specific pod
+  static fetchPodInfo = (url, namespace, pod) => {
+    return this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods/${pod}`)
+      .then(podObj => podObj)
       .catch(err => console.log('err: ', err));
   };
 }

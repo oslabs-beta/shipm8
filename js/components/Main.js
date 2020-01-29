@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import { Badge, Icon, withBadge } from 'react-native-elements';
-import { } from 'react-native-material';
+import { Dropdown } from 'react-native-material-dropdown';
 import { connect } from 'react-redux';
 import Login from './Login';
 import SignOut from './SignOut';
@@ -33,15 +33,30 @@ const Main = props => {
   //   'cluster11',
   //   'cluster12'
   // ]
-  // clustArr = [];
+  // const clustArr = [];
 
   // clusArr.forEach(clusters => {
 
   // });
 
+  const regions = [
+    'USA Central',
+    'USA Pacific',
+    'USA Atlantic',
+    'USA Mountain'
+  ]
+
+  const regionsArr = [];
+
+  regions.forEach(element =>
+    regionsArr.push(element);
+
   let content = (
     <View
       style={{ flex: 1, backgroundColor: 'orange', justifyContent: 'center' }}>
+      <Dropdown>
+        Regions
+        </Dropdown>
       <TouchableOpacity
         style={styles.clusterButton}
         activeOpacity={.7}

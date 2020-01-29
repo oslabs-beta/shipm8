@@ -91,7 +91,7 @@ const Pods = props => {
           <Button
             style={styles.signOut}
             title="Sign Out"
-            onPress={() => props.navigation.navigate('PodStatus')}
+            onPress={() => props.navigation.navigate('Login')}
           />
         </View>
       </ScrollView>
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     backgroundColor: 'white',
-    marginHorizontal: 30,
+    marginHorizontal: 20,
     height: '100%',
   },
   scrollView: { marginHorizontal: 20, marginTop: 30 },
@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
+    fontWeight: 'bold',
   },
   buttonView: {
     marginTop: 20,
@@ -137,24 +138,31 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   podScroll: {
-    backgroundColor: 'pink',
+    backgroundColor: '#69ADFF',
+    borderRadius: 3,
     marginTop: 10,
     height: 580,
   },
   podContainer: {
     marginTop: 10,
-    backgroundColor: 'gray',
+    backgroundColor: 'white',
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginBottom: 6,
-    height: 40,
-    width: '100%',
-    paddingVertical: 10,
+    marginLeft: 6,
+    height: 48,
+    width: '96%',
+    paddingVertical: 12,
     paddingLeft: 6,
+    borderStyle: 'solid',
+    borderColor: '#063CB9',
+    borderWidth: 1,
+    borderRadius: 8,
+    alignContent: 'center',
   },
   podText: {
     fontSize: 16,
-    marginRight: 22,
+    marginRight: 24,
     width: 200,
     backgroundColor: 'white',
   },

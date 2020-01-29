@@ -44,7 +44,7 @@ const Login = (props) => {
       AWSApi.getEksClusters('us-west-2')
         .then(data => { console.log(data) })
       // where i should do the state updateing 
-      props.navigation.navigate('Main');
+      props.navigation.navigate('Clusters');
     } else {
       alert('Invalid Cluster and/or API Token');
     }
@@ -77,16 +77,19 @@ const Login = (props) => {
         }
       />
       <View style={{ paddingTop: 30 }}>
-        <TouchableOpacity style={styles.buttonContainer} onPress={checkLogin} >
+        <TouchableOpacity style={styles.buttonContainer} activeOpacity={.7} onPress={checkLogin}>
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.awsButton}>
+        <TouchableOpacity style={styles.awsButton} activeOpacity={.7}>
           <Text
             style={styles.buttonText}
             onPress={() => { alert('IM WORKING ON IT!!') }}>
             Sign in w/ AWS
           </Text>
         </TouchableOpacity>
+        {/* <TouchableOpacity style={styles.addButton} onPress={checkLogin}>
+          <Text style={styles.addText}>Add Cluster </Text>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -126,6 +129,20 @@ const styles = StyleSheet.create({
   awsButton: {
     paddingTop: 13,
     backgroundColor: '#151B54',
+    borderRadius: 5,
+    marginTop: 10,
+    width: 200,
+    height: 45,
+  },
+  addText: {
+    textAlign: 'center',
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  addButton: {
+    paddingTop: 13,
+    backgroundColor: 'black',
     borderRadius: 5,
     marginTop: 10,
     width: 200,

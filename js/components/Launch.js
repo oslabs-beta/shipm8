@@ -24,10 +24,11 @@ const Launch = ({ navigation }) => {
         <Text style={styles.textStyle}>
           Monitor Your K8s Clusters Anywhere!
         </Text>
-        <View style={styles.formContainer}></View>
+        <View style={styles.formContainer} />
         <View style={{ paddingTop: 5 }}>
           <TouchableOpacity
             style={styles.buttonContainer}
+            activeOpacity={.7}
             behavior="padding"
             enabled
             onPress={getStarted}>

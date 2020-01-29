@@ -14,6 +14,7 @@ const url =
 
 
 
+
 // state for the changing input fields
 const Login = ({ navigation }) => {
   const [loginState, setLoginState] = useState({
@@ -24,6 +25,8 @@ const Login = ({ navigation }) => {
   // this will be verifying the login obviously logic will change (currently any input will login)
   const checkLogin = () => {
     if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
+      AWSApi.getEksClusters('us-west-2')
+        .then(data => { console.log(data) })
       // where i should do the state updateing 
       navigation.navigate('Main');
     } else {

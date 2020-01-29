@@ -14,10 +14,9 @@ import { connect } from 'react-redux';
    Development Testing
      **** Start ****
 ************************/
-const url =
-  'https://64A4A753714D2EBFF419B6C287DDE8C9.yl4.us-west-2.eks.amazonaws.com';
-// AWSApi.getEksClusters('us-west-2')
-//   .then((res) => console.log(res))
+// const url =
+//   'https://64A4A753714D2EBFF419B6C287DDE8C9.yl4.us-west-2.eks.amazonaws.com';
+// AWSApi.getNamespaces(url);
 
 // AWSApi.getPodsInNamespace(url);
 

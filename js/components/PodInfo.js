@@ -32,6 +32,7 @@ const PodInfo = props => {
         <Button
           style={styles.signOut}
           title="Sign Out"
+          color="red"
           onPress={() => props.navigation.navigate('Login')}
         />
       </View>

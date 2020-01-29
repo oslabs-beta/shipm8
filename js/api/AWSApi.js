@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 
 
 const mapStateToProps = state => ({
+  accessKeyId: state.app.accessKeyId,
+  secretAccessKey: state.app.secretAccessKey,
 
 });
 
@@ -30,8 +32,8 @@ class AWSApi {
     };
     /* Hard coded credentials during development */
     const CREDENTIALS = {
-      accessKeyId: `AKIAQX3FXW3RJ5P4ZN4E`,
-      secretAccessKey: `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`,
+      accessKeyId: this.props.accessKeyId,
+      secretAccessKey: this.props.secretAccessKey,
     };
     /* Sign STS API Query with AWS4 Signature */
     const signedQuery = sign(queryOptions, CREDENTIALS);
@@ -65,8 +67,8 @@ class AWSApi {
     };
     /* Hard coded credentials during development */
     const CREDENTIALS = {
-      accessKeyId: `AKIAQX3FXW3RJ5P4ZN4E`,
-      secretAccessKey: `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`,
+      accessKeyId: ``,
+      secretAccessKey: ``,
     };
     const query = sign(queryOptions, CREDENTIALS);
     return fetch(`https://eks.${region}.amazonaws.com${path}`, {

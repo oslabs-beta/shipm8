@@ -81,28 +81,28 @@ class AWSApi {
   // step 2, retrieve all info about the selected cluster, need to pull out the api URL
   static describeEksCluster = (region, clusterName) => {
     return this.eksFetch(region, `GET`, `/clusters/${clusterName}`)
-      .then(res => res.json())
       .then(clusterObj => clusterObj)
       .catch(err => console.log('err: ', err));
   };
 
   // step 3, get all namespaces for the selected cluster
-  static fetchNamespaces = url => {
-    return this.apiFetch(`${url}/api/v1/namespaces`)
+  static fetchNamespaces = (url, clusterId) => {
+    return this.apiFetch(`${url}/api/v1/namespaces`, clusterId)
       .then(namespacesObj => namespacesObj.items.map(namespace => namespace.metadata.name))
       .catch(err => console.log('err: ', err));
   };
+  //
 
   // step 4, get a list of pods for the selected cluster & namespace
-  static fetchPods = (url, namespace) => {
-    return this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods`)
+  static fetchPods = (url, namespace, clusterId) => {
+    return this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods`, clusterId)
       .then(podsObj => podsObj.items.map(pod => pod.metadata.name))
       .catch(err => console.log('err: ', err));
   };
 
   // step 5, when a pod is clicked, retrive info about that specific pod
-  static fetchPodInfo = (url, namespace, pod) => {
-    return this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods/${pod}`)
+  static fetchPodInfo = (url, namespace, pod, clusterId) => {
+    return this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods/${pod}`, clusterId)
       .then(podObj => podObj)
       .catch(err => console.log('err: ', err));
   };

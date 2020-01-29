@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 mapStateToProps = state => ({});
@@ -70,11 +71,17 @@ const Pods = props => {
         style={styles.podContainer}
         activeOpacity={0.7}
         onPress={() => props.navigation.navigate('Details')}>
-        <Text style={styles.podText} ellipsizeMode="tail">
+        <Text style={styles.podText} numberOfLines={1}>
           {pod}
         </Text>
         <Text style={styles.statusText}>Status:</Text>
-        <Badge status="success" badgeStyle={{ marginLeft: 13, marginTop: 6 }} />
+        <Badge status="success" badgeStyle={styles.badge} />
+        <Icon
+          name="chevron-right"
+          size={15}
+          color="gray"
+          style={styles.arrow}
+        />
       </TouchableOpacity>,
     );
   });
@@ -87,7 +94,7 @@ const Pods = props => {
           label="Select a Namespace"
           data={namespaces}
           itemCount={3}
-          dropdownOffset={{ top: 15, left: 0 }}
+          dropdownOffset={styles.dropDownOffset}
           style={styles.dropDown}
         />
         <ScrollView style={styles.podScroll}>{pods}</ScrollView>
@@ -110,10 +117,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  test: {
-    textAlign: 'center',
-    fontSize: 20,
   },
   safeArea: {
     backgroundColor: 'white',
@@ -143,30 +146,34 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   podScroll: {
-    backgroundColor: '#69ADFF',
+    backgroundColor: '#D0D3D4',
+    borderStyle: 'solid',
+    borderColor: 'navy',
+    borderWidth: 2,
     borderRadius: 3,
     marginTop: 10,
-    height: 580,
+    height: 602,
   },
   podContainer: {
     marginTop: 10,
     backgroundColor: 'white',
     flexDirection: 'row',
-    marginBottom: 6,
+    marginBottom: 1,
     marginLeft: 6,
     height: 48,
     width: '96%',
     paddingVertical: 12,
     paddingLeft: 6,
     borderStyle: 'solid',
-    borderColor: '#063CB9',
+    borderColor: 'navy',
     borderWidth: 1,
     borderRadius: 8,
     alignContent: 'center',
   },
   podText: {
     fontSize: 16,
-    marginRight: 24,
+    marginRight: 12,
+    marginLeft: 2,
     width: 200,
     backgroundColor: 'white',
     overflow: 'scroll',
@@ -174,6 +181,19 @@ const styles = StyleSheet.create({
   statusText: {
     fontSize: 16,
     backgroundColor: 'white',
+    color: 'gray',
+  },
+  arrow: {
+    marginLeft: 8,
+    marginTop: 4,
+  },
+  badge: {
+    marginLeft: 8,
+    marginTop: 7,
+  },
+  dropDownOffset: {
+    top: 15,
+    left: 0,
   },
 });
 

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, AsyncStorage } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import * as actions from '../actions/actions';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import AWSApi from '../api/AWSApi';
 
@@ -37,17 +38,6 @@ const Login = (props) => {
   const saveData = () => {
     AsyncStorage.setItem('AWSCredentials', JSON.stringify(loginState))
   };
-  // const displayData = async () => {
-  //   try {
-  //     let user = await AsyncStorage.getItem('AWSCredentials');
-  //     let parsed = JSON.parse(user)
-  //     console.log('This is await dataYAY!!!!!!', parsed)
-
-  //   }
-  //   catch (error) {
-  //     console.log(error)
-  //   }
-  // }
 
   // this will be verifying the login obviously logic will change (currently any input will login)
   const checkLogin = () => {

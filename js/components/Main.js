@@ -22,34 +22,36 @@ mapStateToProps = state => ({
   pods: state.app.totalPods,
 });
 
+// function Menu(props) {
+//   return 
+// }
+
+// Menu.navigationOptions = {
+//   title: '',
+// };
+
 // where <Badge> is created we need to determine the error cases for clusters
 // so we can determine the status of the cluster and perhaps real time updates
 const Main = props => {
-  let regions = [
-    {
-      value: 'USA Central',
-    },
-    {
-      value: 'USA Pacific',
-    },
-    {
-      value: 'USA Eastern',
-    },
-    {
-      value: 'United Kingdom',
-    },
-    {
-      value: 'South Africa',
-    },
-    {
-      value: 'Madagascar',
-    },
-    {
-      value: 'Luxembourg',
-    },
-    {
-      value: 'Tattoine',
-    },
+  const regionsList = [
+    { value: 'US East (N. Virginia)' },
+    { value: 'US East(Ohio)' },
+    { value: 'US West(N.California)' },
+    { value: 'US West(Oregon)' },
+    { value: 'Asia Pacific(Hong Kong)' },
+    { value: 'Asia Pacific(Mumbai)' },
+    { value: 'Asia Pacific(Seoul)' },
+    { value: 'Asia Pacific(Singapore)' },
+    { value: 'Asia Pacific(Sydney)' },
+    { value: 'Asia Pacific(Tokyo)' },
+    { value: 'Canada(Central)' },
+    { value: 'Europe(Frankfurt)' },
+    { value: 'Europe(Ireland)' },
+    { value: 'Europe(London)' },
+    { value: 'Europe(Paris)' },
+    { value: 'Europe(Stockholm)' },
+    { value: 'Middle East(Bahrain)' },
+    { value: 'South America(São Paulo)' }
   ];
 
   let clusterList = [
@@ -90,8 +92,8 @@ const Main = props => {
           {/* <Text style={styles.test}>Select Namespace to View Pods</Text> */}
           <Dropdown
             label="Select a Region"
-            data={regions}
-            itemCount={3}
+            data={regionsList}
+            itemCount={4}
             dropdownOffset={{ top: 15, left: 0 }}
             style={styles.dropDown}
           />

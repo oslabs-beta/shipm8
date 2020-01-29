@@ -12,8 +12,8 @@ import reducers from './reducers/index';
 import LandingPage from './components/LandingPage';
 import Main from './components/Main';
 import Launch from './components/Launch';
-// import AddCluster from './components/AddCluster';
 import Pods from './components/Pods';
+import PodInfo from './components/PodInfo';
 
 const store = createStore(reducers, composeWithDevTools());
 
@@ -22,8 +22,8 @@ const MainNavigator = createStackNavigator(
     ShipM8: Launch,
     Login: LandingPage, // Login Page
     Clusters: Main, // Landing Page
-    // Add: AddCluster,
-    Pods: Pods
+    Pods: Pods,
+    Details: PodInfo,
   },
   {
     initialRouteName: 'ShipM8',

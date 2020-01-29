@@ -17,7 +17,7 @@ const Login = ({ navigation }) => {
   // this will be verifying the login obviously logic will change (currently any input will login)
   const checkLogin = () => {
     if (loginState.validIP !== '' && loginState.validAPI !== '') {
-      navigation.navigate('Main');
+      navigation.navigate('Clusters');
     } else {
       alert('Invalid Cluster and/or API Token');
     }
@@ -50,16 +50,19 @@ const Login = ({ navigation }) => {
         }
       />
       <View style={{ paddingTop: 30 }}>
-        <TouchableOpacity style={styles.buttonContainer} onPress={checkLogin}>
+        <TouchableOpacity style={styles.buttonContainer} activeOpacity={.7} onPress={checkLogin}>
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.awsButton}>
+        <TouchableOpacity style={styles.awsButton} activeOpacity={.7}>
           <Text
             style={styles.buttonText}
             onPress={() => alert('AWS Server is Currently Inactive')}>
             Sign in w/ AWS
           </Text>
         </TouchableOpacity>
+        {/* <TouchableOpacity style={styles.addButton} onPress={checkLogin}>
+          <Text style={styles.addText}>Add Cluster </Text>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -99,6 +102,20 @@ const styles = StyleSheet.create({
   awsButton: {
     paddingTop: 13,
     backgroundColor: '#151B54',
+    borderRadius: 5,
+    marginTop: 10,
+    width: 200,
+    height: 45,
+  },
+  addText: {
+    textAlign: 'center',
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  addButton: {
+    paddingTop: 13,
+    backgroundColor: 'black',
     borderRadius: 5,
     marginTop: 10,
     width: 200,

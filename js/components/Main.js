@@ -2,9 +2,11 @@
 import React from 'react';
 import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import { Badge, Icon, withBadge } from 'react-native-elements';
+import { } from 'react-native-material';
 import { connect } from 'react-redux';
 import Login from './Login';
-import AddCluster from './AddCluster';
+import SignOut from './SignOut';
+// import AddCluster from './AddCluster';
 
 mapStateToProps = state => ({
   totalCluster: state.app.totalCluster,
@@ -13,34 +15,51 @@ mapStateToProps = state => ({
 
 });
 
+// where <Badge> is created we need to determine the error cases for clusters
+// so we can determine the status of the cluster and perhaps real time updates
 const Main = props => {
+
+  // const clusters = [
+  //   'cluster1',
+  //   'cluster2',
+  //   'cluster3',
+  //   'cluster4',
+  //   'cluster5',
+  //   'cluster6',
+  //   'cluster7',
+  //   'cluster8',
+  //   'cluster9',
+  //   'cluster10',
+  //   'cluster11',
+  //   'cluster12'
+  // ]
+  // clustArr = [];
+
+  // clusArr.forEach(clusters => {
+
+  // });
+
   let content = (
     <View
       style={{ flex: 1, backgroundColor: 'orange', justifyContent: 'center' }}>
       <TouchableOpacity
         style={styles.clusterButton}
+        activeOpacity={.7}
         behavior="padding"
         enabled
-      // onPress={() => props.navigation.navigate("Pods")}
+        onPress={() => props.navigation.navigate("Pods")}
       >
         <Text> Cluster: {props.clusterName} Pods: {props.totalPods}  </Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity
-        style={styles.buttonsContainer}
-        behavior="padding"
-        enabled
-        onPress={props.validIP}>
-        <Text style={styles.buttonsText}>Cluster Name</Text>
-      </TouchableOpacity> */}
-      <View>
+      {/* <View>
         <TouchableOpacity
           style={styles.buttonsContainer}
           behavior="padding"
           enabled
-          onPress={() => props.navigation.navigate('AddCluster')}>
+          onPress={() => props.navigation.navigate('Add')}>
           <Text style={styles.buttonsText}> Add Cluster </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <Button
         style={{
           flex: 2,
@@ -49,7 +68,7 @@ const Main = props => {
           backgroundColor: 'red',
         }}
         title="Sign Out"
-        onPress={() => props.navigation.navigate('Launch')}
+        onPress={() => props.navigation.navigate('ShipM8')}
       />
     </View >
   );

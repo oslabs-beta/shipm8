@@ -17,7 +17,7 @@ const Login = ({ navigation }) => {
   // this will be verifying the login obviously logic will change (currently any input will login)
   const checkLogin = () => {
     if (loginState.validIP !== '' && loginState.validAPI !== '') {
-      navigation.navigate('Main');
+      navigation.navigate('Clusters');
     } else {
       alert('Invalid Cluster and/or API Token');
     }
@@ -50,10 +50,10 @@ const Login = ({ navigation }) => {
         }
       />
       <View style={{ paddingTop: 30 }}>
-        <TouchableOpacity style={styles.buttonContainer} onPress={checkLogin}>
+        <TouchableOpacity style={styles.buttonContainer} activeOpacity={.7} onPress={checkLogin}>
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.awsButton}>
+        <TouchableOpacity style={styles.awsButton} activeOpacity={.7}>
           <Text
             style={styles.buttonText}
             onPress={() => alert('AWS Server is Currently Inactive')}>

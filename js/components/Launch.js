@@ -28,6 +28,7 @@ const Launch = ({ navigation }) => {
         <View style={{ paddingTop: 5 }}>
           <TouchableOpacity
             style={styles.buttonContainer}
+            activeOpacity={.7}
             behavior="padding"
             enabled
             onPress={getStarted}>

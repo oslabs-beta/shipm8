@@ -1,4 +1,4 @@
-// this will be our landing page we can use this to work with the MVP data we are trying to get
+//this will be our landing page we can use this to work with the MVP data we are trying to get
 import React from 'react';
 import {
   View,

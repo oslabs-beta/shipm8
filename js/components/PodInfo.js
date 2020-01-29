@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
     color: 'gray',
+    overflow: 'scroll',
   },
   outerTextView: {
     marginHorizontal: 15,

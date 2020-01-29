@@ -56,12 +56,12 @@ const Pods = props => {
     'pod8',
     'pod9',
     'pod10',
-    'pod11',
-    'pod12',
-    'pod13',
-    'pod14',
-    'pod15',
-    'pod16',
+    // 'pod11',
+    // 'pod12',
+    // 'pod13',
+    // 'pod14',
+    // 'pod15',
+    // 'pod16',
   ];
   const pods = [];
 
@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginHorizontal: 20,
     height: '100%',
+    marginTop: -11,
   },
   scrollView: { marginHorizontal: 20, marginTop: 30 },
   namespacePickText: {

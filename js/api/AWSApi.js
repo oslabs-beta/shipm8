@@ -24,8 +24,8 @@ class AWSApi {
     };
     /* Hard coded credentials during development */
     const CREDENTIALS = {
-      accessKeyId: ``,
-      secretAccessKey: ``,
+      accessKeyId: `AKIAQX3FXW3RJ5P4ZN4E`,
+      secretAccessKey: `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`,
     };
     /* Sign STS API Query with AWS4 Signature */
     const signedQuery = sign(queryOptions, CREDENTIALS);
@@ -59,8 +59,8 @@ class AWSApi {
     };
     /* Hard coded credentials during development */
     const CREDENTIALS = {
-      accessKeyId: ``,
-      secretAccessKey: ``,
+      accessKeyId: `AKIAQX3FXW3RJ5P4ZN4E`,
+      secretAccessKey: `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`,
     };
     const query = sign(queryOptions, CREDENTIALS);
     return fetch(`https://eks.${region}.amazonaws.com${path}`, {
@@ -74,7 +74,7 @@ class AWSApi {
   // step 1, retrieve list of all AWS clusters in the selected region
   static getEksClusters = region => {
     return this.eksFetch(region, `GET`, `/clusters`)
-      .then(clustersObj => clustersObj.clusters)
+      .then(clustersObj => clustersObj)
       .catch(err => console.log('err: ', err))
   };
 

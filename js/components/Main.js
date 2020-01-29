@@ -1,4 +1,4 @@
-// this will be our landing page we can use this to work with the MVP data we are trying to get
+//this will be our landing page we can use this to work with the MVP data we are trying to get
 import React from 'react';
 import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import { Badge, Icon, withBadge } from 'react-native-elements';
@@ -20,17 +20,10 @@ const Main = props => {
         style={styles.clusterButton}
         behavior="padding"
         enabled
-      // onPress={() => props.navigation.navigate("Pods")}
+        onPress={() => props.navigation.navigate("Pods")}
       >
-        <Text> Cluster: {props.clusterName} Pods: {props.totalPods}  </Text>
+        <Text> Cluster: {props.clusterName}                                                       Running:J {props.totalPods}  </Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity
-        style={styles.buttonsContainer}
-        behavior="padding"
-        enabled
-        onPress={props.validIP}>
-        <Text style={styles.buttonsText}>Cluster Name</Text>
-      </TouchableOpacity> */}
       <View>
         <TouchableOpacity
           style={styles.buttonsContainer}
@@ -48,9 +41,10 @@ const Main = props => {
           backgroundColor: 'red',
         }}
         title="Sign Out"
-        onPress={() => props.navigation.navigate('Launch')}
+        onPress={() => props.navigation.navigate('ShipM8')}
       />
-    </View >
+    </View>
+
   );
   return content;
 };

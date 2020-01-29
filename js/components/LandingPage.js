@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import AWSApi from '../api/AWSApi';
 import Login from './Login';
+import { connect } from 'react-redux';
 
 /***********************
    Development Testing
@@ -15,14 +16,26 @@ import Login from './Login';
 ************************/
 const url =
   'https://64A4A753714D2EBFF419B6C287DDE8C9.yl4.us-west-2.eks.amazonaws.com';
-AWSApi.getNamespaces(url);
+// AWSApi.getEksClusters('us-west-2')
+//   .then((res) => console.log(res))
 
-AWSApi.getPodsInNamespace(url);
+// AWSApi.getPodsInNamespace(url);
 
-AWSApi.getPodInfo(url);
+// AWSApi.getPodInfo(url);
 /********
  * End
  ********/
+
+mapStateToProps = state => ({
+
+});
+
+mapDispatchToProps = dispatch => ({
+  addApitoken: (event) => {
+    dispatch(actions.addApitoken(event))
+  },
+});
+
 
 const App = props => {
   return (
@@ -34,7 +47,7 @@ const App = props => {
         />
         <Text style={styles.textStyle}>Monitor You K8s Cluster Anywhere!</Text>
         <View style={styles.formContainer}>
-          <Login />
+          <Login addApitoken={props.addApitoken} />
         </View>
       </View>
     </KeyboardAvoidingView>

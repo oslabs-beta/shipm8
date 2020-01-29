@@ -3,18 +3,29 @@ import * as types from '../constants/actions';
 
 //our state
 const initialState = {
-  clusterName: '',
   clusterList: [],
   totalCluster: 0,
   pods: [],
   totalPods: 0,
+  accessKeyId: ``,
+  secretAccessKey: ``,
 };
+
 
 const appReducer = (state = initialState, action) => {
   let clusterName;
   let totalCluster;
 
   switch (action.type) {
+    case types.ADD_APITOKEN:
+      accessKeyId = action.payload.accessKeyId;
+      secretAccessKey = action.payload.secretAccessKey;
+
+      return {
+        ...state,
+        accessKeyId,
+        secretAccessKey,
+      };
     case types.ADD_CLUSTER:
 
       totalCluster = state.totalCluster + 1;

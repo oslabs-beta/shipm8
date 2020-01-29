@@ -4,19 +4,27 @@ import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from 'react-navigation';
 
+import AWSApi from '../api/AWSApi';
+
 // Load FontAwesome icons
 Icon.loadFont();
+
+const url =
+  'https://64A4A753714D2EBFF419B6C287DDE8C9.yl4.us-west-2.eks.amazonaws.com';
+
+
 
 // state for the changing input fields
 const Login = ({ navigation }) => {
   const [loginState, setLoginState] = useState({
-    validIP: '',
-    validAPI: '',
+    accessKeyId: '',
+    secretAccessKey: '',
   });
 
   // this will be verifying the login obviously logic will change (currently any input will login)
   const checkLogin = () => {
-    if (loginState.validIP !== '' && loginState.validAPI !== '') {
+    if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
+      // where i should do the state updateing 
       navigation.navigate('Main');
     } else {
       alert('Invalid Cluster and/or API Token');
@@ -25,10 +33,10 @@ const Login = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Input
-        onChangeText={text => setLoginState({ ...loginState, validIP: text })}
+        onChangeText={text => setLoginState({ ...loginState, accessKeyId: text })}
         style={{ marginBottom: 20 }}
         label="Cluster Info"
-        placeholder="Enter Cluster Info Here"
+        placeholder="Enter Access Key ID Here"
         leftIcon={{
           type: 'font-awesome',
           name: 'chevron-right',
@@ -37,10 +45,10 @@ const Login = ({ navigation }) => {
         }}
       />
       <Input
-        onChangeText={text => setLoginState({ ...loginState, validAPI: text })}
+        onChangeText={text => setLoginState({ ...loginState, secretAccessKey: text })}
         style={{ marginTop: 20 }}
         label="Api Key"
-        placeholder="Enter API Key Here"
+        placeholder="Enter Secret Access Key Here"
         leftIcon={
           <Icon
             name="lock"
@@ -56,7 +64,7 @@ const Login = ({ navigation }) => {
         <TouchableOpacity style={styles.awsButton}>
           <Text
             style={styles.buttonText}
-            onPress={() => alert('AWS Server is Currently Inactive')}>
+            onPress={() => { alert('IM WORKING ON IT!!') }}>
             Sign in w/ AWS
           </Text>
         </TouchableOpacity>
@@ -65,7 +73,7 @@ const Login = ({ navigation }) => {
   );
 };
 
-export default withNavigation(Login);
+export default withNavigation(React.memo(Login));
 
 const styles = StyleSheet.create({
   container: {

@@ -1,6 +1,12 @@
 import { sign } from '../utils/aws4';
 import RNFetchBlob from 'rn-fetch-blob';
 import { Base64 } from 'js-base64';
+import { connect } from 'react-redux';
+
+
+const mapStateToProps = state => ({
+
+});
 
 class AWSApi {
 
@@ -108,4 +114,4 @@ class AWSApi {
   };
 }
 
-export default AWSApi;
+export default connect(mapStateToProps)(AWSApi);

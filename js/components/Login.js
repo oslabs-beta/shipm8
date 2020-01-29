@@ -3,11 +3,23 @@ import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from 'react-navigation';
+import { connect } from 'react-redux';
+import * as actions from '../actions/actions';
 
 import AWSApi from '../api/AWSApi';
 
 // Load FontAwesome icons
 Icon.loadFont();
+
+const mapStateToProps = state => ({
+
+});
+
+const mapDispatchToProps = dispatch => ({
+  addApi: (obj) => {
+    dispatch(actions.addApi(obj))
+  },
+});
 
 const url =
   'https://64A4A753714D2EBFF419B6C287DDE8C9.yl4.us-west-2.eks.amazonaws.com';
@@ -16,7 +28,7 @@ const url =
 
 
 // state for the changing input fields
-const Login = ({ navigation }) => {
+const Login = (props) => {
   const [loginState, setLoginState] = useState({
     accessKeyId: '',
     secretAccessKey: '',
@@ -25,10 +37,14 @@ const Login = ({ navigation }) => {
   // this will be verifying the login obviously logic will change (currently any input will login)
   const checkLogin = () => {
     if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
+      props.addApi({
+        accessKeyId: loginState.accessKeyId,
+        secretAccessKey: loginState.secretAccessKey,
+      })
       AWSApi.getEksClusters('us-west-2')
         .then(data => { console.log(data) })
       // where i should do the state updateing 
-      navigation.navigate('Main');
+      props.navigation.navigate('Main');
     } else {
       alert('Invalid Cluster and/or API Token');
     }
@@ -61,7 +77,7 @@ const Login = ({ navigation }) => {
         }
       />
       <View style={{ paddingTop: 30 }}>
-        <TouchableOpacity style={styles.buttonContainer} onPress={checkLogin}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={checkLogin} >
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.awsButton}>
@@ -76,7 +92,7 @@ const Login = ({ navigation }) => {
   );
 };
 
-export default withNavigation(React.memo(Login));
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(React.memo(Login)));
 
 const styles = StyleSheet.create({
   container: {

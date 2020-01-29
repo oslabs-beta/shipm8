@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import AWSApi from '../api/AWSApi';
 import Login from './Login';
-import { connect } from 'react-redux';
+
 
 /***********************
    Development Testing
@@ -25,15 +25,6 @@ import { connect } from 'react-redux';
  * End
  ********/
 
-mapStateToProps = state => ({
-
-});
-
-mapDispatchToProps = dispatch => ({
-  addApitoken: (event) => {
-    dispatch(actions.addApitoken(event))
-  },
-});
 
 
 const App = props => {
@@ -46,14 +37,16 @@ const App = props => {
         />
         <Text style={styles.textStyle}>Monitor You K8s Cluster Anywhere!</Text>
         <View style={styles.formContainer}>
-          <Login addApitoken={props.addApitoken} />
+          <Login />
         </View>
       </View>
     </KeyboardAvoidingView>
   );
 };
 
-export default React.memo(App);
+
+
+export default (React.memo(App));
 
 const styles = StyleSheet.create({
   container: {

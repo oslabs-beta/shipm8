@@ -1,4 +1,4 @@
-import * as types from '../constants/actions';
+import * as types from '../constants/actionsTypes';
 
 
 //our state
@@ -13,11 +13,12 @@ const initialState = {
 
 
 const appReducer = (state = initialState, action) => {
-  let clusterName;
-  let totalCluster;
+  let accessKeyId;
+  let secretAccessKey;
 
   switch (action.type) {
-    case types.ADD_APITOKEN:
+    case types.ADD_API:
+      console.log('This is action.payload ====>', action.payload)
       accessKeyId = action.payload.accessKeyId;
       secretAccessKey = action.payload.secretAccessKey;
 
@@ -26,6 +27,7 @@ const appReducer = (state = initialState, action) => {
         accessKeyId,
         secretAccessKey,
       };
+
     case types.ADD_CLUSTER:
 
       totalCluster = state.totalCluster + 1;

@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 40,
+    paddingBottom: 60,
   },
   buttonContainer: {
     backgroundColor: '#1589FF',

@@ -6,55 +6,92 @@ import {
   SafeAreaView,
   ScrollView,
   View,
+  TouchableOpacity,
 } from 'react-native';
+import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import { connect } from 'react-redux';
 
 mapStateToProps = state => ({});
 
 const Pods = props => {
+  /* Dummy Data for Namespaces and Pods. Will need to have a podList 
+     for each Namespace, and render accordingly */
   let namespaces = [
     {
       value: 'default',
-      pod: 'pod1',
-      status: 'running',
     },
     {
       value: 'namespace1',
-      pod: 'pod2',
-      status: 'running',
     },
     {
       value: 'namespace2',
-      pod: 'pod3',
-      status: 'inactive',
     },
     {
       value: 'namespace3',
-      pod: 'pod4',
-      status: 'running',
+    },
+    {
+      value: 'namespace4',
+    },
+    {
+      value: 'namespace5',
+    },
+    {
+      value: 'namespace6',
+    },
+    {
+      value: 'namespace7',
     },
   ];
+
+  let podList = [
+    'pod1',
+    'pod2',
+    'pod3',
+    'pod4',
+    'pod5',
+    'pod6',
+    'pod7',
+    'pod8',
+    'pod9',
+    'pod10',
+    'pod11',
+    'pod12',
+    'pod13',
+    'pod14',
+    'pod15',
+    'pod16',
+  ];
+  const pods = [];
+
+  podList.forEach(pod => {
+    pods.push(
+      <TouchableOpacity style={styles.podContainer} activeOpacity={0.7}>
+        <Text style={styles.podText}>{pod}</Text>
+        <Text style={styles.statusText}>Status:</Text>
+        <Badge status="success" badgeStyle={{ marginLeft: 13, marginTop: 6 }} />
+      </TouchableOpacity>,
+    );
+  });
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.scrollView}>
-        <Text style={styles.test}>Select Namespace to View Pods</Text>
+        {/* <Text style={styles.test}>Select Namespace to View Pods</Text> */}
         <Dropdown
-          label="namespaces"
+          label="Select a Namespace"
           data={namespaces}
+          itemCount={3}
+          dropdownOffset={{ top: 15, left: 0 }}
           style={styles.dropDown}
         />
-        <ScrollView style={styles.podScroll}>
-          <Text>
-            This will be where individual pods names and statuses will render
-          </Text>
-        </ScrollView>
+        <ScrollView style={styles.podScroll}>{pods}</ScrollView>
+
         <View style={styles.buttonView}>
           <Button
-            style={styles.button}
+            style={styles.signOut}
             title="Sign Out"
-            onPress={() => props.navigation.navigate('ShipM8')}
+            onPress={() => props.navigation.navigate('PodStatus')}
           />
         </View>
       </ScrollView>
@@ -85,11 +122,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  button: {
+  signOut: {
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'orange',
   },
   buttonView: {
     marginTop: 20,
@@ -98,10 +134,33 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignItems: 'center',
     width: 20,
+    fontSize: 18,
   },
   podScroll: {
     backgroundColor: 'pink',
-    height: 590,
+    marginTop: 10,
+    height: 580,
+  },
+  podContainer: {
+    marginTop: 10,
+    backgroundColor: 'gray',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 6,
+    height: 40,
+    width: '100%',
+    paddingVertical: 10,
+    paddingLeft: 6,
+  },
+  podText: {
+    fontSize: 16,
+    marginRight: 22,
+    width: 200,
+    backgroundColor: 'white',
+  },
+  statusText: {
+    fontSize: 16,
+    backgroundColor: 'white',
   },
 });
 

@@ -34,8 +34,24 @@ const Login = (props) => {
     secretAccessKey: '',
   });
 
+  const saveData = () => {
+    AsyncStorage.setItem('AWSCredentials', JSON.stringify(loginState))
+  };
+  // const displayData = async () => {
+  //   try {
+  //     let user = await AsyncStorage.getItem('AWSCredentials');
+  //     let parsed = JSON.parse(user)
+  //     console.log('This is await dataYAY!!!!!!', parsed)
+
+  //   }
+  //   catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
   // this will be verifying the login obviously logic will change (currently any input will login)
   const checkLogin = () => {
+    saveData()
     if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
       props.addApi({
         accessKeyId: loginState.accessKeyId,

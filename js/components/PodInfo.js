@@ -16,12 +16,25 @@ const PodInfo = props => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.podScroll}>
-        <View style={styles.textView}>
-          <Text style={styles.text}>Name: </Text>
-          <Text style={styles.text}>Status: </Text>
-          <Text style={styles.text}>Time Created: </Text>
+        <View style={styles.outerTextView}>
+          <View style={styles.innerTextView}>
+            <Text style={styles.text}>Name: </Text>
+            <Text style={styles.text}>Status: </Text>
+            <Text style={styles.text}>Time Created: </Text>
+            <Text style={styles.text}>Host IP: </Text>
+            <Text style={styles.text}>Pod IP: </Text>
+            <Text style={styles.text}>Labels</Text>
+            <Text style={styles.text}>Containers</Text>
+          </View>
         </View>
       </ScrollView>
+      <View style={styles.buttonView}>
+        <Button
+          style={styles.signOut}
+          title="Sign Out"
+          onPress={() => props.navigation.navigate('Login')}
+        />
+      </View>
     </SafeAreaView>
   );
 };
@@ -46,16 +59,26 @@ const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: 'white',
     marginHorizontal: 20,
-    height: '80%',
+    height: '90%',
     marginTop: 40,
   },
   text: {
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 10,
   },
-  textView: {
+  outerTextView: {
     marginHorizontal: 20,
     marginTop: 20,
+  },
+  innerTextView: {
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 5,
+    height: '100%',
+  },
+  buttonView: {
+    marginTop: 20,
+    marginBottom: 20,
   },
 });
 

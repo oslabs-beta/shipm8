@@ -102,6 +102,7 @@ const Pods = props => {
         <View style={styles.buttonView}>
           <Button
             style={styles.signOut}
+            color="red"
             title="Sign Out"
             onPress={() => props.navigation.navigate('Login')}
           />
@@ -117,6 +118,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  test: {
+    textAlign: 'center',
+    fontSize: 20,
   },
   safeArea: {
     backgroundColor: 'white',
@@ -135,6 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     fontWeight: 'bold',
+    color: 'red',
   },
   buttonView: {
     marginTop: 20,
@@ -146,26 +152,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   podScroll: {
-    backgroundColor: '#D0D3D4',
-    borderStyle: 'solid',
-    borderColor: 'navy',
-    borderWidth: 2,
-    borderRadius: 3,
+    backgroundColor: '#69ADFF',
+    borderRadius: 5,
     marginTop: 10,
-    height: 602,
+    height: 583,
   },
   podContainer: {
     marginTop: 10,
     backgroundColor: 'white',
     flexDirection: 'row',
-    marginBottom: 1,
+    marginBottom: 6,
     marginLeft: 6,
     height: 48,
     width: '96%',
     paddingVertical: 12,
     paddingLeft: 6,
     borderStyle: 'solid',
-    borderColor: 'navy',
+    borderColor: '#063CB9',
     borderWidth: 1,
     borderRadius: 8,
     alignContent: 'center',
@@ -190,10 +193,6 @@ const styles = StyleSheet.create({
   badge: {
     marginLeft: 8,
     marginTop: 7,
-  },
-  dropDownOffset: {
-    top: 15,
-    left: 0,
   },
 });
 

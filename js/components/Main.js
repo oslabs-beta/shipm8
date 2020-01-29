@@ -7,14 +7,11 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import { connect } from 'react-redux';
-import Login from './Login';
-import SignOut from './SignOut';
-// import AddCluster from './AddCluster';
 
 mapStateToProps = state => ({
   totalCluster: state.app.totalCluster,
@@ -76,12 +73,17 @@ const Main = props => {
 
   clusterList.forEach(cluster => {
     clusterArr.push(
-      <TouchableOpacity style={styles.podContainer} activeOpacity={0.7} onPress={() => props.navigation.navigate('Pods')}>
-        {/* <Text style={styles.podText}>{cluster}</Text> */}
-        <Text style={styles.podText}>{' '}Name: {props.clusterName} Pods: {props.totalPods}{' '}</Text>
+      <TouchableOpacity
+        style={styles.podContainer}
+        activeOpacity={0.7}
+        onPress={() => props.navigation.navigate('Pods')}>
+        <Text style={styles.podText}>
+          {' '}
+          Name: {props.clusterName} Pods: {props.totalPods}{' '}
+        </Text>
         <Text style={styles.statusText}>Status:</Text>
         <Badge status="success" badgeStyle={{ marginLeft: 13, marginTop: 6 }} />
-      </TouchableOpacity >,
+      </TouchableOpacity>,
     );
   });
 
@@ -120,7 +122,7 @@ const Main = props => {
           />
         </ScrollView>
       </SafeAreaView>
-    </View >
+    </View>
   );
 };
 
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   buttonsContainer: {
     backgroundColor: 'blue',
@@ -141,7 +143,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   buttonsText: {
     textAlign: 'center',
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginHorizontal: 20,
-    marginTop: 30
+    marginTop: 30,
   },
 
   namespacePickText: {

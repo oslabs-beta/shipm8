@@ -66,7 +66,10 @@ const Pods = props => {
 
   podList.forEach(pod => {
     pods.push(
-      <TouchableOpacity style={styles.podContainer} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={styles.podContainer}
+        activeOpacity={0.7}
+        onPress={() => props.navigation.navigate('Details')}>
         <Text style={styles.podText}>{pod}</Text>
         <Text style={styles.statusText}>Status:</Text>
         <Badge status="success" badgeStyle={{ marginLeft: 13, marginTop: 6 }} />

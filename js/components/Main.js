@@ -96,15 +96,15 @@ const Main = props => {
           />
           <ScrollView style={styles.podScroll}>{}</ScrollView>
           <TouchableOpacity
-            style={{
-              flex: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'blue',
-            }}
-            title=""
-            onPress={() => props.navigation.navigate('ShipM8')}
-          />
+            style={styles.clusterButton}
+            behavior="padding"
+            enabled
+            onPress={() => props.navigation.navigate('Pods')}>
+            <Text>
+              {' '}
+              Cluster: {props.clusterName} Pods: {props.totalPods}{' '}
+            </Text>
+          </TouchableOpacity>
           <Button
             style={{
               flex: 2,

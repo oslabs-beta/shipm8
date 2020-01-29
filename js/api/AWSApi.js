@@ -1,14 +1,9 @@
 import { sign } from '../utils/aws4';
 import RNFetchBlob from 'rn-fetch-blob';
 import { Base64 } from 'js-base64';
-import { connect } from 'react-redux';
+// import { initialState } from '../reducers/appReducers';
 
 
-const mapStateToProps = state => ({
-  accessKeyId: state.app.accessKeyId,
-  secretAccessKey: state.app.secretAccessKey,
-
-});
 
 class AWSApi {
 
@@ -32,8 +27,8 @@ class AWSApi {
     };
     /* Hard coded credentials during development */
     const CREDENTIALS = {
-      accessKeyId: this.props.accessKeyId,
-      secretAccessKey: this.props.secretAccessKey,
+      accessKeyId: '',
+      secretAccessKey: '',
     };
     /* Sign STS API Query with AWS4 Signature */
     const signedQuery = sign(queryOptions, CREDENTIALS);
@@ -67,8 +62,8 @@ class AWSApi {
     };
     /* Hard coded credentials during development */
     const CREDENTIALS = {
-      accessKeyId: ``,
-      secretAccessKey: ``,
+      accessKeyId: '',
+      secretAccessKey: '',
     };
     const query = sign(queryOptions, CREDENTIALS);
     return fetch(`https://eks.${region}.amazonaws.com${path}`, {
@@ -81,6 +76,7 @@ class AWSApi {
 
   // step 1, retrieve list of all AWS clusters in the selected region
   static getEksClusters = region => {
+    // console.log(initialState.accessKeyId)
     return this.eksFetch(region, `GET`, `/clusters`)
       .then(clustersObj => clustersObj)
       .catch(err => console.log('err: ', err))
@@ -116,4 +112,4 @@ class AWSApi {
   };
 }
 
-export default connect(mapStateToProps)(AWSApi);
+export default AWSApi;

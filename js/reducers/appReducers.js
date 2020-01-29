@@ -58,4 +58,6 @@ const appReducer = (state = initialState, action) => {
   }
 };
 
+console.log('This is the store', initialState.accessKeyId)
+
 export default appReducer;

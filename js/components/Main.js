@@ -74,11 +74,12 @@ const Main = props => {
 
   clusterList.forEach(cluster => {
     clusterArr.push(
-      <TouchableOpacity style={styles.podContainer} activeOpacity={0.7}>
-        <Text style={styles.podText}>{clusterArr}</Text>
+      <TouchableOpacity style={styles.podContainer} activeOpacity={0.7} onPress={() => props.navigation.navigate('Pods')}>
+        {/* <Text style={styles.podText}>{cluster}</Text> */}
+        <Text style={styles.podText}>{' '}Name: {props.clusterName} Pods: {props.totalPods}{' '}</Text>
         <Text style={styles.statusText}>Status:</Text>
         <Badge status="success" badgeStyle={{ marginLeft: 13, marginTop: 6 }} />
-      </TouchableOpacity>,
+      </TouchableOpacity >,
     );
   });
 
@@ -94,8 +95,8 @@ const Main = props => {
             dropdownOffset={{ top: 15, left: 0 }}
             style={styles.dropDown}
           />
-          <ScrollView style={styles.podScroll}>{}</ScrollView>
-          <TouchableOpacity
+          <ScrollView style={styles.podScroll}>{clusterArr}</ScrollView>
+          {/* <TouchableOpacity
             style={styles.clusterButton}
             behavior="padding"
             enabled
@@ -104,7 +105,7 @@ const Main = props => {
               {' '}
               Cluster: {props.clusterName} Pods: {props.totalPods}{' '}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <Button
             style={{
               flex: 2,

@@ -3,7 +3,7 @@ import * as types from '../constants/actions';
 
 //our state
 const initialState = {
-  clusterName: 'Test',
+  clusterName: '',
   clusterList: [],
   totalCluster: 0,
   pods: [],

@@ -12,6 +12,7 @@ import {
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import { connect } from 'react-redux';
+import regionsList from '../RegionsList'
 
 mapStateToProps = state => ({
   totalCluster: state.app.totalCluster,
@@ -19,18 +20,10 @@ mapStateToProps = state => ({
   pods: state.app.totalPods,
 });
 
-// function Menu(props) {
-//   return 
-// }
-
-// Menu.navigationOptions = {
-//   title: '',
-// };
-
 // where <Badge> is created we need to determine the error cases for clusters
 // so we can determine the status of the cluster and perhaps real time updates
 const Main = props => {
-  const regionsList = [
+  const regionsListArr = [
     { value: 'US East (N. Virginia)' },
     { value: 'US East(Ohio)' },
     { value: 'US West(N.California)' },
@@ -87,6 +80,31 @@ const Main = props => {
     );
   });
 
+  for (let i = 0; i < regionsListArr.length; i++) {
+    for (let key of regionsList) {
+      if (reigionsListArr[i][value] === regionsList[key] && regionsList[key] === props.regions) {
+        forceUpdate(
+          clusterArr.push(
+            <TouchableOpacity
+              style={styles.podContainer}
+              activeOpacity={0.7}
+              onPress={() => props.navigation.navigate('Pods')}>
+              <Text style={styles.podText}>
+                {' '}
+                Name: {props.clusterName}
+                Pods: {props.totalPods}
+                Regions: {props.regions}
+                {' '}
+              </Text>
+              <Text style={styles.statusText}>Status:</Text>
+              <Badge status="success" badgeStyle={{ marginLeft: 13, marginTop: 6 }} />
+            </TouchableOpacity>,
+          )
+        );
+      }
+    }
+  }
+
   return (
     <View>
       <SafeAreaView style={styles.safeArea}>
@@ -94,7 +112,7 @@ const Main = props => {
           {/* <Text style={styles.test}>Select Namespace to View Pods</Text> */}
           <Dropdown
             label="Select a Region"
-            data={regionsList}
+            data={regionsListArr}
             itemCount={4}
             dropdownOffset={{ top: 15, left: 0 }}
             style={styles.dropDown}

@@ -47,13 +47,14 @@ const Login = ({ addApi, navigation }) => {
         accessKeyId: loginState.accessKeyId,
         secretAccessKey: loginState.secretAccessKey,
       })
-      AWSApi.getEksClusters('us-west-2')
+      AWSApi.fetchEksClusters('us-west-2')
         .then(data => {
-          if (data.clusters) {
+          console.log('this is data =====>', data)
+          if (data) {
             navigation.navigate('Clusters');
           }
           else {
-            alert(data.message)
+            alert('The Security Token Included in the Request Is Invalid')
           }
         })
     } else {

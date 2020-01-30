@@ -30,3 +30,8 @@ Install iOS dependencies
 Finally, cd back to main project directory and run the app on iOS
 
 ```npm run ios```
+
+# Limitations
+
+These regions are not currently supported: 
+  [Northern California, Hong Kong, Frankfurt, Bahrain]

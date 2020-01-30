@@ -43,14 +43,14 @@ const Login = ({ addApi, navigation }) => {
   const checkLogin = () => {
     if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
       saveData()
-      props.addApi({
+      addApi({
         accessKeyId: loginState.accessKeyId,
         secretAccessKey: loginState.secretAccessKey,
       })
       AWSApi.getEksClusters('us-west-2')
         .then(data => {
           if (data.clusters) {
-            props.navigation.navigate('Clusters');
+            navigation.navigate('Clusters');
           }
           else {
             alert(data.message)

@@ -1,5 +1,5 @@
 //this will be our landing page we can use this to work with the MVP data we are trying to get
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,8 @@ import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import Regions from '../Regions'
+import Regions from '../Regions';
+import AWSApi from '../api/AWSApi';
 
 mapStateToProps = state => ({
   totalCluster: state.app.totalCluster,
@@ -25,40 +26,44 @@ mapStateToProps = state => ({
 // where <Badge> is created we need to determine the error cases for clusters
 // so we can determine the status of the cluster and perhaps real time updates
 const Main = props => {
+  let clusterList = [];
+  let content;
 
-  let clusterList = [
-    'cluster1',
-    'cluster2',
-    'cluster3',
-    'cluster4',
-    'cluster5',
-    'cluster6',
-    'cluster7',
-    'cluster8',
-    'cluster9',
-    'cluster10',
-    'cluster11',
-    'cluster12',
-    'cluster13',
-    'cluster14',
-    'cluster15',
-    'cluster16',
-  ];
-  const clusterArr = [];
-  const reRenderArr = [];
+  const [dataState, setDataState] = useState([]);
 
-  clusterList.forEach(cluster => {
-    clusterArr.push(
+  const callClusters = async (text) => {
+    const storedData = await AWSApi.describeAllEksClusters(text);
+    setDataState(storedData)
+
+
+
+    console.log(storedData)
+  }
+
+  useEffect(() => {
+  }, [dataState]);
+
+  const checkStatus = (text) => {
+    if (text === 'ACTIVE') {
+      return 'success'
+    }
+    else {
+      return 'error'
+    }
+  };
+
+  dataState.length > 0 ? dataState.forEach(cluster => {
+    clusterList.push(
       <TouchableOpacity
         style={styles.clusterContainer}
         activeOpacity={0.7}
         onPress={() => props.navigation.navigate('Pods')}>
-        <Text style={styles.clusterText}>
+        <Text numberOfLines={1} style={styles.clusterText}>
           {' '}
-          CN:{props.clusterName} TP:{props.totalPods}{' '}
+          {cluster.name}{' '}
         </Text>
-        <Text style={styles.statusText}>Status: </Text>
-        <Badge status="success" badgeStyle={styles.badge} />
+        <Text style={styles.statusText}>Status:</Text>
+        <Badge status={checkStatus(cluster.status)} badgeStyle={styles.badge} />
         <Icon
           name="chevron-right"
           size={15}
@@ -67,9 +72,9 @@ const Main = props => {
         />
       </TouchableOpacity>,
     );
-  });
+  }) : null;
 
-  return (
+  content = (
     <View>
       <SafeAreaView style={styles.safeArea}>
         <ScrollView style={styles.scrollView}>
@@ -80,8 +85,11 @@ const Main = props => {
             itemCount={4}
             dropdownOffset={{ top: 15, left: 0 }}
             style={styles.dropDown}
+            onChangeText={callClusters}
           />
-          <ScrollView style={styles.clusterScroll}>{clusterArr}</ScrollView>
+          <ScrollView style={styles.clusterScroll}>{
+            clusterList.length > 0 ? clusterList : <Text>No Clusters Found in this Region</Text>
+          }</ScrollView>
           <Button
             style={{
               flex: 2,
@@ -91,12 +99,13 @@ const Main = props => {
             }}
             color='red'
             title="Sign Out"
-            onPress={() => props.navigation.navigate('ShipM8')}
+            onPress={() => props.navigation.navigate('Login')}
           />
         </ScrollView>
       </SafeAreaView>
     </View>
   );
+  return content
 };
 
 export default connect(mapStateToProps)(React.memo(Main));
@@ -144,7 +153,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     backgroundColor: 'white',
     flexDirection: 'row',
-    marginBottom: 6,
+    marginBottom: 2,
     marginLeft: 6,
     height: 48,
     width: '96%',
@@ -158,14 +167,16 @@ const styles = StyleSheet.create({
   },
   clusterText: {
     fontSize: 16,
-    marginRight: 8,
-    width: 200,
+    marginRight: 27,
+    width: 165,
     backgroundColor: 'white',
+    overflow: 'scroll',
   },
   statusText: {
     fontSize: 16,
     backgroundColor: 'white',
     color: 'gray',
+    marginRight: 3,
   },
   clusterScroll: {
     backgroundColor: '#69ADFF',
@@ -173,11 +184,12 @@ const styles = StyleSheet.create({
     height: 580,
   },
   arrow: {
-    marginLeft: 4,
+    marginLeft: 6,
     marginTop: 4,
   },
   badge: {
-    marginLeft: 0,
+    marginLeft: 6,
     marginTop: 7,
+    marginRight: 3,
   },
 });

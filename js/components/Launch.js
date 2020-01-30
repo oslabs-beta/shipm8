@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
     height: 315,
     alignContent: 'center',
     alignItems: 'center',
-    borderStyle: 'solid',
     borderColor: '#151B54',
     borderWidth: 3,
     marginBottom: 25,

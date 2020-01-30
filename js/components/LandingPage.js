@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 175,
     height: 175,
-    borderStyle: 'solid',
     borderColor: '#151B54',
     borderWidth: 3,
     marginBottom: 25,

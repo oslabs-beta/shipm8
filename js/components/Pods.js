@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 mapStateToProps = state => ({});
@@ -45,7 +46,7 @@ const Pods = props => {
   ];
 
   let podList = [
-    'pod1',
+    'pod1sslasdjflkajsdflkjsdlfkjlsdkfjlksjdflkjsdf',
     'pod2',
     'pod3',
     'pod4',
@@ -70,9 +71,17 @@ const Pods = props => {
         style={styles.podContainer}
         activeOpacity={0.7}
         onPress={() => props.navigation.navigate('Details')}>
-        <Text style={styles.podText}>{pod}</Text>
+        <Text style={styles.podText} numberOfLines={1}>
+          {pod}
+        </Text>
         <Text style={styles.statusText}>Status:</Text>
-        <Badge status="success" badgeStyle={{ marginLeft: 13, marginTop: 6 }} />
+        <Badge status="success" badgeStyle={styles.badge} />
+        <Icon
+          name="chevron-right"
+          size={15}
+          color="gray"
+          style={styles.arrow}
+        />
       </TouchableOpacity>,
     );
   });
@@ -85,7 +94,7 @@ const Pods = props => {
           label="Select a Namespace"
           data={namespaces}
           itemCount={3}
-          dropdownOffset={{ top: 15, left: 0 }}
+          dropdownOffset={styles.dropDownOffset}
           style={styles.dropDown}
         />
         <ScrollView style={styles.podScroll}>{pods}</ScrollView>
@@ -93,6 +102,7 @@ const Pods = props => {
         <View style={styles.buttonView}>
           <Button
             style={styles.signOut}
+            color="red"
             title="Sign Out"
             onPress={() => props.navigation.navigate('Login')}
           />
@@ -130,6 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     fontWeight: 'bold',
+    color: 'red',
   },
   buttonView: {
     marginTop: 20,
@@ -142,15 +153,14 @@ const styles = StyleSheet.create({
   },
   podScroll: {
     backgroundColor: '#69ADFF',
-    borderRadius: 3,
+    borderRadius: 5,
     marginTop: 10,
-    height: 580,
+    height: 583,
   },
   podContainer: {
     marginTop: 10,
     backgroundColor: 'white',
     flexDirection: 'row',
-    flexWrap: 'wrap',
     marginBottom: 6,
     marginLeft: 6,
     height: 48,
@@ -165,13 +175,24 @@ const styles = StyleSheet.create({
   },
   podText: {
     fontSize: 16,
-    marginRight: 24,
+    marginRight: 12,
+    marginLeft: 2,
     width: 200,
     backgroundColor: 'white',
+    overflow: 'scroll',
   },
   statusText: {
     fontSize: 16,
     backgroundColor: 'white',
+    color: 'gray',
+  },
+  arrow: {
+    marginLeft: 8,
+    marginTop: 4,
+  },
+  badge: {
+    marginLeft: 8,
+    marginTop: 7,
   },
 });
 

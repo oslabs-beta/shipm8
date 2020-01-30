@@ -1,22 +1,38 @@
-import * as types from '../constants/actions';
+import * as types from '../constants/actionsTypes';
 
 
 //our state
 const initialState = {
-  clusterName: '',
   clusterList: [],
   totalCluster: 0,
   pods: [],
   totalPods: 0,
+<<<<<<< HEAD
   clusterId: '',
   regions: ''
+=======
+  accessKeyId: ``,
+  secretAccessKey: ``,
+>>>>>>> master
 };
 
+
 const appReducer = (state = initialState, action) => {
-  let clusterName;
-  let totalCluster;
+  let accessKeyId;
+  let secretAccessKey;
 
   switch (action.type) {
+    case types.ADD_API:
+      console.log('This is action.payload ====>', action.payload)
+      accessKeyId = action.payload.accessKeyId;
+      secretAccessKey = action.payload.secretAccessKey;
+
+      return {
+        ...state,
+        accessKeyId,
+        secretAccessKey,
+      };
+
     case types.ADD_CLUSTER:
 
       totalCluster = state.totalCluster + 1;
@@ -46,5 +62,7 @@ const appReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+console.log('This is the store', initialState.accessKeyId)
 
 export default appReducer;

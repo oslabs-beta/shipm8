@@ -9,6 +9,7 @@ import {
 import AWSApi from '../api/AWSApi';
 import Login from './Login';
 
+
 /***********************
    Development Testing
      **** Start ****
@@ -23,6 +24,8 @@ import Login from './Login';
 /********
  * End
  ********/
+
+
 
 const App = props => {
   return (
@@ -41,7 +44,9 @@ const App = props => {
   );
 };
 
-export default React.memo(App);
+
+
+export default (React.memo(App));
 
 const styles = StyleSheet.create({
   container: {

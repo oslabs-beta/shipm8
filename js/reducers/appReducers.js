@@ -8,7 +8,8 @@ const initialState = {
   totalCluster: 0,
   pods: [],
   totalPods: 0,
-  clusterId: ''
+  clusterId: '',
+  regions: ''
 };
 
 const appReducer = (state = initialState, action) => {

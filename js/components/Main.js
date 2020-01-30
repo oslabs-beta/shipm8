@@ -12,17 +12,39 @@ import {
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import { connect } from 'react-redux';
-import regionsList from '../RegionsList'
+// import RegionsList from '../RegionsList'
 
 mapStateToProps = state => ({
   totalCluster: state.app.totalCluster,
   clusterName: state.app.clusterName,
   pods: state.app.totalPods,
+  region: state.app.regions
 });
 
 // where <Badge> is created we need to determine the error cases for clusters
 // so we can determine the status of the cluster and perhaps real time updates
 const Main = props => {
+  const regionsList = {
+    'US East (N. Virginia)': 'us-east-1',
+    'US East(Ohio)': 'us-east-2',
+    'US West(N.California)': 'us-west-1',
+    'US West(Oregon)': 'us-west-2',
+    'Asia Pacific(Hong Kong)': 'ap-east-1',
+    'Asia Pacific(Mumbai)': 'ap-south-1',
+    'Asia Pacific(Seoul)': 'ap-northeast-2',
+    'Asia Pacific(Singapore)': 'ap-southeast-1',
+    'Asia Pacific(Sydney)': 'ap-southeast-2',
+    'Asia Pacific(Tokyo)': 'ap-northeast-1',
+    'Canada(Central)': 'ca-central-1',
+    'Europe(Frankfurt)': 'eu-central-1',
+    'Europe(Ireland)': 'eu-west-1',
+    'Europe(London)': 'eu-west-2',
+    'Europe(Paris)': 'eu-west-3',
+    'Europe(Stockholm)': 'eu-north-1',
+    'Middle East(Bahrain)': 'me-south-1',
+    'South America(São Paulo)': 'sa-east-1'
+  }
+
   const regionsListArr = [
     { value: 'US East (N. Virginia)' },
     { value: 'US East(Ohio)' },
@@ -63,6 +85,7 @@ const Main = props => {
     'cluster16',
   ];
   const clusterArr = [];
+  const reRenderArr = [];
 
   clusterList.forEach(cluster => {
     clusterArr.push(
@@ -80,30 +103,32 @@ const Main = props => {
     );
   });
 
-  for (let i = 0; i < regionsListArr.length; i++) {
-    for (let key of regionsList) {
-      if (reigionsListArr[i][value] === regionsList[key] && regionsList[key] === props.regions) {
-        forceUpdate(
-          clusterArr.push(
-            <TouchableOpacity
-              style={styles.podContainer}
-              activeOpacity={0.7}
-              onPress={() => props.navigation.navigate('Pods')}>
-              <Text style={styles.podText}>
-                {' '}
-                Name: {props.clusterName}
-                Pods: {props.totalPods}
-                Regions: {props.regions}
-                {' '}
-              </Text>
-              <Text style={styles.statusText}>Status:</Text>
-              <Badge status="success" badgeStyle={{ marginLeft: 13, marginTop: 6 }} />
-            </TouchableOpacity>,
-          )
-        );
-      }
-    }
-  }
+  // for (let i = 0; i < regionsListArr.length; i++) {
+  //   for (let key of regionsList) {
+  //     if (regionsListArr[i][value] === key && regionsList[key] === props.regions) {
+  //       forceUpdate(
+  //         clusterArr.forEach(element =>
+  //           reRenderArr.push(
+  //             <TouchableOpacity
+  //               style={styles.podContainer}
+  //               activeOpacity={0.7}
+  //               onPress={() => props.navigation.navigate('Pods')}>
+  //               <Text style={styles.podText}>
+  //                 {' '}
+  //                 Name: {props.clusterName}
+  //                 Pods: {props.totalPods}
+  //                 Regions: {props.region}
+  //                 {' '}
+  //               </Text>
+  //               <Text style={styles.statusText}>Status:</Text>
+  //               <Badge status="success" badgeStyle={{ marginLeft: 13, marginTop: 6 }} />
+  //             </TouchableOpacity>,
+  //           )
+  //         )
+  //       )
+  //     }
+  //   }
+  // }
 
   return (
     <View>

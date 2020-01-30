@@ -11,43 +11,20 @@ import {
 } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import Regions from '../Regions'
 
 mapStateToProps = state => ({
   totalCluster: state.app.totalCluster,
   clusterName: state.app.clusterName,
   pods: state.app.totalPods,
+  region: state.app.regions
 });
 
 // where <Badge> is created we need to determine the error cases for clusters
 // so we can determine the status of the cluster and perhaps real time updates
 const Main = props => {
-  let regions = [
-    {
-      value: 'USA Central',
-    },
-    {
-      value: 'USA Pacific',
-    },
-    {
-      value: 'USA Eastern',
-    },
-    {
-      value: 'United Kingdom',
-    },
-    {
-      value: 'South Africa',
-    },
-    {
-      value: 'Madagascar',
-    },
-    {
-      value: 'Luxembourg',
-    },
-    {
-      value: 'Tattoine',
-    },
-  ];
 
   let clusterList = [
     'cluster1',
@@ -68,19 +45,26 @@ const Main = props => {
     'cluster16',
   ];
   const clusterArr = [];
+  const reRenderArr = [];
 
   clusterList.forEach(cluster => {
     clusterArr.push(
       <TouchableOpacity
-        style={styles.podContainer}
+        style={styles.clusterContainer}
         activeOpacity={0.7}
         onPress={() => props.navigation.navigate('Pods')}>
-        <Text style={styles.podText}>
+        <Text style={styles.clusterText}>
           {' '}
-          Name: {props.clusterName} Pods: {props.totalPods}{' '}
+          CN:{props.clusterName} TP:{props.totalPods}{' '}
         </Text>
-        <Text style={styles.statusText}>Status:</Text>
-        <Badge status="success" badgeStyle={{ marginLeft: 13, marginTop: 6 }} />
+        <Text style={styles.statusText}>Status: </Text>
+        <Badge status="success" badgeStyle={styles.badge} />
+        <Icon
+          name="chevron-right"
+          size={15}
+          color="gray"
+          style={styles.arrow}
+        />
       </TouchableOpacity>,
     );
   });
@@ -92,22 +76,12 @@ const Main = props => {
           {/* <Text style={styles.test}>Select Namespace to View Pods</Text> */}
           <Dropdown
             label="Select a Region"
-            data={regions}
-            itemCount={3}
+            data={Regions}
+            itemCount={4}
             dropdownOffset={{ top: 15, left: 0 }}
             style={styles.dropDown}
           />
-          <ScrollView style={styles.podScroll}>{clusterArr}</ScrollView>
-          {/* <TouchableOpacity
-            style={styles.clusterButton}
-            behavior="padding"
-            enabled
-            onPress={() => props.navigation.navigate('Pods')}>
-            <Text>
-              {' '}
-              Cluster: {props.clusterName} Pods: {props.totalPods}{' '}
-            </Text>
-          </TouchableOpacity> */}
+          <ScrollView style={styles.clusterScroll}>{clusterArr}</ScrollView>
           <Button
             style={{
               flex: 2,
@@ -115,6 +89,7 @@ const Main = props => {
               alignItems: 'center',
               backgroundColor: 'blue',
             }}
+            color='red'
             title="Sign Out"
             onPress={() => props.navigation.navigate('ShipM8')}
           />
@@ -159,36 +134,50 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
 
-  namespacePickText: {
+  regionPickText: {
     textAlign: 'center',
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  podContainer: {
+  clusterContainer: {
     marginTop: 10,
-    backgroundColor: 'gray',
+    backgroundColor: 'white',
     flexDirection: 'row',
-    flexWrap: 'wrap',
     marginBottom: 6,
-    height: 40,
-    width: '100%',
-    paddingVertical: 10,
+    marginLeft: 6,
+    height: 48,
+    width: '96%',
+    paddingVertical: 12,
     paddingLeft: 6,
+    borderStyle: 'solid',
+    borderColor: '#063CB9',
+    borderWidth: 1,
+    borderRadius: 8,
+    alignContent: 'center',
   },
-  podText: {
+  clusterText: {
     fontSize: 16,
-    marginRight: 22,
+    marginRight: 8,
     width: 200,
     backgroundColor: 'white',
   },
   statusText: {
     fontSize: 16,
     backgroundColor: 'white',
+    color: 'gray',
   },
-  podScroll: {
-    backgroundColor: 'pink',
+  clusterScroll: {
+    backgroundColor: '#69ADFF',
     marginTop: 10,
     height: 580,
+  },
+  arrow: {
+    marginLeft: 4,
+    marginTop: 4,
+  },
+  badge: {
+    marginLeft: 0,
+    marginTop: 7,
   },
 });

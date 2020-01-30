@@ -36,8 +36,8 @@ class AWSApi {
       /* Prepend result with required string */
       const authToken = `k8s-aws-v1.${token}`;
       return authToken;
-    } catch (e) {
-      console.log('err: ', e)
+    } catch (err) {
+      console.log('err: ', err)
     }
   };
 
@@ -45,8 +45,8 @@ class AWSApi {
     try {
       const credentials = await AsyncStorage.getItem('AWSCredentials');
       return JSON.parse(credentials);
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -62,11 +62,11 @@ class AWSApi {
       return res.json();
     }
     catch (err) {
-      return console.log(err);
+      console.log(err);
     }
   };
 
-  static eksFetch = async (region, method, path) => {
+  static eksFetch = async (region, path) => {
     const queryOptions = {
       host: `eks.${region}.amazonaws.com`,
       path: path,
@@ -75,7 +75,6 @@ class AWSApi {
     const query = sign(queryOptions, credentials);
     try {
       const res = await fetch(`https://eks.${region}.amazonaws.com${path}`, {
-        method: method,
         headers: query.headers,
       });
       return res.json();
@@ -86,10 +85,10 @@ class AWSApi {
   };
 
   // step 1, retrieve list of all AWS clusters in the selected region
-  static getEksClusters = async region => {
+  static fetchEksClusters = async region => {
     try {
-      const clustersObj = await this.eksFetch(region, `GET`, `/clusters`);
-      return clustersObj;
+      const clustersObj = await this.eksFetch(region, `/clusters`);
+      return clustersObj.clusters;
     }
     catch (err) {
       return console.log('err: ', err);
@@ -97,9 +96,9 @@ class AWSApi {
   };
 
   // step 2, retrieve all info about the selected cluster, need to pull out the api URL
-  static describeEksCluster = async (region, clusterName) => {
+  static describeEksCluster = async (region, clusterId) => {
     try {
-      const clusterObj = await this.eksFetch(region, `GET`, `/clusters/${clusterName}`);
+      const clusterObj = await this.eksFetch(region, `/clusters/${clusterId}`);
       return clusterObj;
     }
     catch (err) {
@@ -107,8 +106,28 @@ class AWSApi {
     }
   };
 
+  static describeAllEksClusters = async region => {
+    try {
+      const clusterList = await this.fetchEksClusters(region);
+      const clusterObjList = await Promise.all(clusterList.map(async clusterName => {
+        const fullClusterObj = await this.eksFetch(region, `/clusters/${clusterName}`);
+        const clusterObj = {
+          endpointUrl: fullClusterObj.cluster.endpoint,
+          name: fullClusterObj.cluster.name,
+          status: fullClusterObj.cluster.status,
+          createdAt: fullClusterObj.cluster.createdAt,
+        }
+        return clusterObj;
+      }));
+      return clusterObjList;
+    }
+    catch (err) {
+      return console.log('err: ', err);
+    }
+  };
+
   // step 3, get all namespaces for the selected cluster
-  static fetchNamespaces = async (url, clusterId) => {
+  static fetchNamespaces = async (clusterId, url) => {
     try {
       const namespacesObj = await this.apiFetch(`${url}/api/v1/namespaces`, clusterId);
       return namespacesObj.items.map(namespace => namespace.metadata.name);
@@ -117,10 +136,9 @@ class AWSApi {
       return console.log('err: ', err);
     }
   };
-  //
 
   // step 4, get a list of pods for the selected cluster & namespace
-  static fetchPods = async (url, namespace, clusterId) => {
+  static fetchPods = async (clusterId, url, namespace) => {
     try {
       const podsObj = await this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods`, clusterId);
       return podsObj.items.map(pod => pod.metadata.name);
@@ -131,7 +149,7 @@ class AWSApi {
   };
 
   // step 5, when a pod is clicked, retrive info about that specific pod
-  static fetchPodInfo = async (url, namespace, pod, clusterId) => {
+  static fetchPodInfo = async (clusterId, url, namespace, pod) => {
     try {
       const podObj = await this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods/${pod}`, clusterId);
       return podObj;
@@ -140,6 +158,6 @@ class AWSApi {
       return console.log('err: ', err);
     }
   };
-}
+};
 
 export default AWSApi;

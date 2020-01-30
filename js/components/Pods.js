@@ -7,6 +7,7 @@ import {
   ScrollView,
   View,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -46,7 +47,7 @@ const Pods = props => {
   ];
 
   let podList = [
-    'pod1sslasdjflkajsdflkjsdlfkjlsdkfjlksjdflkjsdf',
+    'pod1sslasdjflkajsdflk',
     'pod2',
     'pod3',
     'pod4',
@@ -56,12 +57,12 @@ const Pods = props => {
     'pod8',
     'pod9',
     'pod10',
-    'pod11',
-    'pod12',
-    'pod13',
-    'pod14',
-    'pod15',
-    'pod16',
+    // 'pod11',
+    // 'pod12',
+    // 'pod13',
+    // 'pod14',
+    // 'pod15',
+    // 'pod16',
   ];
   const pods = [];
 
@@ -71,6 +72,7 @@ const Pods = props => {
         style={styles.podContainer}
         activeOpacity={0.7}
         onPress={() => props.navigation.navigate('Details')}>
+        <Image source={require('../../assets/pod.png')} style={styles.logo} />
         <Text style={styles.podText} numberOfLines={1}>
           {pod}
         </Text>
@@ -127,6 +129,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginHorizontal: 20,
     height: '100%',
+    marginTop: -11,
   },
   scrollView: { marginHorizontal: 20, marginTop: 30 },
   namespacePickText: {
@@ -155,13 +158,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#69ADFF',
     borderRadius: 5,
     marginTop: 10,
-    height: 583,
+    height: 600,
   },
   podContainer: {
     marginTop: 10,
     backgroundColor: 'white',
     flexDirection: 'row',
-    marginBottom: 6,
+    marginBottom: 1,
     marginLeft: 6,
     height: 48,
     width: '96%',
@@ -175,9 +178,9 @@ const styles = StyleSheet.create({
   },
   podText: {
     fontSize: 16,
-    marginRight: 12,
-    marginLeft: 2,
-    width: 200,
+    marginLeft: 10,
+    width: 140,
+    marginRight: 25,
     backgroundColor: 'white',
     overflow: 'scroll',
   },
@@ -193,6 +196,11 @@ const styles = StyleSheet.create({
   badge: {
     marginLeft: 8,
     marginTop: 7,
+  },
+  logo: {
+    width: 38,
+    height: 38,
+    marginTop: -7,
   },
 });
 

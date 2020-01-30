@@ -7,6 +7,8 @@ const initialState = {
   totalCluster: 0,
   pods: [],
   totalPods: 0,
+  accessKeyId: ``,
+  secretAccessKey: ``,
   clusterId: '',
 };
 

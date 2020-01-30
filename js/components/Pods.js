@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   Button,
@@ -13,80 +13,81 @@ import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import AWSApi from '../api/AWSApi';
+import AsyncStorage from '@react-native-community/async-storage';
 
 mapStateToProps = state => ({});
 
-const Pods = props => {
-  /* Dummy Data for Namespaces and Pods. Will need to have a podList 
-     for each Namespace, and render accordingly */
-  let namespaces = [
-    {
-      value: 'default',
-    },
-    {
-      value: 'namespace1',
-    },
-    {
-      value: 'namespace2',
-    },
-    {
-      value: 'namespace3',
-    },
-    {
-      value: 'namespace4',
-    },
-    {
-      value: 'namespace5',
-    },
-    {
-      value: 'namespace6',
-    },
-    {
-      value: 'namespace7',
-    },
-  ];
+const Pods = ({ navigation }) => {
+  const [namespaces, setNamespaces] = useState([]);
+  const [podsList, setPodsList] = useState([]);
 
-  let podList = [
-    'pod1sslasdjflkajsdflk',
-    'pod2',
-    'pod3',
-    'pod4',
-    'pod5',
-    'pod6',
-    'pod7',
-    'pod8',
-    'pod9',
-    'pod10',
-    // 'pod11',
-    // 'pod12',
-    // 'pod13',
-    // 'pod14',
-    // 'pod15',
-    // 'pod16',
-  ];
-  const pods = [];
+  useEffect(() => {
+    getNamespaces();
+  }, []);
 
-  podList.forEach(pod => {
-    pods.push(
+  const getNamespaces = async () => {
+    const currentCluster = await AsyncStorage.getItem('currentCluster').then(data => JSON.parse(data));
+    const clusters = await AsyncStorage.getItem('ClustersStore').then(data => JSON.parse(data));
+    const namespaces = clusters[currentCluster.name].namespaces;
+    const namespaceList = namespaces.map(namespace => {
+      return {
+        value: namespace
+      }
+    });
+    setNamespaces(namespaceList);
+    handleNamespaceChange(namespaces[0]);
+  }
+
+  const handleNamespaceChange = async text => {
+    const currentCluster = await AsyncStorage.getItem('currentCluster').then(cluster => JSON.parse(cluster));
+    const pods = await AWSApi.fetchAllPodsInfo(currentCluster.name, currentCluster.endpointUrl, text);
+    const podsList = pods.items.map(pod => {
+      return {
+        name: pod.metadata.name,
+        status: pod.status.phase,
+      }
+    });
+    setPodsList(podsList);
+    await AsyncStorage.setItem('currentCluster', JSON.stringify({
+      ...currentCluster,
+      pods,
+    }));
+  }
+
+  const checkStatus = text => {
+    if (text === 'Running') {
+      return 'success'
+    }
+    else {
+      return 'error'
+    }
+  };
+
+  const podsDisplay = [];
+
+  podsList.length > 0 ? podsList.forEach((pod, idx) => {
+    podsDisplay.push(
       <TouchableOpacity
+        key={pod.name + idx}
         style={styles.podContainer}
         activeOpacity={0.7}
-        onPress={() => props.navigation.navigate('Details')}>
+        onPress={() => navigation.navigate('Details')}>
         <Image source={require('../../assets/pod.png')} style={styles.logo} />
         <Text style={styles.podText} numberOfLines={1}>
-          {pod}
+          {pod.name}
         </Text>
         <Text style={styles.statusText}>Status:</Text>
-        <Badge status="success" badgeStyle={styles.badge} />
+        <Badge status={checkStatus(pod.status)} badgeStyle={styles.badge} />
         <Icon
           name="chevron-right"
           size={15}
           color="gray"
           style={styles.arrow}
         />
-      </TouchableOpacity>,
+      </TouchableOpacity>
     );
-  });
+  }) : null;
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -94,19 +95,21 @@ const Pods = props => {
         {/* <Text style={styles.test}>Select Namespace to View Pods</Text> */}
         <Dropdown
           label="Select a Namespace"
+          value={namespaces.length > 0 ? namespaces[0].value : ''}
           data={namespaces}
           itemCount={3}
           dropdownOffset={styles.dropDownOffset}
           style={styles.dropDown}
+          onChangeText={handleNamespaceChange}
         />
-        <ScrollView style={styles.podScroll}>{pods}</ScrollView>
+        <ScrollView style={styles.podScroll}>{podsDisplay.length > 0 ? podsDisplay : <Text>Loading...</Text>}</ScrollView>
 
         <View style={styles.buttonView}>
           <Button
             style={styles.signOut}
             color="red"
             title="Sign Out"
-            onPress={() => props.navigation.navigate('Login')}
+            onPress={() => navigation.navigate('Login')}
           />
         </View>
       </ScrollView>
@@ -127,11 +130,11 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     backgroundColor: 'white',
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     height: '100%',
     marginTop: -11,
   },
-  scrollView: { marginHorizontal: 20, marginTop: 30 },
+  scrollView: { marginHorizontal: 0, marginTop: 30 },
   namespacePickText: {
     textAlign: 'center',
     fontSize: 20,
@@ -178,8 +181,8 @@ const styles = StyleSheet.create({
   },
   podText: {
     fontSize: 16,
-    marginLeft: 10,
-    width: 140,
+    marginLeft: 7,
+    width: 200,
     marginRight: 25,
     backgroundColor: 'white',
     overflow: 'scroll',

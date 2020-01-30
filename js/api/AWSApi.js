@@ -52,7 +52,7 @@ class AWSApi {
 
   static apiFetch = async (url, clusterId) => {
     const authHeader = {
-      Authorization: `Bearer ${this.getAuthToken(clusterId)}`,
+      Authorization: `Bearer ${await this.getAuthToken(clusterId)}`,
     };
     try {
       const res = await RNFetchBlob.config({
@@ -138,10 +138,10 @@ class AWSApi {
   };
 
   // step 4, get a list of pods for the selected cluster & namespace
-  static fetchPods = async (clusterId, url, namespace) => {
+  static fetchAllPodsInfo = async (clusterId, url, namespace) => {
     try {
       const podsObj = await this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods`, clusterId);
-      return podsObj.items.map(pod => pod.metadata.name);
+      return podsObj;
     }
     catch (err) {
       return console.log('err: ', err);

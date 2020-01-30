@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import Regions from '../Regions';
 import AWSApi from '../api/AWSApi';
+import AsyncStorage from '@react-native-community/async-storage';
 
 mapStateToProps = state => ({
   totalCluster: state.app.totalCluster,
@@ -25,23 +26,37 @@ mapStateToProps = state => ({
 
 // where <Badge> is created we need to determine the error cases for clusters
 // so we can determine the status of the cluster and perhaps real time updates
-const Main = props => {
-  let clusterList = [];
+const Main = ({ navigation }) => {
+  const clusterList = [];
   let content;
 
   const [dataState, setDataState] = useState([]);
 
-  const callClusters = async (text) => {
-    const storedData = await AWSApi.describeAllEksClusters(text);
-    setDataState(storedData)
-
-
-
-    console.log(storedData)
+  const saveClusters = async (clusters) => {
+    const clustersStore = {};
+    clusters.forEach(cluster => {
+      clustersStore[cluster.name] = cluster;
+    });
+    AsyncStorage.setItem('ClustersStore', JSON.stringify(clustersStore))
   }
 
-  useEffect(() => {
-  }, [dataState]);
+  const clusterOnPress = async cluster => {
+    await AsyncStorage.setItem('currentCluster', JSON.stringify(cluster));
+    navigation.navigate('Pods');
+  }
+
+  const callClusters = async (text) => {
+    const clusters = await AWSApi.describeAllEksClusters(text);
+    setDataState(clusters);
+    const newClusterList = await Promise.all(clusters.map(async cluster => {
+      const namespaces = await AWSApi.fetchNamespaces(cluster.name, cluster.endpointUrl);
+      return {
+        ...cluster,
+        namespaces
+      }
+    }));
+    saveClusters(newClusterList);
+  }
 
   const checkStatus = (text) => {
     if (text === 'ACTIVE') {
@@ -52,15 +67,16 @@ const Main = props => {
     }
   };
 
-  dataState.length > 0 ? dataState.forEach(cluster => {
+  dataState.length > 0 ? dataState.forEach((cluster, idx) => {
     clusterList.push(
       <TouchableOpacity
+        key={cluster.name + idx}
         style={styles.clusterContainer}
         activeOpacity={0.7}
-        onPress={() => props.navigation.navigate('Pods')}>
+        cluster={cluster.name}
+        onPress={e => clusterOnPress(cluster)}>
         <Text numberOfLines={1} style={styles.clusterText}>
-          {' '}
-          {cluster.name}{' '}
+          {cluster.name}
         </Text>
         <Text style={styles.statusText}>Status:</Text>
         <Badge status={checkStatus(cluster.status)} badgeStyle={styles.badge} />
@@ -99,7 +115,7 @@ const Main = props => {
             }}
             color='red'
             title="Sign Out"
-            onPress={() => props.navigation.navigate('Login')}
+            onPress={() => navigation.navigate('Login')}
           />
         </ScrollView>
       </SafeAreaView>
@@ -135,14 +151,13 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     backgroundColor: 'white',
-    marginHorizontal: 30,
+    marginHorizontal: 10,
     height: '100%',
   },
   scrollView: {
-    marginHorizontal: 20,
+    marginHorizontal: 0,
     marginTop: 30,
   },
-
   regionPickText: {
     textAlign: 'center',
     fontSize: 20,
@@ -167,7 +182,8 @@ const styles = StyleSheet.create({
   },
   clusterText: {
     fontSize: 16,
-    marginRight: 27,
+    marginLeft: 5,
+    marginRight: 100,
     width: 165,
     backgroundColor: 'white',
     overflow: 'scroll',
@@ -182,6 +198,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#69ADFF',
     marginTop: 10,
     height: 580,
+    borderRadius: 5,
   },
   arrow: {
     marginLeft: 6,

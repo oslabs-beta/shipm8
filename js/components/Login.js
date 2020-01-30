@@ -93,9 +93,6 @@ const Login = (props) => {
             Sign in w/ AWS
           </Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity style={styles.addButton} onPress={checkLogin}>
-          <Text style={styles.addText}>Add Cluster </Text>
-        </TouchableOpacity> */}
       </View>
     </View>
   );

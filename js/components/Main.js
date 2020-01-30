@@ -13,7 +13,6 @@ import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-// import RegionsList from '../RegionsList'
 
 mapStateToProps = state => ({
   totalCluster: state.app.totalCluster,
@@ -25,46 +24,26 @@ mapStateToProps = state => ({
 // where <Badge> is created we need to determine the error cases for clusters
 // so we can determine the status of the cluster and perhaps real time updates
 const Main = props => {
-  const regionsList = {
-    'US East (N. Virginia)': 'us-east-1',
-    'US East(Ohio)': 'us-east-2',
-    'US West(N.California)': 'us-west-1',
-    'US West(Oregon)': 'us-west-2',
-    'Asia Pacific(Hong Kong)': 'ap-east-1',
-    'Asia Pacific(Mumbai)': 'ap-south-1',
-    'Asia Pacific(Seoul)': 'ap-northeast-2',
-    'Asia Pacific(Singapore)': 'ap-southeast-1',
-    'Asia Pacific(Sydney)': 'ap-southeast-2',
-    'Asia Pacific(Tokyo)': 'ap-northeast-1',
-    'Canada(Central)': 'ca-central-1',
-    'Europe(Frankfurt)': 'eu-central-1',
-    'Europe(Ireland)': 'eu-west-1',
-    'Europe(London)': 'eu-west-2',
-    'Europe(Paris)': 'eu-west-3',
-    'Europe(Stockholm)': 'eu-north-1',
-    'Middle East(Bahrain)': 'me-south-1',
-    'South America(São Paulo)': 'sa-east-1'
-  }
 
   const regionsListArr = [
-    { value: 'US East (N. Virginia)' },
-    { value: 'US East(Ohio)' },
-    { value: 'US West(N.California)' },
-    { value: 'US West(Oregon)' },
-    { value: 'Asia Pacific(Hong Kong)' },
-    { value: 'Asia Pacific(Mumbai)' },
-    { value: 'Asia Pacific(Seoul)' },
-    { value: 'Asia Pacific(Singapore)' },
-    { value: 'Asia Pacific(Sydney)' },
-    { value: 'Asia Pacific(Tokyo)' },
-    { value: 'Canada(Central)' },
-    { value: 'Europe(Frankfurt)' },
-    { value: 'Europe(Ireland)' },
-    { value: 'Europe(London)' },
-    { value: 'Europe(Paris)' },
-    { value: 'Europe(Stockholm)' },
-    { value: 'Middle East(Bahrain)' },
-    { value: 'South America(São Paulo)' }
+    { value: 'us-east-1', label: 'US East (N. Virginia)' },
+    { value: 'us-east-2', label: 'US East(Ohio)' },
+    { value: 'us-west-1', label: 'US West(N.California)' },
+    { value: 'us-west-2', label: 'US West(Oregon)' },
+    { value: 'ap-east-1', label: 'Asia Pacific(Hong Kong)' },
+    { value: 'ap-south-1', label: 'Asia Pacific(Mumbai)' },
+    { value: 'ap-northeast-2', label: 'Asia Pacific(Seoul)' },
+    { value: 'ap-southeast-1', label: 'Asia Pacific(Singapore)' },
+    { value: 'ap-southeast-2', label: 'Asia Pacific(Sydney)' },
+    { value: 'ap-northeast-1', label: 'Asia Pacific(Tokyo)' },
+    { value: 'ca-central-1', label: 'Canada(Central)' },
+    { value: 'eu - central - 1', label: 'Europe(Frankfurt)' },
+    { value: 'eu-west-1', label: 'Europe(Ireland)' },
+    { value: 'eu-west-2', label: 'Europe(London)' },
+    { value: 'eu-west-3', label: 'Europe(Paris)' },
+    { value: 'eu-north-1', label: 'Europe(Stockholm)' },
+    { value: 'me-south-1', label: 'Middle East(Bahrain)' },
+    { value: 'sa-east-1', label: 'South America(São Paulo)' }
   ];
 
   let clusterList = [
@@ -123,16 +102,6 @@ const Main = props => {
             style={styles.dropDown}
           />
           <ScrollView style={styles.clusterScroll}>{clusterArr}</ScrollView>
-          {/* <TouchableOpacity
-            style={styles.clusterButton}
-            behavior="padding"
-            enabled
-            onPress={() => props.navigation.navigate('Pods')}>
-            <Text>
-              {' '}
-              Cluster: {props.clusterName} Pods: {props.totalPods}{' '}
-            </Text>
-          </TouchableOpacity> */}
           <Button
             style={{
               flex: 2,

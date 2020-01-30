@@ -18,13 +18,36 @@ const PodInfo = props => {
       <ScrollView style={styles.podScroll}>
         <View style={styles.outerTextView}>
           <View style={styles.innerTextView}>
-            <Text style={styles.text}>Name: </Text>
-            <Text style={styles.text}>Status: </Text>
-            <Text style={styles.text}>Time Created: </Text>
-            <Text style={styles.text}>Host IP: </Text>
-            <Text style={styles.text}>Pod IP: </Text>
-            <Text style={styles.text}>Labels</Text>
-            <Text style={styles.text}>Containers</Text>
+            <Text style={styles.text}>
+              apiVersion: <Text style={styles.innerText}>v1</Text>
+            </Text>
+            <Text style={styles.text}>
+              Kind: <Text style={styles.innerText}>Pod</Text>
+            </Text>
+            <Text style={styles.text}>
+              Name: <Text style={styles.innerText}>podName1</Text>
+            </Text>
+            <Text style={styles.text}>
+              Status: <Text style={styles.innerText}>Running</Text>
+            </Text>
+            <Text style={styles.text}>
+              Time Created:{' '}
+              <Text style={styles.innerText}>2020-01-29T00:27:40Z</Text>
+            </Text>
+            <Text style={styles.text}>
+              Self-Link:{' '}
+              <Text style={styles.innerText}>
+                /api/v1/namespaces/default/pods/shipm8
+              </Text>{' '}
+            </Text>
+            <Text style={styles.text}>
+              UID:{' '}
+              <Text style={styles.innerText}>
+                287db3d7-422e-11ea-a037-02b853562b6a
+              </Text>{' '}
+            </Text>
+            <Text style={styles.text}>Labels: </Text>
+            <Text style={styles.text}>Containers: </Text>
           </View>
         </View>
       </ScrollView>
@@ -32,6 +55,7 @@ const PodInfo = props => {
         <Button
           style={styles.signOut}
           title="Sign Out"
+          color="red"
           onPress={() => props.navigation.navigate('Login')}
         />
       </View>
@@ -65,9 +89,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginBottom: 10,
+    color: 'gray',
+    overflow: 'scroll',
   },
   outerTextView: {
-    marginHorizontal: 20,
+    marginHorizontal: 15,
     marginTop: 20,
   },
   innerTextView: {
@@ -75,10 +101,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     height: '100%',
+    overflow: 'scroll',
   },
   buttonView: {
     marginTop: 20,
     marginBottom: 20,
+  },
+  innerText: {
+    color: 'black',
   },
 });
 

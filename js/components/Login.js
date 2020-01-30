@@ -29,7 +29,7 @@ const url =
 
 
 // state for the changing input fields
-const Login = (props) => {
+const Login = ({ addApi, navigation }) => {
   const [loginState, setLoginState] = useState({
     accessKeyId: '',
     secretAccessKey: '',
@@ -65,7 +65,7 @@ const Login = (props) => {
       <Input
         onChangeText={text => setLoginState({ ...loginState, accessKeyId: text })}
         style={{ marginBottom: 20 }}
-        label="Cluster Info"
+        label="Access Key ID"
         placeholder="Enter Access Key ID Here"
         leftIcon={{
           type: 'font-awesome',
@@ -77,7 +77,7 @@ const Login = (props) => {
       <Input
         onChangeText={text => setLoginState({ ...loginState, secretAccessKey: text })}
         style={{ marginTop: 20 }}
-        label="Api Key"
+        label="Secret Access Key"
         placeholder="Enter Secret Access Key Here"
         leftIcon={
           <Icon

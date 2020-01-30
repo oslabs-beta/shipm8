@@ -195,7 +195,6 @@ const styles = StyleSheet.create({
     marginRight: 3,
   },
   clusterScroll: {
-    backgroundColor: '#69ADFF',
     marginTop: 10,
     height: 580,
     borderRadius: 5,

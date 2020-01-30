@@ -158,7 +158,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   podScroll: {
-    backgroundColor: '#69ADFF',
     borderRadius: 5,
     marginTop: 10,
     height: 600,

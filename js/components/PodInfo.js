@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   Button,
@@ -9,14 +9,27 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 
 mapStateToProps = state => ({});
 
-const PodInfo = props => {
+const PodInfo = ({ navigation }) => {
+  const [currentPod, setCurrentPod] = useState({});
+
+  useEffect(() => {
+    getCurrentPod();
+  }, []);
+
+  const getCurrentPod = async () => {
+    const currentPod = await AsyncStorage.getItem('currentPod').then(data => JSON.parse(data));
+    setCurrentPod(currentPod);
+    console.log('currentpod:', currentPod)
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.podScroll}>
-        <View style={styles.outerTextView}>
+        {currentPod ? (<View style={styles.outerTextView}>
           <View style={styles.innerTextView}>
             <Text style={styles.text}>
               apiVersion: <Text style={styles.innerText}>v1</Text>
@@ -25,14 +38,14 @@ const PodInfo = props => {
               Kind: <Text style={styles.innerText}>Pod</Text>
             </Text>
             <Text style={styles.text}>
-              Name: <Text style={styles.innerText}>podName1</Text>
+              Name: <Text style={styles.innerText}>{currentPod.metadata ? currentPod.metadata.name : 'Loading'}</Text>
             </Text>
             <Text style={styles.text}>
-              Status: <Text style={styles.innerText}>Running</Text>
+              Status: <Text style={styles.innerText}>{currentPod.metadata ? currentPod.status.phase : 'Loading'}</Text>
             </Text>
             <Text style={styles.text}>
               Time Created:{' '}
-              <Text style={styles.innerText}>2020-01-29T00:27:40Z</Text>
+              <Text style={styles.innerText}>{currentPod.metadata ? currentPod.metadata.creationTimestamp : 'Loading'}</Text>
             </Text>
             <Text style={styles.text}>
               Self-Link:{' '}
@@ -46,21 +59,22 @@ const PodInfo = props => {
                 287db3d7-422e-11ea-a037-02b853562b6a
               </Text>{' '}
             </Text>
-            <Text style={styles.text}>Labels: </Text>
-            <Text style={styles.text}>Containers: </Text>
+            {/* <Text style={styles.text}>Labels: </Text> */}
+            <Text style={styles.text}>Host IP: <Text style={styles.innerText}>{currentPod.metadata ? currentPod.status.hostIP : 'Loading'}</Text></Text>
           </View>
-        </View>
+        </View>)
+          : <Text>Loading...</Text>}
       </ScrollView>
       <View style={styles.buttonView}>
         <Button
           style={styles.signOut}
           title="Sign Out"
           color="red"
-          onPress={() => props.navigation.navigate('Login')}
+          onPress={() => navigation.navigate('Login')}
         />
       </View>
     </SafeAreaView>
-  );
+  )
 };
 
 const styles = StyleSheet.create({

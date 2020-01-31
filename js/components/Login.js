@@ -22,12 +22,6 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-const url =
-  'https://64A4A753714D2EBFF419B6C287DDE8C9.yl4.us-west-2.eks.amazonaws.com';
-
-
-
-
 // state for the changing input fields
 const Login = ({ addApi, navigation }) => {
   const [loginState, setLoginState] = useState({
@@ -35,28 +29,21 @@ const Login = ({ addApi, navigation }) => {
     secretAccessKey: '',
   });
 
-  const saveData = () => {
-    AsyncStorage.setItem('AWSCredentials', JSON.stringify(loginState))
+  const saveData = async () => {
+    await AsyncStorage.setItem('AWSCredentials', JSON.stringify(loginState));
   };
 
-  // this will be verifying the login obviously logic will change (currently any input will login)
   const checkLogin = () => {
     if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
       saveData()
-      addApi({
-        accessKeyId: loginState.accessKeyId,
-        secretAccessKey: loginState.secretAccessKey,
+      AWSApi.fetchEksClusters('us-west-2').then(data => {
+        if (data) {
+          navigation.navigate('Clusters');
+        }
+        else {
+          alert('The Security Token Included in the Request Is Invalid')
+        }
       })
-      AWSApi.fetchEksClusters('us-west-2')
-        .then(data => {
-          console.log('this is data =====>', data)
-          if (data) {
-            navigation.navigate('Clusters');
-          }
-          else {
-            alert('The Security Token Included in the Request Is Invalid')
-          }
-        })
     } else {
       alert('Please Input Your AWS Access and Secret Information');
     }

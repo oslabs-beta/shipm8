@@ -6,26 +6,7 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import AWSApi from '../api/AWSApi';
 import Login from './Login';
-
-
-/***********************
-   Development Testing
-     **** Start ****
-************************/
-// const url =
-//   'https://64A4A753714D2EBFF419B6C287DDE8C9.yl4.us-west-2.eks.amazonaws.com';
-// AWSApi.getNamespaces(url);
-
-// AWSApi.getPodsInNamespace(url);
-
-// AWSApi.getPodInfo(url);
-/********
- * End
- ********/
-
-
 
 const App = props => {
   return (
@@ -43,8 +24,6 @@ const App = props => {
     </KeyboardAvoidingView>
   );
 };
-
-
 
 export default (React.memo(App));
 

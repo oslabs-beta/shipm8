@@ -6,7 +6,6 @@ import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import * as actions from '../actions/actions';
 import AsyncStorage from '@react-native-community/async-storage';
-
 import AWSApi from '../api/AWSApi';
 
 // Load FontAwesome icons
@@ -22,7 +21,6 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-// state for the changing input fields
 const Login = ({ addApi, navigation }) => {
   const [loginState, setLoginState] = useState({
     accessKeyId: '',

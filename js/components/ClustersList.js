@@ -24,8 +24,6 @@ mapStateToProps = state => ({
   region: state.app.regions
 });
 
-// where <Badge> is created we need to determine the error cases for clusters
-// so we can determine the status of the cluster and perhaps real time updates
 const ClustersList = ({ navigation }) => {
   const [dataState, setDataState] = useState([]);
   const clusterList = [];
@@ -35,7 +33,7 @@ const ClustersList = ({ navigation }) => {
     clusters.forEach(cluster => {
       clustersStore[cluster.name] = cluster;
     });
-    await AsyncStorage.setItem('ClustersStore', JSON.stringify(clustersStore))
+    await AsyncStorage.setItem('ClustersStore', JSON.stringify(clustersStore));
   }
 
   const handleClusterPress = async cluster => {
@@ -94,7 +92,6 @@ const ClustersList = ({ navigation }) => {
     <View>
       <SafeAreaView style={styles.safeArea}>
         <ScrollView style={styles.scrollView}>
-          {/* <Text style={styles.test}>Select Namespace to View Pods</Text> */}
           <Dropdown
             label="Select a Region"
             data={Regions}

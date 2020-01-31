@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   ScrollView,
   View,
-  TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -23,7 +22,6 @@ const PodInfo = ({ navigation }) => {
   const getCurrentPod = async () => {
     const currentPod = await AsyncStorage.getItem('currentPod').then(data => JSON.parse(data));
     setCurrentPod(currentPod);
-    console.log('currentpod:', currentPod)
   }
 
   return (
@@ -59,7 +57,6 @@ const PodInfo = ({ navigation }) => {
                 287db3d7-422e-11ea-a037-02b853562b6a
               </Text>{' '}
             </Text>
-            {/* <Text style={styles.text}>Labels: </Text> */}
             <Text style={styles.text}>Host IP: <Text style={styles.innerText}>{currentPod.metadata ? currentPod.status.hostIP : 'Loading'}</Text></Text>
           </View>
         </View>)

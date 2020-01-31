@@ -42,12 +42,6 @@ const Pods = ({ navigation }) => {
   const handleNamespaceChange = async text => {
     const currentCluster = await AsyncStorage.getItem('currentCluster').then(cluster => JSON.parse(cluster));
     const pods = await AWSApi.fetchAllPodsInfo(currentCluster.name, currentCluster.endpointUrl, text);
-    // const podsList = pods.items.map(pod => {
-    //   return {
-    //     name: pod.metadata.name,
-    //     status: pod.status.phase,
-    //   }
-    // });
     setPodsList(pods.items);
     await AsyncStorage.setItem('currentCluster', JSON.stringify({
       ...currentCluster,
@@ -57,7 +51,7 @@ const Pods = ({ navigation }) => {
 
   const handlePodPress = async pod => {
     await AsyncStorage.setItem('currentPod', JSON.stringify(pod));
-    navigation.navigate('Details')
+    navigation.navigate('Details');
   }
 
   const checkStatus = text => {
@@ -97,7 +91,6 @@ const Pods = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.scrollView}>
-        {/* <Text style={styles.test}>Select Namespace to View Pods</Text> */}
         <Dropdown
           label="Select a Namespace"
           value={namespaces.length > 0 ? namespaces[0].value : ''}

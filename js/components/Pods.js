@@ -42,17 +42,16 @@ const Pods = ({ navigation }) => {
   const handleNamespaceChange = async text => {
     const currentCluster = await AsyncStorage.getItem('currentCluster').then(cluster => JSON.parse(cluster));
     const pods = await AWSApi.fetchAllPodsInfo(currentCluster.name, currentCluster.endpointUrl, text);
-    const podsList = pods.items.map(pod => {
-      return {
-        name: pod.metadata.name,
-        status: pod.status.phase,
-      }
-    });
-    setPodsList(podsList);
+    setPodsList(pods.items);
     await AsyncStorage.setItem('currentCluster', JSON.stringify({
       ...currentCluster,
       pods,
     }));
+  }
+
+  const handlePodPress = async pod => {
+    await AsyncStorage.setItem('currentPod', JSON.stringify(pod));
+    navigation.navigate('Details');
   }
 
   const checkStatus = text => {
@@ -69,16 +68,16 @@ const Pods = ({ navigation }) => {
   podsList.length > 0 ? podsList.forEach((pod, idx) => {
     podsDisplay.push(
       <TouchableOpacity
-        key={pod.name + idx}
+        key={pod.metadata.name + idx}
         style={styles.podContainer}
         activeOpacity={0.7}
-        onPress={() => navigation.navigate('Details')}>
+        onPress={e => handlePodPress(pod)}>
         <Image source={require('../../assets/pod.png')} style={styles.logo} />
         <Text style={styles.podText} numberOfLines={1}>
-          {pod.name}
+          {pod.metadata.name}
         </Text>
-        <Text style={styles.statusText}>Status:</Text>
-        <Badge status={checkStatus(pod.status)} badgeStyle={styles.badge} />
+        <Text style={styles.statusText}>{pod.status.phase}</Text>
+        <Badge status={checkStatus(pod.status.phase)} badgeStyle={styles.badge} />
         <Icon
           name="chevron-right"
           size={15}
@@ -92,7 +91,6 @@ const Pods = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.scrollView}>
-        {/* <Text style={styles.test}>Select Namespace to View Pods</Text> */}
         <Dropdown
           label="Select a Namespace"
           value={namespaces.length > 0 ? namespaces[0].value : ''}
@@ -158,7 +156,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   podScroll: {
-    backgroundColor: '#69ADFF',
     borderRadius: 5,
     marginTop: 10,
     height: 600,

@@ -24,29 +24,25 @@ mapStateToProps = state => ({
   region: state.app.regions
 });
 
-// where <Badge> is created we need to determine the error cases for clusters
-// so we can determine the status of the cluster and perhaps real time updates
-const Main = ({ navigation }) => {
-  const clusterList = [];
-  let content;
-
+const ClustersList = ({ navigation }) => {
   const [dataState, setDataState] = useState([]);
+  const clusterList = [];
 
-  const saveClusters = async (clusters) => {
+  const saveClusters = async clusters => {
     const clustersStore = {};
     clusters.forEach(cluster => {
       clustersStore[cluster.name] = cluster;
     });
-    AsyncStorage.setItem('ClustersStore', JSON.stringify(clustersStore))
+    await AsyncStorage.setItem('ClustersStore', JSON.stringify(clustersStore));
   }
 
-  const clusterOnPress = async cluster => {
+  const handleClusterPress = async cluster => {
     await AsyncStorage.setItem('currentCluster', JSON.stringify(cluster));
     navigation.navigate('Pods');
   }
 
-  const callClusters = async (text) => {
-    const clusters = await AWSApi.describeAllEksClusters(text);
+  const fetchClusters = async namespace => {
+    const clusters = await AWSApi.describeAllEksClusters(namespace);
     setDataState(clusters);
     const newClusterList = await Promise.all(clusters.map(async cluster => {
       const namespaces = await AWSApi.fetchNamespaces(cluster.name, cluster.endpointUrl);
@@ -74,11 +70,13 @@ const Main = ({ navigation }) => {
         style={styles.clusterContainer}
         activeOpacity={0.7}
         cluster={cluster.name}
-        onPress={e => clusterOnPress(cluster)}>
-        <Text numberOfLines={1} style={styles.clusterText}>
+        onPress={() => handleClusterPress(cluster)}>
+        <Text
+          numberOfLines={1}
+          style={styles.clusterText}>
           {cluster.name}
         </Text>
-        <Text style={styles.statusText}>Status:</Text>
+        <Text style={styles.statusText}>{cluster.status}</Text>
         <Badge status={checkStatus(cluster.status)} badgeStyle={styles.badge} />
         <Icon
           name="chevron-right"
@@ -90,18 +88,17 @@ const Main = ({ navigation }) => {
     );
   }) : null;
 
-  content = (
+  return (
     <View>
       <SafeAreaView style={styles.safeArea}>
         <ScrollView style={styles.scrollView}>
-          {/* <Text style={styles.test}>Select Namespace to View Pods</Text> */}
           <Dropdown
             label="Select a Region"
             data={Regions}
             itemCount={4}
             dropdownOffset={{ top: 15, left: 0 }}
             style={styles.dropDown}
-            onChangeText={callClusters}
+            onChangeText={fetchClusters}
           />
           <ScrollView style={styles.clusterScroll}>{
             clusterList.length > 0 ? clusterList : <Text>No Clusters Found in this Region</Text>
@@ -121,10 +118,9 @@ const Main = ({ navigation }) => {
       </SafeAreaView>
     </View>
   );
-  return content
 };
 
-export default connect(mapStateToProps)(React.memo(Main));
+export default connect(mapStateToProps)(React.memo(ClustersList));
 
 const styles = StyleSheet.create({
   clusterButton: {
@@ -195,7 +191,6 @@ const styles = StyleSheet.create({
     marginRight: 3,
   },
   clusterScroll: {
-    backgroundColor: '#69ADFF',
     marginTop: 10,
     height: 580,
     borderRadius: 5,

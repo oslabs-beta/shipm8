@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 import reducers from './reducers/index';
 
 import LandingPage from './components/LandingPage';
-import Main from './components/Main';
+import ClustersList from './components/ClustersList';
 import Launch from './components/Launch';
 import Pods from './components/Pods';
 import PodInfo from './components/PodInfo';
@@ -21,7 +21,7 @@ const MainNavigator = createStackNavigator(
   {
     ShipM8: Launch,
     Login: LandingPage, // Login Page
-    Clusters: Main, // Landing Page
+    Clusters: ClustersList, // Landing Page
     Pods: Pods,
     Details: PodInfo,
   },

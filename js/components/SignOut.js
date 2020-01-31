@@ -1,10 +1,5 @@
 import React from 'react';
-import { Button, Image, View, Text } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { withNavigation } from 'react-navigation';
-
+import { Button } from 'react-native';
 
 const SignOut = ({ navigation }) => {
   navigationOptions = {
@@ -19,4 +14,4 @@ const SignOut = ({ navigation }) => {
   };
 }
 
-export default React.memo(SignOut)
+export default React.memo(SignOut);

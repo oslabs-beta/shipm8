@@ -19,7 +19,7 @@ const appReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case types.ADD_API:
-      console.log('This is action.payload ====>', action.payload)
+      // console.log('This is action.payload ====>', action.payload)
       accessKeyId = action.payload.accessKeyId;
       secretAccessKey = action.payload.secretAccessKey;
 

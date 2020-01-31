@@ -1,14 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-// import { withNavigation } from 'react-navigation';
 
 // Load FontAwesome icons
 Icon.loadFont();
 
-// state for the changing input fields
 const Launch = ({ navigation }) => {
-  // this will be the launch function
   const getStarted = () => {
     navigation.navigate('Login');
   };
@@ -83,7 +80,6 @@ const styles = StyleSheet.create({
     height: 315,
     alignContent: 'center',
     alignItems: 'center',
-    borderStyle: 'solid',
     borderColor: '#151B54',
     borderWidth: 3,
     marginBottom: 25,

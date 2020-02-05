@@ -10,17 +10,20 @@ import { Provider } from 'react-redux';
 import reducers from './reducers/index';
 
 import LandingPage from './components/LandingPage';
-import Main from './components/Main';
+import ClustersList from './components/ClustersList';
+import Launch from './components/Launch';
+import Pods from './components/Pods';
+import PodInfo from './components/PodInfo';
 
-const store = createStore(
-  reducers,
-  composeWithDevTools()
-);
+const store = createStore(reducers, composeWithDevTools());
 
 const MainNavigator = createStackNavigator(
   {
-    ShipM8: LandingPage, // Login Page
-    Main: Main, // Landing Page
+    ShipM8: Launch,
+    Login: LandingPage, // Login Page
+    Clusters: ClustersList, // Landing Page
+    Pods: Pods,
+    Details: PodInfo,
   },
   {
     initialRouteName: 'ShipM8',
@@ -44,9 +47,7 @@ const App = () => {
     <Provider store={store}>
       <AppContainer />
     </Provider>
-  )
-}
-
-
+  );
+};
 
 export default App;

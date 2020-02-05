@@ -6,12 +6,7 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import AWSApi from '../api/AWSApi';
 import Login from './Login';
-
-AWSApi.apiFetch(
-  'https://64A4A753714D2EBFF419B6C287DDE8C9.yl4.us-west-2.eks.amazonaws.com/api/v1/namespaces',
-);
 
 const App = props => {
   return (
@@ -30,7 +25,7 @@ const App = props => {
   );
 };
 
-export default React.memo(App);
+export default (React.memo(App));
 
 const styles = StyleSheet.create({
   container: {
@@ -59,7 +54,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 175,
     height: 175,
-    borderStyle: 'solid',
     borderColor: '#151B54',
     borderWidth: 3,
     marginBottom: 25,

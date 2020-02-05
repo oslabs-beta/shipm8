@@ -3,32 +3,56 @@ import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from 'react-navigation';
+import { connect } from 'react-redux';
+import * as actions from '../actions/actions';
+import AsyncStorage from '@react-native-community/async-storage';
+import AWSApi from '../api/AWSApi';
 
 // Load FontAwesome icons
 Icon.loadFont();
 
-// state for the changing input fields
-const Login = ({ navigation }) => {
+const mapStateToProps = state => ({
+
+});
+
+const mapDispatchToProps = dispatch => ({
+  addApi: (obj) => {
+    dispatch(actions.addApi(obj))
+  },
+});
+
+const Login = ({ addApi, navigation }) => {
   const [loginState, setLoginState] = useState({
-    validIP: '',
-    validAPI: '',
+    accessKeyId: '',
+    secretAccessKey: '',
   });
 
-  // this will be verifying the login obviously logic will change (currently any input will login)
+  const saveData = async () => {
+    await AsyncStorage.setItem('AWSCredentials', JSON.stringify(loginState));
+  };
+
   const checkLogin = () => {
-    if (loginState.validIP !== '' && loginState.validAPI !== '') {
-      navigation.navigate('Main');
+    if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
+      saveData()
+      AWSApi.fetchEksClusters('us-west-2').then(data => {
+        if (data) {
+          navigation.navigate('Clusters');
+        }
+        else {
+          alert('The Security Token Included in the Request Is Invalid')
+        }
+      })
     } else {
-      alert('Invalid Cluster and/or API Token');
+      alert('Please Input Your AWS Access and Secret Information');
     }
   };
   return (
     <View style={styles.container}>
       <Input
-        onChangeText={text => setLoginState({ ...loginState, validIP: text })}
+        onChangeText={text => setLoginState({ ...loginState, accessKeyId: text })}
         style={{ marginBottom: 20 }}
-        label="Cluster Info"
-        placeholder="Enter Cluster Info Here"
+        label="Access Key ID"
+        placeholder="Enter Access Key ID Here"
         leftIcon={{
           type: 'font-awesome',
           name: 'chevron-right',
@@ -37,10 +61,10 @@ const Login = ({ navigation }) => {
         }}
       />
       <Input
-        onChangeText={text => setLoginState({ ...loginState, validAPI: text })}
+        onChangeText={text => setLoginState({ ...loginState, secretAccessKey: text })}
         style={{ marginTop: 20 }}
-        label="Api Key"
-        placeholder="Enter API Key Here"
+        label="Secret Access Key"
+        placeholder="Enter Secret Access Key Here"
         leftIcon={
           <Icon
             name="lock"
@@ -50,22 +74,15 @@ const Login = ({ navigation }) => {
         }
       />
       <View style={{ paddingTop: 30 }}>
-        <TouchableOpacity style={styles.buttonContainer} onPress={checkLogin}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.awsButton}>
-          <Text
-            style={styles.buttonText}
-            onPress={() => alert('AWS Server is Currently Inactive')}>
-            Sign in w/ AWS
-          </Text>
+        <TouchableOpacity style={styles.buttonContainer} activeOpacity={.7} onPress={checkLogin}>
+          <Text style={styles.buttonText}>Sign in w/ AWS</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default withNavigation(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(React.memo(Login)));
 
 const styles = StyleSheet.create({
   container: {
@@ -95,13 +112,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
+    width: 175
   },
-  awsButton: {
-    paddingTop: 13,
-    backgroundColor: '#151B54',
-    borderRadius: 5,
-    marginTop: 10,
-    width: 200,
-    height: 45,
+  addText: {
+    textAlign: 'center',
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 16,
   },
 });

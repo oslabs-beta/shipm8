@@ -14,9 +14,10 @@ import ClustersList from './components/ClustersList';
 import Launch from './components/Launch';
 import Pods from './components/Pods';
 import PodInfo from './components/PodInfo';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const store = createStore(reducers, composeWithDevTools());
-
+const initialRoute = AsyncStorage.getItem('AWSCredentials') ? 'Clusters' : 'ShipM8';
 const MainNavigator = createStackNavigator(
   {
     ShipM8: Launch,
@@ -26,7 +27,7 @@ const MainNavigator = createStackNavigator(
     Details: PodInfo,
   },
   {
-    initialRouteName: 'ShipM8',
+    initialRouteName: initialRoute,
 
     defaultNavigationOptions: {
       headerStyle: {

@@ -1,33 +1,53 @@
 // React and React-Native are imported for future develoment
 import React from 'react';
 import { View } from 'react-native';
-// import navigation tools so we can render new pages (Container: Used to bundle and set Nav settings, Stack: Used to build Nav settings) 
+// import navigation tools so we can render new pages (Container: Used to bundle and set Nav settings, Stack: Used to build Nav settings)
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import { createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { Provider } from 'react-redux';
+import reducers from './reducers/index';
 
-import App from './App'
-import Main from "./components/Main";
+import LandingPage from './components/LandingPage';
+import ClustersList from './components/ClustersList';
+import Launch from './components/Launch';
+import Pods from './components/Pods';
+import PodInfo from './components/PodInfo';
+
+const store = createStore(reducers, composeWithDevTools());
 
 const MainNavigator = createStackNavigator(
   {
-    ShipM8: App, // Login Page
-    Main: Main, // Landing Page
+    ShipM8: Launch,
+    Login: LandingPage, // Login Page
+    Clusters: ClustersList, // Landing Page
+    Pods: Pods,
+    Details: PodInfo,
   },
   {
     initialRouteName: 'ShipM8',
 
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: 'pink',
+        backgroundColor: '#1589FF',
       },
-      headerTintColor: 'black',
+      headerTintColor: 'white',
       headerTitleStyle: {
         fontWeight: 'bold',
+        fontSize: 20,
       },
     },
   },
 );
-
 const AppContainer = createAppContainer(MainNavigator);
 
-export default AppContainer;
+const App = () => {
+  return (
+    <Provider store={store}>
+      <AppContainer />
+    </Provider>
+  );
+};
+
+export default App;

@@ -1,5 +1,5 @@
 //this will be our landing page we can use this to work with the MVP data we are trying to get
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -30,8 +30,8 @@ const ClustersList = ({ navigation, cloudProvider }) => {
   const clusters = useSelector(state => state.clusters.EksClusters);
   const clusterList = [];
 
-  const handleClusterPress = async cluster => {
-    dispatch(addCluster)
+  const handleClusterPress = cluster => {
+    dispatch(addCluster(cluster))
     navigation.navigate('Pods');
   }
 
@@ -43,7 +43,8 @@ const ClustersList = ({ navigation, cloudProvider }) => {
       return 'error'
     }
   };
-  clusters.length > 0 ? clusters.forEach((cluster, idx) => {
+
+  clusters && Object.values(clusters).length > 0 ? Object.values(clusters).forEach((cluster, idx) => {
     clusterList.push(
       <TouchableOpacity
         key={cluster.name + idx}

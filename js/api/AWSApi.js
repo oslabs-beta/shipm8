@@ -85,21 +85,10 @@ class AWSApi {
   };
 
   // step 1, retrieve list of all AWS clusters in the selected region
-  static fetchEksClusters = async region => {
+  static fetchEksClusterNames = async region => {
     try {
-      const clustersObj = await this.eksFetch(region, `/clusters`);
-      return clustersObj.clusters;
-    }
-    catch (err) {
-      return console.log('err: ', err);
-    }
-  };
-
-  // step 2, retrieve all info about the selected cluster, need to pull out the api URL
-  static describeEksCluster = async (region, clusterName) => {
-    try {
-      const clusterObj = await this.eksFetch(region, `/clusters/${clusterName}`);
-      return clusterObj;
+      const clusters = await this.eksFetch(region, `/clusters`);
+      return clusters.clusters;
     }
     catch (err) {
       return console.log('err: ', err);
@@ -108,18 +97,23 @@ class AWSApi {
 
   static describeAllEksClusters = async region => {
     try {
-      const clusterList = await this.fetchEksClusters(region);
-      const clusterObjList = await Promise.all(clusterList.map(async clusterName => {
-        const fullClusterObj = await this.eksFetch(region, `/clusters/${clusterName}`);
-        const clusterObj = {
-          endpointUrl: fullClusterObj.cluster.endpoint,
-          name: fullClusterObj.cluster.name,
-          status: fullClusterObj.cluster.status,
-          createdAt: fullClusterObj.cluster.createdAt,
+      const clusterNameList = await this.fetchEksClusterNames(region);
+      const clusterList = await Promise.all(clusterNameList.map(async clusterName => {
+        const cluster = await this.eksFetch(region, `/clusters/${clusterName}`);
+        const newCluster = {
+          url: cluster.cluster.endpoint,
+          name: cluster.cluster.name,
+          status: cluster.cluster.status,
+          createdAt: cluster.cluster.createdAt,
+          cloudProvider: 'AWS',
         }
-        return clusterObj;
+        return newCluster;
       }));
-      return clusterObjList;
+      const clusters = {};
+      clusterList.forEach(cluster => {
+        clusters[cluster.name] = cluster;
+      });
+      return clusters;
     }
     catch (err) {
       return console.log('err: ', err);

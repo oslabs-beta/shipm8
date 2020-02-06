@@ -8,8 +8,11 @@ const clusters = createSlice({
   },
   reducers: {
     getEksClusters(state, action) {
-      const clusters = action.payload;
-      state.clusters = clusters;
+      const eksClusters = action.payload;
+      state.EksClusters = eksClusters;
+    },
+    addCluster(state, action) {
+
     }
 
     // getGoogleClusters(state, action) {
@@ -22,20 +25,24 @@ export const { getEksClusters } = clusters.actions;
 
 export default clusters.reducer;
 
+const saveCluster = async cluster => {
+  await AsyncStorage.setItem('currentCluster', JSON.stringify(cluster));
+}
+
+const saveClusters = async clusters => {
+  const clustersStore = {};
+  clusters.forEach(cluster => {
+    clustersStore[cluster.name] = cluster;
+  });
+  await AsyncStorage.setItem('ClustersStore', JSON.stringify(clustersStore));
+}
+
 export const fetchEksClusters = region =>
   async dispatch => {
     try {
       const clusters = await AWSApi.describeAllEksClusters(region);
-      const newClusterList = await Promise.all(clusters.map(async cluster => {
-        const namespaces = await AWSApi.fetchNamespaces(cluster.name, cluster.endpointUrl);
-        return {
-          ...cluster,
-          namespaces
-        }
-      }));
-      dispatch(getEksClusters(newClusterList));
+      dispatch(getEksClusters(clusters));
     } catch (err) {
       console.log(err);
     }
   }
-

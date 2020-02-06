@@ -12,7 +12,7 @@ class AWSApi {
    *
    */
 
-  static getAuthToken = async clusterId => {
+  static getAuthToken = async clusterName => {
     /* Declare options for STS API Query */
     try {
       const queryOptions = {
@@ -20,7 +20,7 @@ class AWSApi {
         service: 'sts',
         path: `/?Action=GetCallerIdentity&Version=2011-06-15&X-Amz-Expires=60`,
         headers: {
-          'x-k8s-aws-id': clusterId,
+          'x-k8s-aws-id': clusterName,
         },
         signQuery: true,
       };
@@ -50,9 +50,9 @@ class AWSApi {
     }
   }
 
-  static apiFetch = async (url, clusterId) => {
+  static apiFetch = async (url, clusterName) => {
     const authHeader = {
-      Authorization: `Bearer ${await this.getAuthToken(clusterId)}`,
+      Authorization: `Bearer ${await this.getAuthToken(clusterName)}`,
     };
     try {
       const res = await RNFetchBlob.config({
@@ -96,9 +96,9 @@ class AWSApi {
   };
 
   // step 2, retrieve all info about the selected cluster, need to pull out the api URL
-  static describeEksCluster = async (region, clusterId) => {
+  static describeEksCluster = async (region, clusterName) => {
     try {
-      const clusterObj = await this.eksFetch(region, `/clusters/${clusterId}`);
+      const clusterObj = await this.eksFetch(region, `/clusters/${clusterName}`);
       return clusterObj;
     }
     catch (err) {
@@ -127,9 +127,9 @@ class AWSApi {
   };
 
   // step 3, get all namespaces for the selected cluster
-  static fetchNamespaces = async (clusterId, url) => {
+  static fetchNamespaces = async (clusterName, url) => {
     try {
-      const namespacesObj = await this.apiFetch(`${url}/api/v1/namespaces`, clusterId);
+      const namespacesObj = await this.apiFetch(`${url}/api/v1/namespaces`, clusterName);
       return namespacesObj.items.map(namespace => namespace.metadata.name);
     }
     catch (err) {
@@ -138,9 +138,9 @@ class AWSApi {
   };
 
   // step 4, get a list of pods for the selected cluster & namespace
-  static fetchAllPodsInfo = async (clusterId, url, namespace) => {
+  static fetchAllPodsInfo = async (clusterName, url, namespace) => {
     try {
-      const podsObj = await this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods`, clusterId);
+      const podsObj = await this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods`, clusterName);
       return podsObj;
     }
     catch (err) {
@@ -149,9 +149,9 @@ class AWSApi {
   };
 
   // step 5, when a pod is clicked, retrive info about that specific pod
-  static fetchPodInfo = async (clusterId, url, namespace, pod) => {
+  static fetchPodInfo = async (clusterName, url, namespace, pod) => {
     try {
-      const podObj = await this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods/${pod}`, clusterId);
+      const podObj = await this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods/${pod}`, clusterName);
       return podObj;
     }
     catch (err) {

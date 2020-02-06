@@ -16,7 +16,6 @@ import Regions from '../Regions';
 import AWSApi from '../api/AWSApi';
 import AsyncStorage from '@react-native-community/async-storage';
 
-
 const ClustersList = ({ navigation }) => {
   const [dataState, setDataState] = useState([]);
   const clusterList = [];
@@ -27,59 +26,66 @@ const ClustersList = ({ navigation }) => {
       clustersStore[cluster.name] = cluster;
     });
     await AsyncStorage.setItem('ClustersStore', JSON.stringify(clustersStore));
-  }
+  };
 
   const handleClusterPress = async cluster => {
     await AsyncStorage.setItem('currentCluster', JSON.stringify(cluster));
     navigation.navigate('Pods');
-  }
+  };
 
   const fetchClusters = async namespace => {
     const clusters = await AWSApi.describeAllEksClusters(namespace);
     setDataState(clusters);
-    const newClusterList = await Promise.all(clusters.map(async cluster => {
-      const namespaces = await AWSApi.fetchNamespaces(cluster.name, cluster.endpointUrl);
-      return {
-        ...cluster,
-        namespaces
-      }
-    }));
+    const newClusterList = await Promise.all(
+      clusters.map(async cluster => {
+        const namespaces = await AWSApi.fetchNamespaces(
+          cluster.name,
+          cluster.endpointUrl,
+        );
+        return {
+          ...cluster,
+          namespaces,
+        };
+      }),
+    );
     saveClusters(newClusterList);
-  }
+  };
 
-  const checkStatus = (text) => {
+  const checkStatus = text => {
     if (text === 'ACTIVE') {
-      return 'success'
-    }
-    else {
-      return 'error'
+      return 'success';
+    } else {
+      return 'error';
     }
   };
 
-  dataState.length > 0 ? dataState.forEach((cluster, idx) => {
-    clusterList.push(
-      <TouchableOpacity
-        key={cluster.name + idx}
-        style={styles.clusterContainer}
-        activeOpacity={0.7}
-        cluster={cluster.name}
-        onPress={() => handleClusterPress(cluster)}>
-        <Text
-          numberOfLines={1}
-          style={styles.clusterText}>
-          {cluster.name}
-        </Text>
-        <Text style={styles.statusText}>{cluster.status}</Text>
-        <Badge status={checkStatus(cluster.status)} badgeStyle={styles.badge} />
-        <Icon
-          name="chevron-right"
-          size={15}
-          color="gray"
-          style={styles.arrow}
-        />
-      </TouchableOpacity>,
-    );
-  }) : null;
+  dataState.length > 0
+    ? dataState.forEach((cluster, idx) => {
+        clusterList.push(
+          <TouchableOpacity
+            key={cluster.name + idx}
+            style={styles.clusterContainer}
+            activeOpacity={0.7}
+            cluster={cluster.name}
+            onPress={() => handleClusterPress(cluster)}>
+            <Text numberOfLines={1} style={styles.clusterText}>
+              {cluster.name}
+            </Text>
+            <Text style={styles.statusText}>{cluster.status}</Text>
+            <Badge
+              status={checkStatus(cluster.status)}
+              badgeStyle={styles.badge}
+            />
+            <Icon
+              name="chevron-right"
+              size={15}
+              color="gray"
+              style={styles.arrow}
+            />
+          </TouchableOpacity>,
+        );
+      })
+    : null;
 
   return (
     <View>
@@ -93,9 +99,13 @@ const ClustersList = ({ navigation }) => {
             style={styles.dropDown}
             onChangeText={fetchClusters}
           />
-          <ScrollView style={styles.clusterScroll}>{
-            clusterList.length > 0 ? clusterList : <Text>No Clusters Found in this Region</Text>
-          }</ScrollView>
+          <ScrollView style={styles.clusterScroll}>
+            {clusterList.length > 0 ? (
+              clusterList
+            ) : (
+              <Text>No Clusters Found in this Region</Text>
+            )}
+          </ScrollView>
           <Button
             style={{
               flex: 2,
@@ -103,7 +113,7 @@ const ClustersList = ({ navigation }) => {
               alignItems: 'center',
               backgroundColor: 'blue',
             }}
-            color='red'
+            color="red"
             title="Sign Out"
             onPress={() => navigation.navigate('Login')}
           />
@@ -172,7 +182,7 @@ const styles = StyleSheet.create({
   clusterText: {
     fontSize: 16,
     marginLeft: 5,
-    marginRight: 100,
+    marginRight: 96,
     width: 165,
     backgroundColor: 'white',
     overflow: 'scroll',

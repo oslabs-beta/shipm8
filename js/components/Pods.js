@@ -24,66 +24,88 @@ const Pods = ({ navigation }) => {
   }, []);
 
   const getNamespaces = async () => {
-    const currentCluster = await AsyncStorage.getItem('currentCluster').then(data => JSON.parse(data));
-    const clusters = await AsyncStorage.getItem('ClustersStore').then(data => JSON.parse(data));
+    const currentCluster = await AsyncStorage.getItem(
+      'currentCluster',
+    ).then(data => JSON.parse(data));
+    const clusters = await AsyncStorage.getItem('ClustersStore').then(data =>
+      JSON.parse(data),
+    );
     const namespaces = clusters[currentCluster.name].namespaces;
     const namespaceList = namespaces.map(namespace => {
       return {
-        value: namespace
-      }
+        value: namespace,
+      };
     });
     setNamespaces(namespaceList);
     handleNamespaceChange(namespaces[0]);
-  }
+  };
 
   const handleNamespaceChange = async text => {
-    const currentCluster = await AsyncStorage.getItem('currentCluster').then(cluster => JSON.parse(cluster));
-    const pods = await AWSApi.fetchAllPodsInfo(currentCluster.name, currentCluster.endpointUrl, text);
+    const currentCluster = await AsyncStorage.getItem(
+      'currentCluster',
+    ).then(cluster => JSON.parse(cluster));
+    const pods = await AWSApi.fetchAllPodsInfo(
+      currentCluster.name,
+      currentCluster.endpointUrl,
+      text,
+    );
     setPodsList(pods.items);
-    await AsyncStorage.setItem('currentCluster', JSON.stringify({
-      ...currentCluster,
-      pods,
-    }));
-  }
+    await AsyncStorage.setItem(
+      'currentCluster',
+      JSON.stringify({
+        ...currentCluster,
+        pods,
+      }),
+    );
+  };
 
   const handlePodPress = async pod => {
     await AsyncStorage.setItem('currentPod', JSON.stringify(pod));
     navigation.navigate('Details');
-  }
+  };
 
   const checkStatus = text => {
     if (text === 'Running') {
-      return 'success'
-    }
-    else {
-      return 'error'
+      return 'success';
+    } else if (text === 'Pending') {
+      return 'warning';
+    } else {
+      return 'error';
     }
   };
 
   const podsDisplay = [];
 
-  podsList.length > 0 ? podsList.forEach((pod, idx) => {
-    podsDisplay.push(
-      <TouchableOpacity
-        key={pod.metadata.name + idx}
-        style={styles.podContainer}
-        activeOpacity={0.7}
-        onPress={e => handlePodPress(pod)}>
-        <Image source={require('../../assets/pod.png')} style={styles.logo} />
-        <Text style={styles.podText} numberOfLines={1}>
-          {pod.metadata.name}
-        </Text>
-        <Text style={styles.statusText}>{pod.status.phase}</Text>
-        <Badge status={checkStatus(pod.status.phase)} badgeStyle={styles.badge} />
-        <Icon
-          name="chevron-right"
-          size={15}
-          color="gray"
-          style={styles.arrow}
-        />
-      </TouchableOpacity>
-    );
-  }) : null;
+  podsList.length > 0
+    ? podsList.forEach((pod, idx) => {
+        podsDisplay.push(
+          <TouchableOpacity
+            key={pod.metadata.name + idx}
+            style={styles.podContainer}
+            activeOpacity={0.7}
+            onPress={e => handlePodPress(pod)}>
+            <Image
+              source={require('../../assets/pod.png')}
+              style={styles.logo}
+            />
+            <Text style={styles.podText} numberOfLines={1}>
+              {pod.metadata.name}
+            </Text>
+            <Text style={styles.statusText}>{pod.status.phase}</Text>
+            <Badge
+              status={checkStatus(pod.status.phase)}
+              badgeStyle={styles.badge}
+            />
+            <Icon
+              name="chevron-right"
+              size={15}
+              color="gray"
+              style={styles.arrow}
+            />
+          </TouchableOpacity>,
+        );
+      })
+    : null;
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -97,7 +119,9 @@ const Pods = ({ navigation }) => {
           style={styles.dropDown}
           onChangeText={handleNamespaceChange}
         />
-        <ScrollView style={styles.podScroll}>{podsDisplay.length > 0 ? podsDisplay : <Text>Loading...</Text>}</ScrollView>
+        <ScrollView style={styles.podScroll}>
+          {podsDisplay.length > 0 ? podsDisplay : <Text>Loading...</Text>}
+        </ScrollView>
 
         <View style={styles.buttonView}>
           <Button

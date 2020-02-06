@@ -25,7 +25,7 @@ const App = props => {
   );
 };
 
-export default (React.memo(App));
+export default React.memo(App);
 
 const styles = StyleSheet.create({
   container: {

@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 // Load FontAwesome icons
-Icon.loadFont();
+// Icon.loadFont();
 
 const Launch = ({ navigation }) => {
   const getStarted = () => {

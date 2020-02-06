@@ -4,29 +4,47 @@ import AWSApi from '../api/AWSApi';
 const clusters = createSlice({
   name: 'clusters',
   initialState: {
-    clusters: null
+    clusters: {},
+    eksClusters: {},
+    gkeClusters: {},
   },
   reducers: {
+    addCluster(state, action) {
+      const clusterToAdd = action.payload;
+      state.clusters[clusterToAdd.name] = clusterToAdd;
+    },
+    removeCluster(state, action) {
+      const clusterToRemove = action.payload.name;
+      delete state.clusters[clusterToRemove];
+    },
+    updateCluster(state, action) {
+      const updatedCluster = action.payload;
+      state.clusters[updatedCluster.name] = updatedCluster;
+    },
+    setCurrentCluster(state, action) {
+      const selectedCluster = action.payload;
+      state.clusters.current = selectedCluster.name;
+    },
     getEksClusters(state, action) {
       const eksClusters = action.payload;
       state.EksClusters = eksClusters;
     },
-    addCluster(state, action) {
-
-    }
-
-    // getGoogleClusters(state, action) {
-
-    // }
+    getGkeClusters(state, action) {
+      // get Gke Clusters here
+    },
   }
 });
 
-export const { getEksClusters } = clusters.actions;
+export const { addCluster, removeCluster, updateCluster, getEksClusters } = clusters.actions;
 
 export default clusters.reducer;
 
 const saveCluster = async cluster => {
-  await AsyncStorage.setItem('currentCluster', JSON.stringify(cluster));
+  try {
+    await AsyncStorage.setItem('currentCluster', JSON.stringify(cluster));
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 const saveClusters = async clusters => {

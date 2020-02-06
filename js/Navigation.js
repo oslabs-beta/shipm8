@@ -4,7 +4,7 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import store from './store';
+import store from './store/index.js';
 import LandingPage from './components/LandingPage';
 import ClustersList from './components/ClustersList';
 import Launch from './components/Launch';

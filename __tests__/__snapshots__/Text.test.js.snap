@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Text renders correctly 1`] = `
+<View
+  style={Object {}}
+>
+  <Text>
+    React-Native Text Test
+  </Text>
+</View>
+`;

@@ -38,6 +38,9 @@
     "react-test-renderer": "16.9.0"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@react-native-community|react-native|react-navigation|react-native-elements|react-native-vector-icons|react-redux))"
+    ]
   }
 }

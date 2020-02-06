@@ -12,17 +12,9 @@ import {
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { connect } from 'react-redux';
 import Regions from '../Regions';
 import AWSApi from '../api/AWSApi';
 import AsyncStorage from '@react-native-community/async-storage';
-
-mapStateToProps = state => ({
-  totalCluster: state.app.totalCluster,
-  clusterName: state.app.clusterName,
-  pods: state.app.totalPods,
-  region: state.app.regions
-});
 
 const ClustersList = ({ navigation }) => {
   const [dataState, setDataState] = useState([]);
@@ -120,7 +112,7 @@ const ClustersList = ({ navigation }) => {
   );
 };
 
-export default connect(mapStateToProps)(React.memo(ClustersList));
+export default React.memo(ClustersList);
 
 const styles = StyleSheet.create({
   clusterButton: {

@@ -7,10 +7,7 @@ import {
   ScrollView,
   View,
 } from 'react-native';
-import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
-
-mapStateToProps = state => ({});
 
 const PodInfo = ({ navigation }) => {
   const [currentPod, setCurrentPod] = useState({});
@@ -74,6 +71,8 @@ const PodInfo = ({ navigation }) => {
   )
 };
 
+export default React.memo(PodInfo);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -122,5 +121,3 @@ const styles = StyleSheet.create({
     color: 'black',
   },
 });
-
-export default connect(mapStateToProps)(React.memo(PodInfo));

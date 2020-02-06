@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/actions';
 import AsyncStorage from '@react-native-community/async-storage';
 import AWSApi from '../api/AWSApi';
+import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+import GoogleCloudApi from '../api/GoogleCloudApi';
 
 // Load FontAwesome icons
 Icon.loadFont();
@@ -77,6 +79,11 @@ const Login = ({ addApi, navigation }) => {
         <TouchableOpacity style={styles.buttonContainer} activeOpacity={.7} onPress={checkLogin}>
           <Text style={styles.buttonText}>Sign in w/ AWS</Text>
         </TouchableOpacity>
+        <GoogleSigninButton
+          style={{ width: 192, height: 48 }}
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={GoogleCloudApi.signIn} />
       </View>
     </View>
   );

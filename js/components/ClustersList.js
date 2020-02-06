@@ -10,41 +10,29 @@ import {
   ScrollView,
 } from 'react-native';
 import { Badge } from 'react-native-elements';
-import { Dropdown } from 'react-native-material-dropdown';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Dropdown } from 'react-native-material-dropdown';
+
 import Regions from '../Regions';
-import AWSApi from '../api/AWSApi';
-import AsyncStorage from '@react-native-community/async-storage';
+import { fetchEksClusters } from '../reducers/clustersSlice';
 
+const ClustersList = ({ navigation, cloudProvider }) => {
+  const dispatch = useDispatch();
 
-const ClustersList = ({ navigation }) => {
-  const [dataState, setDataState] = useState([]);
+  /*** To be used once we integrate GKE ***/
+  // const clusters = useSelector(state =>
+  //   cloudProvider === 'AWS'
+  //   ? state.clusters.EksClusters
+  //   : state.clusters.GkeClusters
+  //   );
+
+  const clusters = useSelector(state => state.clusters.EksClusters);
   const clusterList = [];
 
-  const saveClusters = async clusters => {
-    const clustersStore = {};
-    clusters.forEach(cluster => {
-      clustersStore[cluster.name] = cluster;
-    });
-    await AsyncStorage.setItem('ClustersStore', JSON.stringify(clustersStore));
-  }
-
   const handleClusterPress = async cluster => {
-    await AsyncStorage.setItem('currentCluster', JSON.stringify(cluster));
+    dispatch(addCluster)
     navigation.navigate('Pods');
-  }
-
-  const fetchClusters = async namespace => {
-    const clusters = await AWSApi.describeAllEksClusters(namespace);
-    setDataState(clusters);
-    const newClusterList = await Promise.all(clusters.map(async cluster => {
-      const namespaces = await AWSApi.fetchNamespaces(cluster.name, cluster.endpointUrl);
-      return {
-        ...cluster,
-        namespaces
-      }
-    }));
-    saveClusters(newClusterList);
   }
 
   const checkStatus = (text) => {
@@ -55,8 +43,7 @@ const ClustersList = ({ navigation }) => {
       return 'error'
     }
   };
-
-  dataState.length > 0 ? dataState.forEach((cluster, idx) => {
+  clusters.length > 0 ? clusters.forEach((cluster, idx) => {
     clusterList.push(
       <TouchableOpacity
         key={cluster.name + idx}
@@ -91,7 +78,7 @@ const ClustersList = ({ navigation }) => {
             itemCount={4}
             dropdownOffset={{ top: 15, left: 0 }}
             style={styles.dropDown}
-            onChangeText={fetchClusters}
+            onChangeText={text => dispatch(fetchEksClusters(text))}
           />
           <ScrollView style={styles.clusterScroll}>{
             clusterList.length > 0 ? clusterList : <Text>No Clusters Found in this Region</Text>

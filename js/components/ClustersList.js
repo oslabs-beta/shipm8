@@ -1,5 +1,5 @@
 //this will be our landing page we can use this to work with the MVP data we are trying to get
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Regions from '../Regions';
 import AWSApi from '../api/AWSApi';
 import AsyncStorage from '@react-native-community/async-storage';
+
 
 const ClustersList = ({ navigation }) => {
   const [dataState, setDataState] = useState([]);

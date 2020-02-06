@@ -1,12 +1,15 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import AsyncStorage from '@react-native-community/async-storage';
+
+import store from './store';
 import LandingPage from './components/LandingPage';
 import ClustersList from './components/ClustersList';
 import Launch from './components/Launch';
 import Pods from './components/Pods';
 import PodInfo from './components/PodInfo';
-import AsyncStorage from '@react-native-community/async-storage';
 
 const initialRoute = AsyncStorage.getItem('AWSCredentials') ? 'Clusters' : 'ShipM8';
 
@@ -37,7 +40,9 @@ const AppContainer = createAppContainer(MainNavigator);
 
 const App = () => {
   return (
-    <AppContainer />
+    <Provider store={store}>
+      <AppContainer />
+    </Provider>
   );
 };
 

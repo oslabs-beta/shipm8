@@ -12,11 +12,8 @@ import {
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { connect } from 'react-redux';
 import AWSApi from '../api/AWSApi';
 import AsyncStorage from '@react-native-community/async-storage';
-
-mapStateToProps = state => ({});
 
 const Pods = ({ navigation }) => {
   const [namespaces, setNamespaces] = useState([]);
@@ -115,6 +112,8 @@ const Pods = ({ navigation }) => {
   );
 };
 
+export default React.memo(Pods);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -203,5 +202,3 @@ const styles = StyleSheet.create({
     marginTop: -7,
   },
 });
-
-export default connect(mapStateToProps)(React.memo(Pods));

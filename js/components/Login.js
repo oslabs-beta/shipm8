@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { withNavigation } from 'react-navigation';
-import { connect } from 'react-redux';
-import * as actions from '../actions/actions';
 import AsyncStorage from '@react-native-community/async-storage';
 import AWSApi from '../api/AWSApi';
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
@@ -12,16 +9,6 @@ import GoogleCloudApi from '../api/GoogleCloudApi';
 
 // Load FontAwesome icons
 Icon.loadFont();
-
-const mapStateToProps = state => ({
-
-});
-
-const mapDispatchToProps = dispatch => ({
-  addApi: (obj) => {
-    dispatch(actions.addApi(obj))
-  },
-});
 
 const Login = ({ addApi, navigation }) => {
   const [loginState, setLoginState] = useState({
@@ -89,7 +76,7 @@ const Login = ({ addApi, navigation }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(React.memo(Login)));
+export default React.memo(Login);
 
 const styles = StyleSheet.create({
   container: {

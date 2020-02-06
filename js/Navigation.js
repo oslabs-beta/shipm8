@@ -1,21 +1,17 @@
-// React and React-Native are imported for future develoment
 import React from 'react';
-import { View } from 'react-native';
-// import navigation tools so we can render new pages (Container: Used to bundle and set Nav settings, Stack: Used to build Nav settings)
+import { Provider } from 'react-redux';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import { Provider } from 'react-redux';
-import reducers from './reducers/index';
+import AsyncStorage from '@react-native-community/async-storage';
 
+import store from './store';
 import LandingPage from './components/LandingPage';
 import ClustersList from './components/ClustersList';
 import Launch from './components/Launch';
 import Pods from './components/Pods';
 import PodInfo from './components/PodInfo';
 
-const store = createStore(reducers, composeWithDevTools());
+const initialRoute = AsyncStorage.getItem('AWSCredentials') ? 'Clusters' : 'ShipM8';
 
 const MainNavigator = createStackNavigator(
   {
@@ -26,7 +22,7 @@ const MainNavigator = createStackNavigator(
     Details: PodInfo,
   },
   {
-    initialRouteName: 'ShipM8',
+    initialRouteName: initialRoute,
 
     defaultNavigationOptions: {
       headerStyle: {

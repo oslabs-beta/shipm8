@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 // Load FontAwesome icons
-Icon.loadFont();
+// Icon.loadFont();
 
 const Launch = ({ navigation }) => {
   const getStarted = () => {
@@ -25,7 +25,7 @@ const Launch = ({ navigation }) => {
         <View style={{ paddingTop: 5 }}>
           <TouchableOpacity
             style={styles.buttonContainer}
-            activeOpacity={.7}
+            activeOpacity={0.7}
             behavior="padding"
             enabled
             onPress={getStarted}>

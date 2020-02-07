@@ -27,47 +27,49 @@ const AddEksCluster = ({ navigation }) => {
     setRegionSelected(true);
     const clusters = await AwsApi.describeAllEksClusters(region);
     setClusters(clusters);
-  }
+  };
 
   const handleClusterPress = cluster => {
-    dispatch(addCluster(cluster))
+    dispatch(addCluster(cluster));
     navigation.navigate('Pods');
-  }
+  };
 
-  const checkStatus = (text) => {
+  const checkStatus = text => {
     if (text === 'ACTIVE') {
-      return 'success'
-    }
-    else {
-      return 'error'
+      return 'success';
+    } else {
+      return 'error';
     }
   };
 
-  const clusterList = clusters && clusters.length > 0 ? clusters.map((cluster, idx) => {
-    return (
-      <TouchableOpacity
-        key={cluster.name + idx}
-        style={styles.clusterContainer}
-        activeOpacity={0.7}
-        cluster={cluster.name}
-        onPress={() => handleClusterPress(cluster)}>
-        <Text
-          numberOfLines={1}
-          style={styles.clusterText}>
-          {cluster.name}
-        </Text>
-        <Text style={styles.statusText}>{cluster.status}</Text>
-        <Badge status={checkStatus(cluster.status)} badgeStyle={styles.badge} />
-        <Icon
-          name="chevron-right"
-          size={15}
-          color="gray"
-          style={styles.arrow}
-        />
-      </TouchableOpacity>
-    )
-  })
-    : null;
+  const clusterList =
+    clusters && clusters.length > 0
+      ? clusters.map((cluster, idx) => {
+          return (
+            <TouchableOpacity
+              key={cluster.name + idx}
+              style={styles.clusterContainer}
+              activeOpacity={0.7}
+              cluster={cluster.name}
+              onPress={() => handleClusterPress(cluster)}>
+              <Text numberOfLines={1} style={styles.clusterText}>
+                {cluster.name}
+              </Text>
+              <Text style={styles.statusText}>{cluster.status}</Text>
+              <Badge
+                status={checkStatus(cluster.status)}
+                badgeStyle={styles.badge}
+              />
+              <Icon
+                name="chevron-right"
+                size={15}
+                color="gray"
+                style={styles.arrow}
+              />
+            </TouchableOpacity>
+          );
+        })
+      : null;
 
   return (
     <View>
@@ -87,7 +89,9 @@ const AddEksCluster = ({ navigation }) => {
           </View>
           <ScrollView style={styles.clusterScroll}>
             {regionSelected && clusterList}
-            {regionSelected && !clusterList && <Text>No Clusters Found in this Region</Text>}
+            {regionSelected && !clusterList && (
+              <Text>No Clusters Found in this Region</Text>
+            )}
           </ScrollView>
           <Button
             style={{
@@ -96,7 +100,7 @@ const AddEksCluster = ({ navigation }) => {
               alignItems: 'center',
               backgroundColor: 'blue',
             }}
-            color='red'
+            color="red"
             title="Sign Out"
             onPress={() => navigation.navigate('Login')}
           />
@@ -169,7 +173,7 @@ const styles = StyleSheet.create({
   clusterText: {
     fontSize: 16,
     marginLeft: 5,
-    marginRight: 100,
+    marginRight: 96,
     width: 165,
     backgroundColor: 'white',
     overflow: 'scroll',

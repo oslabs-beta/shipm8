@@ -12,6 +12,7 @@ import Pods from './components/Pods';
 import PodInfo from './components/PodInfo';
 
 const initialRoute = AsyncStorage.getItem('AWSCredentials') ? 'Clusters' : 'ShipM8';
+console.log('ASDASJKDASKHJDASHJLDHJKLASD', initialRoute)
 
 const MainNavigator = createStackNavigator(
   {

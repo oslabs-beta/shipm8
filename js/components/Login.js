@@ -25,7 +25,7 @@ const Login = ({ addApi, navigation }) => {
       saveData()
       AWSApi.fetchEksClusters('us-west-2').then(data => {
         if (data) {
-          navigation.navigate('Clusters');
+          navigation('Clusters');
         }
         else {
           alert('The Security Token Included in the Request Is Invalid')
@@ -35,6 +35,25 @@ const Login = ({ addApi, navigation }) => {
       alert('Please Input Your AWS Access and Secret Information');
     }
   };
+
+  const checkGKELogin = async () => {
+    try {
+      const verifyGKE = await GoogleCloudApi.signIn()
+      const getToken = await GoogleCloudApi.getToken()
+      const getProject = await GoogleCloudApi.getProjects(getToken)
+      console.log('HEYYYYYYYYY', getToken)
+      navigation('Clusters')
+    }
+    catch (error) {
+      alert(error)
+    }
+    // if (verifyGKE) {
+    //   navigation.navigate('Clusters')
+    // }
+    // else {
+    //   alert('Something Went Wrong Trying to Validate Your Account')
+    // }
+  }
   return (
     <View style={styles.container}>
       <Input
@@ -70,7 +89,7 @@ const Login = ({ addApi, navigation }) => {
           style={{ width: 192, height: 48 }}
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
-          onPress={GoogleCloudApi.signIn} />
+          onPress={checkGKELogin} />
       </View>
     </View>
   );

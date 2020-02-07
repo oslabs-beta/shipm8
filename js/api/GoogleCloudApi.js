@@ -34,6 +34,7 @@ export default class GoogleCloudApi {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log('THIS IS USER INFO AND SIGNIN CONFERMATION =====>', userInfo)
+      return userInfo
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -41,7 +42,7 @@ export default class GoogleCloudApi {
         // GoogleCloudApi.signOut();
       } else if (error.code === statusCodes.IN_PROGRESS) {
         // operation (e.g. sign in) is in progress already
-        console.log('Error 22')
+        console.log('Error 2')
         // GoogleCloudApi.signOut();
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         // play services not available or outdated
@@ -54,6 +55,33 @@ export default class GoogleCloudApi {
       }
     }
   };
+
+  static getToken = async () => {
+    try {
+      const accessToken = await GoogleSignin.getTokens();
+      console.log('access token in gettoken', accessToken)
+      return accessToken.accessToken
+    }
+    catch (error) {
+      alert("Error getting token")
+    }
+  }
+
+  static getProjects = async (token) => {
+    try {
+      console.log('token in getprojects', token)
+      const authHeader = {
+        Authorization: `Bearer ${token}`,
+      }
+      const projects = await fetch('https://container.googleapis.com/v1beta1', authHeader).then(res => res.json());
+      console.log('PROJECTS DATA =========>', projects);
+
+    }
+    catch (error) {
+      alert(error)
+    }
+
+  }
 
   static signOut = async () => {
     try {

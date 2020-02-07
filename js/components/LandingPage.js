@@ -18,7 +18,7 @@ const App = props => {
         />
         <Text style={styles.textStyle}>Monitor You K8s Cluster Anywhere!</Text>
         <View style={styles.formContainer}>
-          <Login />
+          <Login navigation={props.navigation.navigate} />
         </View>
       </View>
     </KeyboardAvoidingView>

@@ -4,11 +4,15 @@ import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
 import AwsApi from '../api/AwsApi';
+import {
+  GoogleSigninButton,
+} from '@react-native-community/google-signin';
+import GoogleCloudApi from '../api/GoogleCloudApi';
 
 // Load FontAwesome icons
 Icon.loadFont();
 
-const Login = ({ addApi, navigation }) => {
+const Login = ({ navigation }) => {
   const [loginState, setLoginState] = useState({
     accessKeyId: '',
     secretAccessKey: '',
@@ -64,6 +68,12 @@ const Login = ({ addApi, navigation }) => {
         <TouchableOpacity style={styles.buttonContainer} activeOpacity={.7} onPress={checkLogin}>
           <Text style={styles.buttonText}>Sign in w/ AWS</Text>
         </TouchableOpacity>
+        <GoogleSigninButton
+          style={{ width: 192, height: 48 }}
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={GoogleCloudApi.getToken}
+          disabled={false} />
       </View>
     </View>
   );

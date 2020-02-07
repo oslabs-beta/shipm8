@@ -15,7 +15,7 @@ import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { addCluster } from '../reducers/ClustersSlice';
-import AWSApi from '../api/AwsApi';
+import AwsApi from '../api/AwsApi';
 import Regions from '../Regions';
 
 const AddEksCluster = ({ navigation }) => {
@@ -25,7 +25,7 @@ const AddEksCluster = ({ navigation }) => {
 
   const handleRegionChange = async region => {
     setRegionSelected(true);
-    const clusters = await AWSApi.describeAllEksClusters(region);
+    const clusters = await AwsApi.describeAllEksClusters(region);
     setClusters(clusters);
   }
 

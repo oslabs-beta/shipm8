@@ -31,7 +31,7 @@ export default Clusters.reducer;
 // export const fetchEksClusters = region =>
 //   async dispatch => {
 //     try {
-//       const clusters = await AWSApi.describeAllEksClusters(region);
+//       const clusters = await AwsApi.describeAllEksClusters(region);
 //       dispatch(getEksClusters(clusters));
 //     } catch (err) {
 //       console.log(err);

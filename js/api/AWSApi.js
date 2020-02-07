@@ -3,7 +3,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { Base64 } from 'js-base64';
 import AsyncStorage from '@react-native-community/async-storage';
 
-class AWSApi {
+class AwsApi {
 
   /**
    * 
@@ -150,4 +150,4 @@ class AWSApi {
   };
 };
 
-export default AWSApi;
+export default AwsApi;

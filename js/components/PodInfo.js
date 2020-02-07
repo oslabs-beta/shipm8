@@ -8,7 +8,7 @@ import {
   View,
   Image,
 } from 'react-native';
-import { Badge } from 'react-native-elements';
+import { Badge, Divider } from 'react-native-elements';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const PodInfo = ({ navigation }) => {
@@ -42,63 +42,74 @@ const PodInfo = ({ navigation }) => {
           <View style={styles.outerTextView}>
             <View style={styles.innerTextView}>
               <Image
-                source={require('../../assets/podDetails.png')}
-                style={styles.logo}
+                source={require('../../assets/pod.png')}
+                style={styles.podLogo}
               />
-              <Text style={styles.text}>
-                apiVersion: <Text style={styles.innerText}>v1</Text>
-              </Text>
-              <Text style={styles.text}>
-                Kind: <Text style={styles.innerText}>Pod</Text>
-              </Text>
-              <Text style={styles.text}>
-                Name:{' '}
-                <Text style={styles.innerText}>
-                  {currentPod.metadata ? currentPod.metadata.name : 'Loading'}
+              <View style={{ flexDirection: 'column' }}>
+                <Text style={styles.text} numberOfLines={2}>
+                  apiVersion: <Text style={styles.innerText}>v1</Text>
                 </Text>
-              </Text>
-              <Text style={styles.text}>
-                Status:{' '}
-                <Text style={styles.innerText}>
-                  {currentPod.metadata ? currentPod.status.phase : 'Loading'}
+                <Divider />
+                <Text style={styles.text} numberOfLines={1}>
+                  Kind: <Text style={styles.innerText}>Pod</Text>
                 </Text>
-                <Badge
-                  status={checkStatus(currentPod.phase)}
-                  badgeStyle={styles.badge}
-                />
-              </Text>
-              <Text style={styles.text}>
-                Time Created:{' '}
-                <Text style={styles.innerText}>
-                  {currentPod.metadata
-                    ? currentPod.metadata.creationTimestamp
-                    : 'Loading'}
+                <Divider />
+                <Text style={styles.text} numberOfLines={2}>
+                  Name:{' '}
+                  <Text style={styles.innerText}>
+                    {currentPod.metadata ? currentPod.metadata.name : 'Loading'}
+                  </Text>
                 </Text>
-              </Text>
-              <Text style={styles.text}>
-                Self-Link:{' '}
-                <Text style={styles.innerText}>
-                  /api/v1/namespaces/default/pods/shipm8
-                </Text>{' '}
-              </Text>
-              <Text style={styles.text}>
-                UID:{' '}
-                <Text style={styles.innerText}>
-                  287db3d7-422e-11ea-a037-02b853562b6a
-                </Text>{' '}
-              </Text>
-              <Text style={styles.text}>
-                Host IP:{' '}
-                <Text style={styles.innerText}>
-                  {currentPod.metadata ? currentPod.status.hostIP : 'Loading'}
+                <Divider />
+                <Text style={styles.text} numberOfLines={2}>
+                  Status:{' '}
+                  <Text style={styles.innerText}>
+                    {currentPod.metadata ? currentPod.status.phase : 'Loading'}
+                  </Text>
+                  <Badge
+                    status={checkStatus(currentPod.phase)}
+                    badgeStyle={styles.badge}
+                  />
                 </Text>
-              </Text>
-              <Text style={styles.text}>
-                Pod IP:{' '}
-                <Text style={styles.innerText}>
-                  {currentPod.metadata ? currentPod.status.podIP : 'Loading'}
+                <Divider />
+                <Text style={styles.text} numberOfLines={2}>
+                  Time Created:{' '}
+                  <Text style={styles.innerText}>
+                    {currentPod.metadata
+                      ? currentPod.metadata.creationTimestamp
+                      : 'Loading'}
+                  </Text>
                 </Text>
-              </Text>
+                <Divider />
+                <Text style={styles.text} numberOfLines={2}>
+                  Self-Link:{' '}
+                  <Text style={styles.innerText}>
+                    /api/v1/namespaces/default/pods/shipm8
+                  </Text>{' '}
+                </Text>
+                <Divider />
+                <Text style={styles.text} numberOfLines={2}>
+                  UID:{' '}
+                  <Text style={styles.innerText}>
+                    287db3d7-422e-11ea-a037-02b853562b6a
+                  </Text>{' '}
+                </Text>
+                <Divider />
+                <Text style={styles.text} numberOfLines={2}>
+                  Host IP:{' '}
+                  <Text style={styles.innerText}>
+                    {currentPod.metadata ? currentPod.status.hostIP : 'Loading'}
+                  </Text>
+                </Text>
+                <Divider />
+                <Text style={styles.text} numberOfLines={2}>
+                  Pod IP:{' '}
+                  <Text style={styles.innerText}>
+                    {currentPod.metadata ? currentPod.status.podIP : 'Loading'}
+                  </Text>
+                </Text>
+              </View>
+              <Divider />
             </View>
           </View>
         ) : (
@@ -129,54 +140,60 @@ const styles = StyleSheet.create({
   podScroll: {
     backgroundColor: 'white',
     borderStyle: 'solid',
-    borderColor: 'navy',
+    borderColor: '#063CB9',
     borderWidth: 2,
     borderRadius: 10,
-    marginTop: 20,
+    marginTop: 32,
     height: 590,
+    width: 380,
+    alignSelf: 'center',
+    marginHorizontal: 4,
     color: 'white',
   },
   safeArea: {
     backgroundColor: 'white',
-    marginHorizontal: 10,
-    height: '90%',
-    marginTop: 40,
+    height: '95%',
   },
   text: {
-    fontSize: 18,
-    marginBottom: 30,
+    fontSize: 15.1,
+    marginBottom: 15,
+    marginTop: 20,
     color: 'gray',
-    overflow: 'scroll',
-    borderStyle: 'solid',
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
   },
   outerTextView: {
     marginHorizontal: 10,
-    marginTop: -15,
+    marginTop: 20,
   },
   innerTextView: {
     backgroundColor: 'white',
-    padding: 10,
+    marginTop: 20,
     borderRadius: 5,
     height: '100%',
-    overflow: 'scroll',
   },
   buttonView: {
     marginTop: 20,
     marginBottom: 20,
+    width: '24%',
+    alignSelf: 'center',
   },
   innerText: {
     color: 'black',
+    overflow: 'scroll',
   },
   badge: {
     marginLeft: 8,
+    marginBottom: 3,
   },
-  logo: {
+  podLogo: {
     width: 100,
     height: 100,
-    marginLeft: 250,
-    marginTop: 20,
-    marginBottom: -50,
+    alignSelf: 'center',
+    marginTop: -9,
+  },
+  header: {
+    fontSize: 29,
+    textAlign: 'left',
+    marginTop: -70,
+    marginBottom: 45,
   },
 });

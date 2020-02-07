@@ -12,8 +12,9 @@ import {
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AWSApi from '../api/AWSApi';
+import AWSApi from '../api/AwsApi';
 import AsyncStorage from '@react-native-community/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Pods = ({ navigation }) => {
   const [namespaces, setNamespaces] = useState([]);

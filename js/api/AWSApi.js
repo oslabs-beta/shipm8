@@ -109,11 +109,7 @@ class AWSApi {
         }
         return newCluster;
       }));
-      const clusters = {};
-      clusterList.forEach(cluster => {
-        clusters[cluster.name] = cluster;
-      });
-      return clusters;
+      return clusterList;
     }
     catch (err) {
       return console.log('err: ', err);

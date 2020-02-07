@@ -1,5 +1,5 @@
 //this will be our landing page we can use this to work with the MVP data we are trying to get
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,26 +9,25 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { Badge } from 'react-native-elements';
-import { useDispatch, useSelector } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
+import { addCluster } from '../reducers/ClustersSlice';
+import AWSApi from '../api/AwsApi';
 import Regions from '../Regions';
-import { fetchEksClusters } from '../reducers/clustersSlice';
 
-const ClustersList = ({ navigation, cloudProvider }) => {
+const AddEksCluster = ({ navigation }) => {
   const dispatch = useDispatch();
+  const [regionSelected, setRegionSelected] = useState(false);
+  const [clusters, setClusters] = useState(null);
 
-  /*** To be used once we integrate GKE ***/
-  // const clusters = useSelector(state =>
-  //   cloudProvider === 'AWS'
-  //   ? state.clusters.EksClusters
-  //   : state.clusters.GkeClusters
-  //   );
-
-  const clusters = useSelector(state => state.clusters.EksClusters);
-  const clusterList = [];
+  const handleRegionChange = async region => {
+    setRegionSelected(true);
+    const clusters = await AWSApi.describeAllEksClusters(region);
+    setClusters(clusters);
+  }
 
   const handleClusterPress = cluster => {
     dispatch(addCluster(cluster))
@@ -44,8 +43,8 @@ const ClustersList = ({ navigation, cloudProvider }) => {
     }
   };
 
-  clusters && Object.values(clusters).length > 0 ? Object.values(clusters).forEach((cluster, idx) => {
-    clusterList.push(
+  const clusterList = clusters && clusters.length > 0 ? clusters.map((cluster, idx) => {
+    return (
       <TouchableOpacity
         key={cluster.name + idx}
         style={styles.clusterContainer}
@@ -65,25 +64,31 @@ const ClustersList = ({ navigation, cloudProvider }) => {
           color="gray"
           style={styles.arrow}
         />
-      </TouchableOpacity>,
-    );
-  }) : null;
+      </TouchableOpacity>
+    )
+  })
+    : null;
 
   return (
     <View>
       <SafeAreaView style={styles.safeArea}>
         <ScrollView style={styles.scrollView}>
-          <Dropdown
-            label="Select a Region"
-            data={Regions}
-            itemCount={4}
-            dropdownOffset={{ top: 15, left: 0 }}
-            style={styles.dropDown}
-            onChangeText={text => dispatch(fetchEksClusters(text))}
-          />
-          <ScrollView style={styles.clusterScroll}>{
-            clusterList.length > 0 ? clusterList : <Text>No Clusters Found in this Region</Text>
-          }</ScrollView>
+          <View style={{ width: '90%', alignSelf: 'center' }}>
+            <Dropdown
+              label="Please Select a Region"
+              data={Regions}
+              itemCount={3}
+              dropdownPosition={0}
+              // dropdownMargins={{ min: 50, max: 50 }}
+              dropdownOffset={{ top: 15, left: 0 }}
+              style={styles.dropDown}
+              onChangeText={text => handleRegionChange(text)}
+            />
+          </View>
+          <ScrollView style={styles.clusterScroll}>
+            {regionSelected && clusterList}
+            {regionSelected && !clusterList && <Text>No Clusters Found in this Region</Text>}
+          </ScrollView>
           <Button
             style={{
               flex: 2,
@@ -101,7 +106,7 @@ const ClustersList = ({ navigation, cloudProvider }) => {
   );
 };
 
-export default React.memo(ClustersList);
+export default React.memo(AddEksCluster);
 
 const styles = StyleSheet.create({
   clusterButton: {
@@ -119,6 +124,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  dropDown: {
+    textAlign: 'center',
+    alignItems: 'center',
   },
   buttonsText: {
     textAlign: 'center',

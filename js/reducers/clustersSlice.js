@@ -1,66 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit';
-import AWSApi from '../api/AWSApi';
 
-const clusters = createSlice({
-  name: 'clusters',
-  initialState: {
-    clusters: {},
-    eksClusters: {},
-    gkeClusters: {},
-  },
+const Clusters = createSlice({
+  name: 'Clusters',
+  initialState: {},
   reducers: {
     addCluster(state, action) {
       const clusterToAdd = action.payload;
-      state.clusters[clusterToAdd.name] = clusterToAdd;
+      state[clusterToAdd.url] = clusterToAdd;
     },
     removeCluster(state, action) {
-      const clusterToRemove = action.payload.name;
-      delete state.clusters[clusterToRemove];
+      const clusterToRemove = action.payload;
+      delete state[clusterToRemove.url];
     },
     updateCluster(state, action) {
       const updatedCluster = action.payload;
-      state.clusters[updatedCluster.name] = updatedCluster;
+      state[updatedCluster.url] = updatedCluster;
     },
     setCurrentCluster(state, action) {
       const selectedCluster = action.payload;
-      state.clusters.current = selectedCluster.name;
-    },
-    getEksClusters(state, action) {
-      const eksClusters = action.payload;
-      state.EksClusters = eksClusters;
-    },
-    getGkeClusters(state, action) {
-      // get Gke Clusters here
+      state.current = selectedCluster.url;
     },
   }
 });
 
-export const { addCluster, removeCluster, updateCluster, getEksClusters } = clusters.actions;
+export const { addCluster, removeCluster, updateCluster, setCurrentCluster } = Clusters.actions;
 
-export default clusters.reducer;
+export default Clusters.reducer;
 
-const saveCluster = async cluster => {
-  try {
-    await AsyncStorage.setItem('currentCluster', JSON.stringify(cluster));
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-const saveClusters = async clusters => {
-  const clustersStore = {};
-  clusters.forEach(cluster => {
-    clustersStore[cluster.name] = cluster;
-  });
-  await AsyncStorage.setItem('ClustersStore', JSON.stringify(clustersStore));
-}
-
-export const fetchEksClusters = region =>
-  async dispatch => {
-    try {
-      const clusters = await AWSApi.describeAllEksClusters(region);
-      dispatch(getEksClusters(clusters));
-    } catch (err) {
-      console.log(err);
-    }
-  }
+// Thunks
+// export const fetchEksClusters = region =>
+//   async dispatch => {
+//     try {
+//       const clusters = await AWSApi.describeAllEksClusters(region);
+//       dispatch(getEksClusters(clusters));
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   }

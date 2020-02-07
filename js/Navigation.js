@@ -5,21 +5,21 @@ import { createStackNavigator } from 'react-navigation-stack';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import store from './store/index.js';
-import LandingPage from './components/LandingPage';
+import CloudLogin from './components/CloudLogin';
 import AddEksCluster from './components/AddEksCluster';
 import Launch from './components/Launch';
 import Pods from './components/Pods';
 import PodInfo from './components/PodInfo';
 
-const initialRoute = AsyncStorage.getItem('AWSCredentials') ? 'AddEksCluster' : 'ShipM8';
+const initialRoute = AsyncStorage.getItem('AWSCredentials') ? 'ShipM8' : 'ShipM8';
 
 const MainNavigator = createStackNavigator(
   {
     ShipM8: Launch,
-    Login: LandingPage, // Login Page
-    AddEksCluster: AddEksCluster, // Landing Page
+    'Cloud Login': CloudLogin,
+    'Add EKS Cluster': AddEksCluster,
     Pods: Pods,
-    Details: PodInfo,
+    'Pod Details': PodInfo,
   },
   {
     initialRouteName: initialRoute,

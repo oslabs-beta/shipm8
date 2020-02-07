@@ -1,17 +1,18 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-// Load FontAwesome icons
-// Icon.loadFont();
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text, Image
+} from 'react-native';
 
 const Launch = ({ navigation }) => {
   const getStarted = () => {
-    navigation.navigate('Login');
+    navigation.navigate('Cloud Login');
   };
   return (
     <View style={styles.container} behavior="padding" enabled>
-      <Text style={styles.banner}>WELCOME</Text>
+      <Text style={styles.banner}>Welcome to ShipM8!</Text>
 
       <Image
         source={require('../../assets/shipm8_logo.png')}
@@ -19,7 +20,7 @@ const Launch = ({ navigation }) => {
       />
       <View style={styles.logoContainer}>
         <Text style={styles.textStyle}>
-          Monitor Your K8s Clusters Anywhere!
+          Monitor K8s Clusters Anywhere
         </Text>
         <View style={styles.formContainer} />
         <View style={{ paddingTop: 5 }}>
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     fontWeight: 'bold',
     color: '#151B54',
+    textAlign: 'center'
   },
   buttonText: {
     textAlign: 'center',

@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
-import AWSApi from '../api/AWSApi';
+import AwsApi from '../api/AwsApi';
 
 // Load FontAwesome icons
 Icon.loadFont();
@@ -21,7 +21,7 @@ const Login = ({ addApi, navigation }) => {
   const checkLogin = () => {
     if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
       saveData()
-      AWSApi.fetchEksClusters('us-west-2').then(data => {
+      AwsApi.fetchEksClusters('us-west-2').then(data => {
         if (data) {
           navigation.navigate('Clusters');
         }

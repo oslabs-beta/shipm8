@@ -1,9 +1,11 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import clustersReducer from './clustersSlice';
+import clustersReducer from './ClustersSlice';
+import podsReducer from './PodsSlice';
 
 const rootReducer = combineReducers({
-  clusters: clustersReducer
+  Clusters: clustersReducer,
+  Pods: podsReducer,
 });
 
 export default rootReducer;

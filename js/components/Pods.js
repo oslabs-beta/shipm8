@@ -12,8 +12,9 @@ import {
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AWSApi from '../api/AWSApi';
+import AwsApi from '../api/AwsApi';
 import AsyncStorage from '@react-native-community/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Pods = ({ navigation }) => {
   const [namespaces, setNamespaces] = useState([]);
@@ -38,7 +39,7 @@ const Pods = ({ navigation }) => {
 
   const handleNamespaceChange = async text => {
     const currentCluster = await AsyncStorage.getItem('currentCluster').then(cluster => JSON.parse(cluster));
-    const pods = await AWSApi.fetchAllPodsInfo(currentCluster.name, currentCluster.endpointUrl, text);
+    const pods = await AwsApi.fetchAllPodsInfo(currentCluster.name, currentCluster.endpointUrl, text);
     setPodsList(pods.items);
     await AsyncStorage.setItem('currentCluster', JSON.stringify({
       ...currentCluster,

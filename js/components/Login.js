@@ -23,7 +23,7 @@ const Login = ({ addApi, navigation }) => {
   const checkLogin = () => {
     if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
       saveData()
-      AWSApi.fetchEksClusters('us-west-2').then(data => {
+      AwsApi.fetchEksClusters('us-west-2').then(data => {
         if (data) {
           navigation('Clusters');
         }

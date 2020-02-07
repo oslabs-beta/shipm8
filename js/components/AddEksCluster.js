@@ -9,93 +9,90 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import { addCluster } from '../reducers/ClustersSlice';
+import AwsApi from '../api/AwsApi';
 import Regions from '../Regions';
-import AWSApi from '../api/AWSApi';
-import AsyncStorage from '@react-native-community/async-storage';
 
+const AddEksCluster = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const [regionSelected, setRegionSelected] = useState(false);
+  const [clusters, setClusters] = useState(null);
 
-const ClustersList = ({ navigation }) => {
-  const [dataState, setDataState] = useState([]);
-  const clusterList = [];
+  const handleRegionChange = async region => {
+    setRegionSelected(true);
+    const clusters = await AwsApi.describeAllEksClusters(region);
+    setClusters(clusters);
+  };
 
-  const saveClusters = async clusters => {
-    const clustersStore = {};
-    clusters.forEach(cluster => {
-      clustersStore[cluster.name] = cluster;
-    });
-    await AsyncStorage.setItem('ClustersStore', JSON.stringify(clustersStore));
-  }
-
-  const handleClusterPress = async cluster => {
-    await AsyncStorage.setItem('currentCluster', JSON.stringify(cluster));
+  const handleClusterPress = cluster => {
+    dispatch(addCluster(cluster));
     navigation.navigate('Pods');
-  }
+  };
 
-  const fetchClusters = async namespace => {
-    const clusters = await AWSApi.describeAllEksClusters(namespace);
-    setDataState(clusters);
-    const newClusterList = await Promise.all(clusters.map(async cluster => {
-      const namespaces = await AWSApi.fetchNamespaces(cluster.name, cluster.endpointUrl);
-      return {
-        ...cluster,
-        namespaces
-      }
-    }));
-    saveClusters(newClusterList);
-  }
-
-  const checkStatus = (text) => {
+  const checkStatus = text => {
     if (text === 'ACTIVE') {
-      return 'success'
-    }
-    else {
-      return 'error'
+      return 'success';
+    } else {
+      return 'error';
     }
   };
 
-  dataState.length > 0 ? dataState.forEach((cluster, idx) => {
-    clusterList.push(
-      <TouchableOpacity
-        key={cluster.name + idx}
-        style={styles.clusterContainer}
-        activeOpacity={0.7}
-        cluster={cluster.name}
-        onPress={() => handleClusterPress(cluster)}>
-        <Text
-          numberOfLines={1}
-          style={styles.clusterText}>
-          {cluster.name}
-        </Text>
-        <Text style={styles.statusText}>{cluster.status}</Text>
-        <Badge status={checkStatus(cluster.status)} badgeStyle={styles.badge} />
-        <Icon
-          name="chevron-right"
-          size={15}
-          color="gray"
-          style={styles.arrow}
-        />
-      </TouchableOpacity>,
-    );
-  }) : null;
+  const clusterList =
+    clusters && clusters.length > 0
+      ? clusters.map((cluster, idx) => {
+          return (
+            <TouchableOpacity
+              key={cluster.name + idx}
+              style={styles.clusterContainer}
+              activeOpacity={0.7}
+              cluster={cluster.name}
+              onPress={() => handleClusterPress(cluster)}>
+              <Text numberOfLines={1} style={styles.clusterText}>
+                {cluster.name}
+              </Text>
+              <Text style={styles.statusText}>{cluster.status}</Text>
+              <Badge
+                status={checkStatus(cluster.status)}
+                badgeStyle={styles.badge}
+              />
+              <Icon
+                name="chevron-right"
+                size={15}
+                color="gray"
+                style={styles.arrow}
+              />
+            </TouchableOpacity>
+          );
+        })
+      : null;
 
   return (
     <View>
       <SafeAreaView style={styles.safeArea}>
         <ScrollView style={styles.scrollView}>
-          <Dropdown
-            label="Select a Region"
-            data={Regions}
-            itemCount={4}
-            dropdownOffset={{ top: 15, left: 0 }}
-            style={styles.dropDown}
-            onChangeText={fetchClusters}
-          />
-          <ScrollView style={styles.clusterScroll}>{
-            clusterList.length > 0 ? clusterList : <Text>No Clusters Found in this Region</Text>
-          }</ScrollView>
+          <View style={{ width: '90%', alignSelf: 'center' }}>
+            <Dropdown
+              label="Please Select a Region"
+              data={Regions}
+              itemCount={3}
+              dropdownPosition={0}
+              // dropdownMargins={{ min: 50, max: 50 }}
+              dropdownOffset={{ top: 15, left: 0 }}
+              style={styles.dropDown}
+              onChangeText={text => handleRegionChange(text)}
+            />
+          </View>
+          <ScrollView style={styles.clusterScroll}>
+            {regionSelected && clusterList}
+            {regionSelected && !clusterList && (
+              <Text>No Clusters Found in this Region</Text>
+            )}
+          </ScrollView>
           <Button
             style={{
               flex: 2,
@@ -103,7 +100,7 @@ const ClustersList = ({ navigation }) => {
               alignItems: 'center',
               backgroundColor: 'blue',
             }}
-            color='red'
+            color="red"
             title="Sign Out"
             onPress={() => navigation.navigate('Login')}
           />
@@ -113,7 +110,7 @@ const ClustersList = ({ navigation }) => {
   );
 };
 
-export default React.memo(ClustersList);
+export default React.memo(AddEksCluster);
 
 const styles = StyleSheet.create({
   clusterButton: {
@@ -131,6 +128,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  dropDown: {
+    textAlign: 'center',
+    alignItems: 'center',
   },
   buttonsText: {
     textAlign: 'center',
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
   clusterText: {
     fontSize: 16,
     marginLeft: 5,
-    marginRight: 100,
+    marginRight: 96,
     width: 165,
     backgroundColor: 'white',
     overflow: 'scroll',

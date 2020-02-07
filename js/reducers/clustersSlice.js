@@ -1,28 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit';
-import AWSApi from '../api/AWSApi';
 
-const clusters = createSlice({
-  name: 'clusters',
+const Clusters = createSlice({
+  name: 'Clusters',
   initialState: {},
   reducers: {
-    getEksClusters(state, action) {
-      const { clusters } = action.payload;
-      state.clusters = clusters;
-    }
+    addCluster(state, action) {
+      const clusterToAdd = action.payload;
+      state[clusterToAdd.url] = clusterToAdd;
+    },
+    removeCluster(state, action) {
+      const clusterToRemove = action.payload;
+      delete state[clusterToRemove.url];
+    },
+    updateCluster(state, action) {
+      const updatedCluster = action.payload;
+      state[updatedCluster.url] = updatedCluster;
+    },
+    setCurrentCluster(state, action) {
+      const selectedCluster = action.payload;
+      state.current = selectedCluster.url;
+    },
   }
 });
 
-export const { addCluster } = clusters.actions;
+export const { addCluster, removeCluster, updateCluster, setCurrentCluster } = Clusters.actions;
 
-export default clusters.reducer;
+export default Clusters.reducer;
 
-export const fetchAwsClusters = region =>
-  async dispatch => {
-    try {
-      const clusters = await AWSApi.describeAllEksClusters(region);
-      dispatch(getEksClusters(clusters));
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
+// Thunks
+// export const fetchEksClusters = region =>
+//   async dispatch => {
+//     try {
+//       const clusters = await AwsApi.describeAllEksClusters(region);
+//       dispatch(getEksClusters(clusters));
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   }

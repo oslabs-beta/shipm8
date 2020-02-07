@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
-import AWSApi from '../api/AWSApi';
+import AWSApi from '../api/AwsApi';
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import GoogleCloudApi from '../api/GoogleCloudApi';
 

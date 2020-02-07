@@ -22,6 +22,7 @@ const PodInfo = ({ navigation }) => {
     const currentPod = await AsyncStorage.getItem('currentPod').then(data =>
       JSON.parse(data),
     );
+    console.log(currentPod);
     setCurrentPod(currentPod);
   };
 
@@ -67,7 +68,7 @@ const PodInfo = ({ navigation }) => {
                     {currentPod.metadata ? currentPod.status.phase : 'Loading'}
                   </Text>
                   <Badge
-                    status={checkStatus(currentPod.phase)}
+                    status={checkStatus(currentPod.status.phase)}
                     badgeStyle={styles.badge}
                   />
                 </Text>
@@ -84,14 +85,16 @@ const PodInfo = ({ navigation }) => {
                 <Text style={styles.text} numberOfLines={2}>
                   Self-Link:{' '}
                   <Text style={styles.innerText}>
-                    /api/v1/namespaces/default/pods/shipm8
+                    {currentPod.metadata
+                      ? currentPod.metadata.selfLink
+                      : 'Loading'}
                   </Text>{' '}
                 </Text>
                 <Divider />
                 <Text style={styles.text} numberOfLines={2}>
                   UID:{' '}
                   <Text style={styles.innerText}>
-                    287db3d7-422e-11ea-a037-02b853562b6a
+                    {currentPod.metadata ? currentPod.metadata.uid : 'Loading'}
                   </Text>{' '}
                 </Text>
                 <Divider />

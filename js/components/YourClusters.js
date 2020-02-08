@@ -19,7 +19,7 @@ import { addCluster } from '../reducers/ClustersSlice';
 import AwsApi from '../api/AwsApi';
 import CloudProviders from '../CloudProviders';
 
-const AddEksCluster = ({ navigation }) => {
+const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
   const [regionSelected, setRegionSelected] = useState(false);
   const [clusters, setClusters] = useState(null);
@@ -119,7 +119,7 @@ const AddEksCluster = ({ navigation }) => {
   );
 };
 
-export default React.memo(AddEksCluster);
+export default React.memo(ClustersIndex);
 
 const styles = StyleSheet.create({
   clusterButton: {

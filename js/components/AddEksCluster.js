@@ -37,6 +37,8 @@ const AddEksCluster = ({ navigation }) => {
   const checkStatus = text => {
     if (text === 'ACTIVE') {
       return 'success';
+    } else if (text === 'CREATING') {
+      return 'warning';
     } else {
       return 'error';
     }
@@ -90,7 +92,15 @@ const AddEksCluster = ({ navigation }) => {
           <ScrollView style={styles.clusterScroll}>
             {regionSelected && clusterList}
             {regionSelected && !clusterList && (
-              <Text>No Clusters Found in this Region</Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  marginTop: 150,
+                  fontSize: 20,
+                  color: 'gray',
+                }}>
+                No Clusters in this Region{' '}
+              </Text>
             )}
           </ScrollView>
           <Button
@@ -180,8 +190,8 @@ const styles = StyleSheet.create({
   },
   clusterText: {
     fontSize: 16,
-    marginLeft: 5,
-    marginRight: 96,
+    marginLeft: 15,
+    marginRight: 80,
     width: 165,
     backgroundColor: 'white',
     overflow: 'scroll',

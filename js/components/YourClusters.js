@@ -8,6 +8,7 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Badge } from 'react-native-elements';
@@ -16,7 +17,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { addCluster } from '../reducers/ClustersSlice';
 import AwsApi from '../api/AwsApi';
-import Regions from '../Regions';
+import CloudProviders from '../CloudProviders';
 
 const AddEksCluster = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -77,11 +78,11 @@ const AddEksCluster = ({ navigation }) => {
         <ScrollView style={styles.scrollView}>
           <View style={styles.dropDownView}>
             <Dropdown
-              label="Select Cloud provider to view clusters"
-              data={Regions}
+              label="Select Cloud Provider "
+              data={CloudProviders}
               itemCount={3}
               dropdownPosition={0}
-              // dropdownMargins={{ min: 50, max: 50 }}
+              dropdownMargins={{ min: 50, max: 50 }}
               dropdownOffset={styles.dropDownOffset}
               style={styles.dropDown}
               onChangeText={text => handleRegionChange(text)}
@@ -90,7 +91,15 @@ const AddEksCluster = ({ navigation }) => {
           <ScrollView style={styles.clusterScroll}>
             {regionSelected && clusterList}
             {regionSelected && !clusterList && (
-              <Text>No Clusters Found in this Region</Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  marginTop: 150,
+                  fontSize: 20,
+                  color: 'gray',
+                }}>
+                No Clusters
+              </Text>
             )}
           </ScrollView>
           <Button

@@ -8,6 +8,7 @@ import {
   View,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -123,7 +124,11 @@ const Pods = ({ navigation }) => {
           />
         </View>
         <ScrollView style={styles.podScroll}>
-          {podsDisplay.length > 0 ? podsDisplay : <Text>Loading...</Text>}
+          {podsDisplay.length > 0 ? (
+            podsDisplay
+          ) : (
+            <ActivityIndicator size="large" style={{ marginTop: 230 }} />
+          )}
         </ScrollView>
 
         <View style={styles.buttonView}>

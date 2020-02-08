@@ -3,17 +3,20 @@ import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
-import AWSApi from '../api/AwsApi';
-import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+import AwsApi from '../api/AwsApi';
+import {
+  GoogleSigninButton,
+} from '@react-native-community/google-signin';
 import GoogleCloudApi from '../api/GoogleCloudApi';
 
 // Load FontAwesome icons
 Icon.loadFont();
 
-const Login = ({ addApi, navigation }) => {
+const Login = ({ navigation }) => {
   const [loginState, setLoginState] = useState({
     accessKeyId: '',
     secretAccessKey: '',
+
   });
 
   const saveData = async () => {
@@ -23,9 +26,9 @@ const Login = ({ addApi, navigation }) => {
   const checkLogin = () => {
     if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
       saveData()
-      AwsApi.fetchEksClusters('us-west-2').then(data => {
+      AwsApi.fetchEksClusterNames('us-west-2').then(data => {
         if (data) {
-          navigation('Clusters');
+          navigation('Add EKS Cluster');
         }
         else {
           alert('The Security Token Included in the Request Is Invalid')
@@ -39,7 +42,7 @@ const Login = ({ addApi, navigation }) => {
   const checkGKELogin = async () => {
     try {
       const verifyGKE = await GoogleCloudApi.signIn()
-      const getToken = await GoogleCloudApi.getToken()
+      const getToken = await GoogleCloudApi.getAccessToken()
       const getProject = await GoogleCloudApi.getProjects(getToken)
       console.log('HEYYYYYYYYY', getToken)
       navigation('Clusters')
@@ -89,7 +92,8 @@ const Login = ({ addApi, navigation }) => {
           style={{ width: 192, height: 48 }}
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
-          onPress={checkGKELogin} />
+          onPress={checkGKELogin}
+          disabled={false} />
       </View>
     </View>
   );

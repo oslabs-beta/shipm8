@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import Login from './Login';
 
-const App = props => {
+const CloudLogin = ({ navigation }) => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
       <View style={styles.logoContainer}>
@@ -16,16 +16,16 @@ const App = props => {
           source={require('../../assets/shipm8_logo.png')}
           style={styles.logo}
         />
-        <Text style={styles.textStyle}>Monitor You K8s Cluster Anywhere!</Text>
+        <Text style={styles.textStyle}>Monitor K8s Clusters Anywhere</Text>
         <View style={styles.formContainer}>
-          <Login navigation={props.navigation.navigate} />
+          <Login navigation={navigation.navigate} />
         </View>
       </View>
     </KeyboardAvoidingView>
   );
 };
 
-export default React.memo(App);
+export default React.memo(CloudLogin);
 
 const styles = StyleSheet.create({
   container: {

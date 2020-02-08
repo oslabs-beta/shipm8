@@ -4,7 +4,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 
 class BaseApi {
 
-  static apiFetch = ({ url, method, clusterName, body = {}, cloudProvider = 'Aws' }) => {
+  static apiFetch = ({ url, method = 'get', clusterName, body = {}, cloudProvider = 'Aws' }) => {
     const token = cloudProvider === 'Aws'
       ? await AwsApi.getAuthToken(clusterName)
       : await GoogleCloudApi.getAccessToken();

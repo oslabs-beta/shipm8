@@ -18,7 +18,7 @@ const CloudLogin = ({ navigation }) => {
         />
         <Text style={styles.textStyle}>Monitor K8s Clusters Anywhere</Text>
         <View style={styles.formContainer}>
-          <Login navigation={navigation.navigate} />
+          <Login navigation={navigation} />
         </View>
       </View>
     </KeyboardAvoidingView>

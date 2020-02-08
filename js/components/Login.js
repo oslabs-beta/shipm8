@@ -25,7 +25,7 @@ const Login = ({ navigation }) => {
       saveData();
       AwsApi.fetchEksClusterNames('us-west-2').then(data => {
         if (data) {
-          navigation('Add EKS Cluster');
+          navigation.navigate('Add EKS Cluster');
         } else {
           alert('The Security Token Included in the Request Is Invalid');
         }

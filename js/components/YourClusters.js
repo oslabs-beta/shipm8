@@ -78,7 +78,7 @@ const AddEksCluster = ({ navigation }) => {
         <ScrollView style={styles.scrollView}>
           <View style={styles.dropDownView}>
             <Dropdown
-              label="Select Cloud Provider "
+              label="Select Cloud Provider"
               data={CloudProviders}
               itemCount={3}
               dropdownPosition={0}
@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
   dropDown: {
     textAlign: 'center',
     alignItems: 'center',
+    fontSize: 18,
   },
   dropDownView: {
     width: '90%',

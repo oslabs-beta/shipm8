@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
   dropDown: {
     textAlign: 'center',
     alignItems: 'center',
+    fontSize: 18,
   },
   dropDownView: {
     width: '90%',

@@ -36,35 +36,39 @@ const Login = ({ navigation }) => {
   };
   return (
     <View style={styles.container}>
-      <Input
-        onChangeText={text =>
-          setLoginState({ ...loginState, accessKeyId: text })
-        }
-        style={{ marginBottom: 20 }}
-        label="Access Key ID"
-        placeholder="Enter Access Key ID Here"
-        leftIcon={{
-          type: 'font-awesome',
-          name: 'chevron-right',
-          marginRight: 10,
-          color: 'gray',
-        }}
-      />
-      <Input
-        onChangeText={text =>
-          setLoginState({ ...loginState, secretAccessKey: text })
-        }
-        style={{ marginTop: 20 }}
-        label="Secret Access Key"
-        placeholder="Enter Secret Access Key Here"
-        leftIcon={
-          <Icon
-            name="lock"
-            size={24}
-            style={{ marginRight: 10, color: 'gray' }}
-          />
-        }
-      />
+      <View style={styles.formOneView}>
+        <Input
+          onChangeText={text =>
+            setLoginState({ ...loginState, accessKeyId: text })
+          }
+          style={{ marginBottom: 20 }}
+          label="Access Key ID"
+          placeholder="Enter Access Key ID Here"
+          leftIcon={{
+            type: 'font-awesome',
+            name: 'chevron-right',
+            marginRight: 10,
+            color: 'gray',
+          }}
+        />
+      </View>
+      <View style={styles.formTwoView}>
+        <Input
+          onChangeText={text =>
+            setLoginState({ ...loginState, secretAccessKey: text })
+          }
+          style={{ marginTop: 20 }}
+          label="Secret Access Key"
+          placeholder="Enter Secret Access Key Here"
+          leftIcon={
+            <Icon
+              name="lock"
+              size={24}
+              style={{ marginRight: 10, color: 'gray' }}
+            />
+          }
+        />
+      </View>
       <View style={{ paddingTop: 30 }}>
         <TouchableOpacity
           style={styles.buttonContainer}
@@ -72,8 +76,10 @@ const Login = ({ navigation }) => {
           onPress={checkLogin}>
           <Text style={styles.buttonText}>Sign in w/ AWS</Text>
         </TouchableOpacity>
+      </View>
+      <View style={{ paddingTop: 3 }}>
         <GoogleSigninButton
-          style={{ width: 192, height: 48 }}
+          style={{ width: 198, height: 52 }}
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
           onPress={GoogleCloudApi.getToken}
@@ -89,10 +95,9 @@ export default React.memo(Login);
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    width: 325,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 80,
+    marginBottom: 40,
     paddingTop: 35,
   },
   input: {
@@ -103,18 +108,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     color: 'black',
   },
+  formOneView: {
+    width: 325,
+    marginBottom: 15,
+  },
+  formTwoView: {
+    width: 325,
+  },
   buttonContainer: {
     backgroundColor: '#1589FF',
     paddingVertical: 15,
     borderRadius: 5,
     marginTop: 10,
+    width: 192,
+    height: 52,
   },
   buttonText: {
     textAlign: 'center',
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
-    width: 175,
   },
   addText: {
     textAlign: 'center',

@@ -7,6 +7,7 @@ import {
   ScrollView,
   View,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import { Badge, Divider } from 'react-native-elements';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -116,7 +117,7 @@ const PodInfo = ({ navigation }) => {
             </View>
           </View>
         ) : (
-          <Text>Loading...</Text>
+          <ActivityIndicator size="large" style={{ marginTop: 230 }} />
         )}
       </ScrollView>
       <View style={styles.buttonView}>

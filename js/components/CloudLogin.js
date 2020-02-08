@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import Login from './Login';
 
-const CloudLogin = () => {
+const CloudLogin = ({ navigation }) => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
       <View style={styles.logoContainer}>
@@ -18,7 +18,7 @@ const CloudLogin = () => {
         />
         <Text style={styles.textStyle}>Monitor K8s Clusters Anywhere</Text>
         <View style={styles.formContainer}>
-          <Login />
+          <Login navigation={navigation} />
         </View>
       </View>
     </KeyboardAvoidingView>

@@ -8,6 +8,7 @@ import {
   View,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -62,7 +63,7 @@ const Pods = ({ navigation }) => {
 
   const handlePodPress = async pod => {
     await AsyncStorage.setItem('currentPod', JSON.stringify(pod));
-    navigation.navigate('Details');
+    navigation.navigate('Pod Details');
   };
 
   const checkStatus = text => {
@@ -111,17 +112,23 @@ const Pods = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.scrollView}>
-        <Dropdown
-          label="Select a Namespace"
-          value={namespaces.length > 0 ? namespaces[0].value : ''}
-          data={namespaces}
-          itemCount={3}
-          dropdownOffset={styles.dropDownOffset}
-          style={styles.dropDown}
-          onChangeText={handleNamespaceChange}
-        />
+        <View style={styles.dropDownView}>
+          <Dropdown
+            label="Select a Namespace"
+            value={namespaces.length > 0 ? namespaces[0].value : ''}
+            data={namespaces}
+            itemCount={3}
+            dropdownOffset={styles.dropDownOffset}
+            style={styles.dropDown}
+            onChangeText={handleNamespaceChange}
+          />
+        </View>
         <ScrollView style={styles.podScroll}>
-          {podsDisplay.length > 0 ? podsDisplay : <Text>Loading...</Text>}
+          {podsDisplay.length > 0 ? (
+            podsDisplay
+          ) : (
+            <ActivityIndicator size="large" style={{ marginTop: 230 }} />
+          )}
         </ScrollView>
 
         <View style={styles.buttonView}>
@@ -176,8 +183,14 @@ const styles = StyleSheet.create({
   dropDown: {
     textAlign: 'center',
     alignItems: 'center',
-    width: 20,
-    fontSize: 18,
+  },
+  dropDownView: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+  dropDownOffset: {
+    top: 15,
+    left: 0,
   },
   podScroll: {
     borderRadius: 5,

@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Text, Image
-} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 
 const Launch = ({ navigation }) => {
   const getStarted = () => {
@@ -19,9 +14,7 @@ const Launch = ({ navigation }) => {
         style={styles.logo}
       />
       <View style={styles.logoContainer}>
-        <Text style={styles.textStyle}>
-          Monitor K8s Clusters Anywhere
-        </Text>
+        <Text style={styles.textStyle}>Monitor K8s Clusters Anywhere</Text>
         <View style={styles.formContainer} />
         <View style={{ paddingTop: 5 }}>
           <TouchableOpacity
@@ -59,7 +52,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     fontWeight: 'bold',
     color: '#151B54',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   buttonText: {
     textAlign: 'center',

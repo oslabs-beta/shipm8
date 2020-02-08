@@ -4,9 +4,7 @@ import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
 import AwsApi from '../api/AwsApi';
-import {
-  GoogleSigninButton,
-} from '@react-native-community/google-signin';
+import { GoogleSigninButton } from '@react-native-community/google-signin';
 import GoogleCloudApi from '../api/GoogleCloudApi';
 
 // Load FontAwesome icons
@@ -24,15 +22,14 @@ const Login = ({ navigation }) => {
 
   const checkLogin = () => {
     if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
-      saveData()
-      AwsApi.fetchEksClusters('us-west-2').then(data => {
+      saveData();
+      AwsApi.fetchEksClusterNames('us-west-2').then(data => {
         if (data) {
-          navigation.navigate('Clusters');
+          navigation('Add EKS Cluster');
+        } else {
+          alert('The Security Token Included in the Request Is Invalid');
         }
-        else {
-          alert('The Security Token Included in the Request Is Invalid')
-        }
-      })
+      });
     } else {
       alert('Please Input Your AWS Access and Secret Information');
     }
@@ -40,7 +37,9 @@ const Login = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Input
-        onChangeText={text => setLoginState({ ...loginState, accessKeyId: text })}
+        onChangeText={text =>
+          setLoginState({ ...loginState, accessKeyId: text })
+        }
         style={{ marginBottom: 20 }}
         label="Access Key ID"
         placeholder="Enter Access Key ID Here"
@@ -52,7 +51,9 @@ const Login = ({ navigation }) => {
         }}
       />
       <Input
-        onChangeText={text => setLoginState({ ...loginState, secretAccessKey: text })}
+        onChangeText={text =>
+          setLoginState({ ...loginState, secretAccessKey: text })
+        }
         style={{ marginTop: 20 }}
         label="Secret Access Key"
         placeholder="Enter Secret Access Key Here"
@@ -65,7 +66,10 @@ const Login = ({ navigation }) => {
         }
       />
       <View style={{ paddingTop: 30 }}>
-        <TouchableOpacity style={styles.buttonContainer} activeOpacity={.7} onPress={checkLogin}>
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          activeOpacity={0.7}
+          onPress={checkLogin}>
           <Text style={styles.buttonText}>Sign in w/ AWS</Text>
         </TouchableOpacity>
         <GoogleSigninButton
@@ -73,7 +77,8 @@ const Login = ({ navigation }) => {
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
           onPress={GoogleCloudApi.getToken}
-          disabled={false} />
+          disabled={false}
+        />
       </View>
     </View>
   );
@@ -109,7 +114,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
-    width: 175
+    width: 175,
   },
   addText: {
     textAlign: 'center',

@@ -44,7 +44,7 @@ const Login = ({ navigation }) => {
       const verifyGKE = await GoogleCloudApi.signIn()
       const getToken = await GoogleCloudApi.getAccessToken()
       const getProject = await GoogleCloudApi.getProjects(getToken)
-      console.log('HEYYYYYYYYY', getToken)
+      console.log('HEYYYYYYYYY', getProject)
       navigation('Clusters')
     }
     catch (error) {

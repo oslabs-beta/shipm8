@@ -40,6 +40,13 @@ class GoogleCloudApi {
     }
   }
 
+  static getProjects = async () => {
+    const headers = {
+
+    }
+    const projects = await fetch('https://cloudresourcemanager.googleapis.com/v1/projects/')
+  }
+
   static signOut = async () => {
     try {
       await GoogleSignin.revokeAccess();

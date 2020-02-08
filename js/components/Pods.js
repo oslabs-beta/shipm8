@@ -63,7 +63,7 @@ const Pods = ({ navigation }) => {
 
   const handlePodPress = async pod => {
     await AsyncStorage.setItem('currentPod', JSON.stringify(pod));
-    navigation('Pod Details');
+    navigation.navigate('Pod Details');
   };
 
   const checkStatus = text => {

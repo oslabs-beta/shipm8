@@ -10,14 +10,18 @@ import AddEksCluster from './components/AddEksCluster';
 import Launch from './components/Launch';
 import Pods from './components/Pods';
 import PodInfo from './components/PodInfo';
+import YourClusters from './components/YourClusters.js';
 
-const initialRoute = AsyncStorage.getItem('AWSCredentials') ? 'ShipM8' : 'ShipM8';
+const initialRoute = AsyncStorage.getItem('AWSCredentials')
+  ? 'ShipM8'
+  : 'ShipM8';
 
 const MainNavigator = createStackNavigator(
   {
     ShipM8: Launch,
     'Cloud Login': CloudLogin,
     'Add EKS Cluster': AddEksCluster,
+    'Your Clusters': YourClusters,
     Pods: Pods,
     'Pod Details': PodInfo,
   },

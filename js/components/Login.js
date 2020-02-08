@@ -4,9 +4,7 @@ import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
 import AwsApi from '../api/AwsApi';
-import {
-  GoogleSigninButton,
-} from '@react-native-community/google-signin';
+import { GoogleSigninButton } from '@react-native-community/google-signin';
 import GoogleCloudApi from '../api/GoogleCloudApi';
 
 // Load FontAwesome icons
@@ -24,56 +22,69 @@ const Login = ({ navigation }) => {
 
   const checkLogin = () => {
     if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
-      saveData()
-      AwsApi.fetchEksClusters('us-west-2').then(data => {
+      saveData();
+      AwsApi.fetchEksClusterNames('us-west-2').then(data => {
         if (data) {
-          navigation.navigate('Clusters');
+          navigation.navigate('Add EKS Cluster');
+        } else {
+          alert('The Security Token Included in the Request Is Invalid');
         }
-        else {
-          alert('The Security Token Included in the Request Is Invalid')
-        }
-      })
+      });
     } else {
       alert('Please Input Your AWS Access and Secret Information');
     }
   };
   return (
     <View style={styles.container}>
-      <Input
-        onChangeText={text => setLoginState({ ...loginState, accessKeyId: text })}
-        style={{ marginBottom: 20 }}
-        label="Access Key ID"
-        placeholder="Enter Access Key ID Here"
-        leftIcon={{
-          type: 'font-awesome',
-          name: 'chevron-right',
-          marginRight: 10,
-          color: 'gray',
-        }}
-      />
-      <Input
-        onChangeText={text => setLoginState({ ...loginState, secretAccessKey: text })}
-        style={{ marginTop: 20 }}
-        label="Secret Access Key"
-        placeholder="Enter Secret Access Key Here"
-        leftIcon={
-          <Icon
-            name="lock"
-            size={24}
-            style={{ marginRight: 10, color: 'gray' }}
-          />
-        }
-      />
+      <View style={styles.formOneView}>
+        <Input
+          onChangeText={text =>
+            setLoginState({ ...loginState, accessKeyId: text })
+          }
+          style={{ marginBottom: 20 }}
+          label="Access Key ID"
+          placeholder="Enter Access Key ID Here"
+          leftIcon={{
+            type: 'font-awesome',
+            name: 'chevron-right',
+            marginRight: 10,
+            color: 'gray',
+          }}
+        />
+      </View>
+      <View style={styles.formTwoView}>
+        <Input
+          onChangeText={text =>
+            setLoginState({ ...loginState, secretAccessKey: text })
+          }
+          style={{ marginTop: 20 }}
+          label="Secret Access Key"
+          placeholder="Enter Secret Access Key Here"
+          leftIcon={
+            <Icon
+              name="lock"
+              size={24}
+              style={{ marginRight: 10, color: 'gray' }}
+            />
+          }
+        />
+      </View>
       <View style={{ paddingTop: 30 }}>
-        <TouchableOpacity style={styles.buttonContainer} activeOpacity={.7} onPress={checkLogin}>
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          activeOpacity={0.7}
+          onPress={checkLogin}>
           <Text style={styles.buttonText}>Sign in w/ AWS</Text>
         </TouchableOpacity>
+      </View>
+      <View style={{ paddingTop: 3 }}>
         <GoogleSigninButton
-          style={{ width: 192, height: 48 }}
+          style={{ width: 198, height: 52 }}
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
           onPress={GoogleCloudApi.getToken}
-          disabled={false} />
+          disabled={false}
+        />
       </View>
     </View>
   );
@@ -84,10 +95,9 @@ export default React.memo(Login);
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    width: 325,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 80,
+    marginBottom: 40,
     paddingTop: 35,
   },
   input: {
@@ -98,18 +108,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     color: 'black',
   },
+  formOneView: {
+    width: 325,
+    marginBottom: 15,
+  },
+  formTwoView: {
+    width: 325,
+  },
   buttonContainer: {
     backgroundColor: '#1589FF',
     paddingVertical: 15,
     borderRadius: 5,
     marginTop: 10,
+    width: 192,
+    height: 52,
   },
   buttonText: {
     textAlign: 'center',
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
-    width: 175
   },
   addText: {
     textAlign: 'center',

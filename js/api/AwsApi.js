@@ -105,7 +105,7 @@ class AwsApi {
           name: cluster.cluster.name,
           status: cluster.cluster.status,
           createdAt: cluster.cluster.createdAt,
-          cloudProvider: 'AWS',
+          cloudProvider: 'Aws',
         }
         return newCluster;
       }));

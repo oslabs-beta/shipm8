@@ -31,7 +31,7 @@ const AddEksCluster = ({ navigation }) => {
 
   const handleClusterPress = cluster => {
     dispatch(addCluster(cluster));
-    navigation.navigate('Your Clusters');
+    navigation.navigate('Pods');
   };
 
   const checkStatus = text => {
@@ -77,7 +77,7 @@ const AddEksCluster = ({ navigation }) => {
         <ScrollView style={styles.scrollView}>
           <View style={styles.dropDownView}>
             <Dropdown
-              label="Please Select a Region"
+              label="Select Cloud provider to view clusters"
               data={Regions}
               itemCount={3}
               dropdownPosition={0}

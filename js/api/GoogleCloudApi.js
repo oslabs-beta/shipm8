@@ -5,7 +5,7 @@ class GoogleCloudApi {
   static configureGoogleSignin = () => {
     GoogleSignin.configure({
       scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-      iosClientId: ''
+      iosClientId: '535704856722-soaqblnbbcf050at58k7bhbenk9fui5p.apps.googleusercontent.com'
     });
   }
 

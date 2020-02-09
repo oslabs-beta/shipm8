@@ -1,6 +1,6 @@
 const CloudProviders = [
-  { value: 'Amazon (AWS)' },
-  { value: 'Google (GKE)' }
+  { value: 'Aws', label: 'Amazon (AWS)' },
+  { value: 'Gke', label: 'Google (GKE)' }
 ];
 
 export default CloudProviders;

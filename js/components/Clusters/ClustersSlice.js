@@ -30,22 +30,22 @@ const Clusters = createSlice({
   reducers: {
     addCluster(state, action) {
       const clusterToAdd = action.payload;
-      state[clusterToAdd.url] = clusterToAdd;
+      state.byUrl[clusterToAdd.url] = clusterToAdd;
     },
     fetchNamespacesStart: startLoading,
     fetchNamespacesFailed: loadingFailed,
     fetchNamespacesSuccess(state, action) {
       const { cluster, namespaces } = action.payload;
-      state[cluster.url].namespaces = namespaces;
+      state.byUrl[cluster.url].namespaces = namespaces;
       state.isLoading = false;
     },
     removeCluster(state, action) {
       const clusterToRemove = action.payload;
-      delete state[clusterToRemove.url];
+      delete state.byUrl[clusterToRemove.url];
     },
     updateCluster(state, action) {
       const updatedCluster = action.payload;
-      state[updatedCluster.url] = updatedCluster;
+      state.byUrl[updatedCluster.url] = updatedCluster;
     },
     setCurrentCluster(state, action) {
       const selectedCluster = action.payload;

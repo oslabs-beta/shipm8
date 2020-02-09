@@ -9,28 +9,28 @@ import {
   TouchableOpacity,
   ActivityIndicator
 } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { Badge } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 
-import AwsApi from '../../api/AwsApi';
-import { addCluster } from './ClustersSlice';
+import { setCurrentCluster } from './ClustersSlice';
 import CloudProviders from '../../data/CloudProviders';
 
 const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [regionSelected, setRegionSelected] = useState(false);
-  const [clusters, setClusters] = useState(null);
+  const clusters = useSelector(state => Object.values(state.Clusters.byUrl));
 
-  const handleRegionChange = async region => {
-    setRegionSelected(true);
-    const clusters = await AwsApi.describeAllEksClusters(region);
-    setClusters(clusters);
+  const [clustersList, setClustersList] = useState(clusters);
+
+  const handleProviderChange = provider => {
+    const clustersForProvider = clusters
+      .filter(cluster => cluster.cloudProvider === provider)
+    setClustersList(clustersForProvider);
   };
 
   const handleClusterPress = cluster => {
-    dispatch(addCluster(cluster));
+    dispatch(setCurrentCluster(cluster));
     navigation.navigate('Pods');
   };
 
@@ -42,9 +42,9 @@ const ClustersIndex = ({ navigation }) => {
     }
   };
 
-  const clusterList =
-    clusters && clusters.length > 0
-      ? clusters.map((cluster, idx) => {
+  const clustersDisplay =
+    clustersList && clustersList.length > 0
+      ? clustersList.map((cluster, idx) => {
         return (
           <TouchableOpacity
             key={cluster.name + idx}
@@ -85,12 +85,12 @@ const ClustersIndex = ({ navigation }) => {
               // dropdownMargins={{ min: 50, max: 50 }}
               dropdownOffset={styles.dropDownOffset}
               style={styles.dropDown}
-              onChangeText={text => handleRegionChange(text)}
+              onChangeText={text => handleProviderChange(text)}
             />
           </View>
           <ScrollView style={styles.clusterScroll}>
-            {regionSelected && clusterList}
-            {regionSelected && !clusterList && (
+            {clustersList.length > 0 && clustersDisplay}
+            {clustersList.length === 0 && (
               <Text
                 style={{
                   textAlign: 'center',

@@ -84,7 +84,6 @@ class AwsApi {
     }
   };
 
-  // step 1, retrieve list of all AWS clusters in the selected region
   static fetchEksClusterNames = async region => {
     try {
       const clusters = await this.eksFetch(region, `/clusters`);
@@ -115,39 +114,6 @@ class AwsApi {
       return console.log('err: ', err);
     }
   };
-
-  // step 3, get all namespaces for the selected cluster
-  static fetchNamespaces = async (clusterName, url) => {
-    try {
-      const namespacesObj = await this.apiFetch(`${url}/api/v1/namespaces`, clusterName);
-      return namespacesObj.items.map(namespace => namespace.metadata.name);
-    }
-    catch (err) {
-      return console.log('err: ', err);
-    }
-  };
-
-  // step 4, get a list of pods for the selected cluster & namespace
-  static fetchAllPodsInfo = async (clusterName, url, namespace) => {
-    try {
-      const podsObj = await this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods`, clusterName);
-      return podsObj;
-    }
-    catch (err) {
-      return console.log('err: ', err);
-    }
-  };
-
-  // step 5, when a pod is clicked, retrive info about that specific pod
-  static fetchPodInfo = async (clusterName, url, namespace, pod) => {
-    try {
-      const podObj = await this.apiFetch(`${url}/api/v1/namespaces/${namespace}/pods/${pod}`, clusterName);
-      return podObj;
-    }
-    catch (err) {
-      return console.log('err: ', err);
-    }
-  };
-};
+}
 
 export default AwsApi;

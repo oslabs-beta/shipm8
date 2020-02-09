@@ -1,6 +1,6 @@
+import { Base64 } from 'js-base64';
 import { sign } from '../utils/aws4';
 import RNFetchBlob from 'rn-fetch-blob';
-import { Base64 } from 'js-base64';
 import AsyncStorage from '@react-native-community/async-storage';
 
 class AwsApi {

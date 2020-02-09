@@ -1,8 +1,6 @@
-import GoogleCloudApi from "./api/GoogleCloudApi"
-
-AwsApi.fetchPodInfo(`https://56A5C5E4A41FCDF92D169B33AB0A5A5F.sk1.us-west-2.eks.amazonaws.com`, 'default', 'repark-deployment-7997f8b86d-4k5dd', 'awsTestCluster1')
-  .then(res => console.log(res.spec.containers[0]))
-
+// AwsApi.fetchPodInfo(`https://56A5C5E4A41FCDF92D169B33AB0A5A5F.sk1.us-west-2.eks.amazonaws.com`, 'default', 'repark-deployment-7997f8b86d-4k5dd', 'awsTestCluster1')
+//   .then(res => console.log(res.spec.containers[0]))
+// gray #EFEFF4
 /**
  * fetchPodInfo:
  * {"apiVersion": "v1", "kind": "Pod", "metadata": {"annotations": {"kubernetes.io/psp": "eks.privileged"}, "creationTimestamp": "2020-01-29T00:27:40Z", "generateName": "repark-deployment-7997f8b86d-",

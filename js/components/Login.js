@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity
+} from 'react-native';
+
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
-import AwsApi from '../api/AwsApi';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
+
+import AwsApi from '../api/AwsApi';
 import GoogleCloudApi from '../api/GoogleCloudApi';
 
 // Load FontAwesome icons

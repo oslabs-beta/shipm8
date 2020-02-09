@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import {
+  View,
   Text,
+  Image,
   Button,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
-  View,
+  SafeAreaView,
   TouchableOpacity,
-  Image,
-  ActivityIndicator,
+  ActivityIndicator
 } from 'react-native';
 import { Badge } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AwsApi from '../api/AwsApi';
+
+import AwsApi from '../../api/AwsApi';
 import AsyncStorage from '@react-native-community/async-storage';
-import { useDispatch, useSelector } from 'react-redux';
 
 const Pods = ({ navigation }) => {
   const [namespaces, setNamespaces] = useState([]);
@@ -80,33 +81,33 @@ const Pods = ({ navigation }) => {
 
   podsList.length > 0
     ? podsList.forEach((pod, idx) => {
-        podsDisplay.push(
-          <TouchableOpacity
-            key={pod.metadata.name + idx}
-            style={styles.podContainer}
-            activeOpacity={0.7}
-            onPress={e => handlePodPress(pod)}>
-            <Image
-              source={require('../../assets/pod.png')}
-              style={styles.logo}
-            />
-            <Text style={styles.podText} numberOfLines={1}>
-              {pod.metadata.name}
-            </Text>
-            <Text style={styles.statusText}>{pod.status.phase}</Text>
-            <Badge
-              status={checkStatus(pod.status.phase)}
-              badgeStyle={styles.badge}
-            />
-            <Icon
-              name="chevron-right"
-              size={15}
-              color="gray"
-              style={styles.arrow}
-            />
-          </TouchableOpacity>,
-        );
-      })
+      podsDisplay.push(
+        <TouchableOpacity
+          key={pod.metadata.name + idx}
+          style={styles.podContainer}
+          activeOpacity={0.7}
+          onPress={() => handlePodPress(pod)}>
+          <Image
+            source={require('../../../assets/pod.png')}
+            style={styles.logo}
+          />
+          <Text style={styles.podText} numberOfLines={1}>
+            {pod.metadata.name}
+          </Text>
+          <Text style={styles.statusText}>{pod.status.phase}</Text>
+          <Badge
+            status={checkStatus(pod.status.phase)}
+            badgeStyle={styles.badge}
+          />
+          <Icon
+            name="chevron-right"
+            size={15}
+            color="gray"
+            style={styles.arrow}
+          />
+        </TouchableOpacity>,
+      );
+    })
     : null;
 
   return (
@@ -117,7 +118,7 @@ const Pods = ({ navigation }) => {
             label="Select a Namespace"
             value={namespaces.length > 0 ? namespaces[0].value : ''}
             data={namespaces}
-            itemCount={3}
+            itemCount={4}
             dropdownOffset={styles.dropDownOffset}
             style={styles.dropDown}
             onChangeText={handleNamespaceChange}
@@ -127,8 +128,8 @@ const Pods = ({ navigation }) => {
           {podsDisplay.length > 0 ? (
             podsDisplay
           ) : (
-            <ActivityIndicator size="large" style={{ marginTop: 230 }} />
-          )}
+              <ActivityIndicator size="large" style={{ marginTop: 230 }} />
+            )}
         </ScrollView>
 
         <View style={styles.buttonView}>

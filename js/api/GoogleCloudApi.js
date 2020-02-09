@@ -1,7 +1,4 @@
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-community/google-signin';
+import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 
 class GoogleCloudApi {
 

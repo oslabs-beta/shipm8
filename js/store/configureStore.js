@@ -1,8 +1,8 @@
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
-import AsyncStorage from '@react-native-community/async-storage';
-import { persistReducer, persistStore } from 'redux-persist';
-import { configureStore } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
+import { persistReducer, persistStore } from 'redux-persist';
+import AsyncStorage from '@react-native-community/async-storage';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 
 import rootReducer from '../reducers/rootReducer';
 

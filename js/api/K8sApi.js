@@ -1,6 +1,6 @@
 import AwsApi from './AwsApi';
-import GoogleCloudApi from './GoogleCloudApi';
 import RNFetchBlob from 'rn-fetch-blob';
+import GoogleCloudApi from './GoogleCloudApi';
 
 class K8sApi {
 

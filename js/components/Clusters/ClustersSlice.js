@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import K8sApi from '../api/K8sApi';
+
+import K8sApi from '../../api/K8sApi';
 
 const startLoading = state => {
   state.isLoading = true;

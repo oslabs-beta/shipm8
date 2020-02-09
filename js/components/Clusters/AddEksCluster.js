@@ -1,25 +1,23 @@
-//this will be our landing page we can use this to work with the MVP data we are trying to get
 import React, { useState } from 'react';
 import {
   View,
   Text,
   Button,
-  TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
-  ActivityIndicator,
+  SafeAreaView,
+  TouchableOpacity
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Badge } from 'react-native-elements';
-import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Dropdown } from 'react-native-material-dropdown';
 
-import { addCluster } from '../reducers/ClustersSlice';
-import AwsApi from '../api/AwsApi';
-import CloudProviders from '../CloudProviders';
+import AwsApi from '../../api/AwsApi';
+import Regions from '../../data/Regions';
+import { addCluster } from './ClustersSlice';
 
-const ClustersIndex = ({ navigation }) => {
+const AddEksCluster = ({ navigation }) => {
   const dispatch = useDispatch();
   const [regionSelected, setRegionSelected] = useState(false);
   const [clusters, setClusters] = useState(null);
@@ -32,12 +30,14 @@ const ClustersIndex = ({ navigation }) => {
 
   const handleClusterPress = cluster => {
     dispatch(addCluster(cluster));
-    navigation.navigate('Pods');
+    navigation.navigate('Clusters');
   };
 
   const checkStatus = text => {
     if (text === 'ACTIVE') {
       return 'success';
+    } else if (text === 'CREATING') {
+      return 'warning';
     } else {
       return 'error';
     }
@@ -78,9 +78,9 @@ const ClustersIndex = ({ navigation }) => {
         <ScrollView style={styles.scrollView}>
           <View style={styles.dropDownView}>
             <Dropdown
-              label="Select Cloud Provider"
-              data={CloudProviders}
-              itemCount={3}
+              label="Please Select a Region"
+              data={Regions}
+              itemCount={4}
               dropdownPosition={0}
               // dropdownMargins={{ min: 50, max: 50 }}
               dropdownOffset={styles.dropDownOffset}
@@ -98,7 +98,7 @@ const ClustersIndex = ({ navigation }) => {
                   fontSize: 20,
                   color: 'gray',
                 }}>
-                No Clusters
+                No Clusters in this Region{' '}
               </Text>
             )}
           </ScrollView>
@@ -119,7 +119,7 @@ const ClustersIndex = ({ navigation }) => {
   );
 };
 
-export default React.memo(ClustersIndex);
+export default React.memo(AddEksCluster);
 
 const styles = StyleSheet.create({
   clusterButton: {
@@ -190,8 +190,8 @@ const styles = StyleSheet.create({
   },
   clusterText: {
     fontSize: 16,
-    marginLeft: 5,
-    marginRight: 96,
+    marginLeft: 15,
+    marginRight: 80,
     width: 165,
     backgroundColor: 'white',
     overflow: 'scroll',

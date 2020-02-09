@@ -5,12 +5,12 @@ import { store, persistor } from './store/configureStore'
 import { PersistGate } from 'redux-persist/integration/react';
 import { createStackNavigator } from 'react-navigation-stack';
 
-import Pods from './components/Pods';
+import Pods from './components/Pods/Pods';
 import Launch from './components/Launch';
-import PodInfo from './components/PodInfo';
+import PodInfo from './components/Pods/PodInfo';
 import CloudLogin from './components/CloudLogin';
-import AddEksCluster from './components/AddEksCluster';
-import ClustersIndex from './components/ClustersIndex.js';
+import AddEksCluster from './components/Clusters/AddEksCluster';
+import ClustersIndex from './components/Clusters/ClustersIndex';
 
 // const onBeforeLift = () => {
 //   const state = store.getState();

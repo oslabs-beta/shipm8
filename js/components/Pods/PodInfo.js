@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {
+  View,
   Text,
+  Image,
   Button,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
-  View,
-  Image,
-  ActivityIndicator,
+  SafeAreaView,
+  ActivityIndicator
 } from 'react-native';
 import { Badge, Divider } from 'react-native-elements';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -44,7 +44,7 @@ const PodInfo = ({ navigation }) => {
           <View style={styles.outerTextView}>
             <View style={styles.innerTextView}>
               <Image
-                source={require('../../assets/pod.png')}
+                source={require('../../../assets/pod.png')}
                 style={styles.podLogo}
               />
               <View style={{ flexDirection: 'column' }}>
@@ -117,8 +117,8 @@ const PodInfo = ({ navigation }) => {
             </View>
           </View>
         ) : (
-          <ActivityIndicator size="large" style={{ marginTop: 230 }} />
-        )}
+            <ActivityIndicator size="large" style={{ marginTop: 230 }} />
+          )}
       </ScrollView>
       <View style={styles.buttonView}>
         <Button

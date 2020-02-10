@@ -52,7 +52,8 @@ class K8sApi {
   }
 
   static fetchPods = async cluster => {
-    return await this.get(`/api/v1/pods`, cluster);
+    const podsList = await this.get(`/api/v1/pods`, cluster);
+    return podsList.items;
   }
 
   static fetchNodes = async cluster => {

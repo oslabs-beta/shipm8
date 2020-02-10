@@ -17,17 +17,7 @@ const Clusters = createSlice({
     isLoading: false,
     current: null,
     error: null,
-    byUrl: {
-      'https://testcluster.com': {
-        name: 'Test Cluster 1',
-        url: 'https://testcluster.com',
-        status: 'ACTIVE',
-        createdAt: '2020-02-01',
-        cloudProvider: 'Aws',
-        namespaces: ['default'],
-        currentNamespace: 'All Namespaces',
-      }
-    }
+    byUrl: {}
   },
   reducers: {
     addCluster(state, action) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,41 +7,88 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity,
-  ActivityIndicator
+  TouchableOpacity
 } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { fetchNamespaces, setCurrentNamespace, setCurrentPod } from '../Clusters/ClustersSlice';
+import Loading from '../common/Loading';
+import { setCurrentPod, fetchPods } from '../Pods/PodsSlice';
+import { fetchNamespaces, setCurrentNamespace } from '../Clusters/ClustersSlice';
 
 const Pods = ({ navigation }) => {
   const dispatch = useDispatch();
+  const isLoading = useSelector(state => state.Pods.isLoading);
   const currentCluster = useSelector(state => state.Clusters.byUrl[state.Clusters.current]);
-  const pods = useSelector(state => Object.values(state.Pods.byCluster[currentCluster.url]));
-  const [podsList, setPodsList] = useState(pods);
+
+  const pods = useSelector(state => {
+    return state.Pods.byCluster[currentCluster.url]
+      ? Object.values(state.Pods.byCluster[currentCluster.url])
+      : null;
+  });
 
   useEffect(() => {
+    dispatch(fetchPods(currentCluster));
     dispatch(fetchNamespaces(currentCluster));
-    handleNamespaceChange(currentCluster.currentNamespace);
   }, []);
 
   const handleNamespaceChange = namespace => {
     dispatch(setCurrentNamespace({ currentCluster, namespace }))
-    if (namespace === 'All Namespaces') {
-      setPodsList(pods);
-    } else {
-      setPodsList(pods
-        .filter(pod => pod.namespace === namespace))
-    }
   };
 
-  const handlePodPress = async pod => {
+  const handlePodPress = pod => {
     dispatch(setCurrentPod(pod))
     navigation.navigate('Pod Details');
   };
+
+  const createNamespaceList = namespaces => {
+    const namespaceList = namespaces.map(namespace => {
+      return { value: namespace }
+    });
+    return [{ value: 'All Namespaces' }, ...namespaceList];
+  }
+
+  const renderPods = () => {
+    const namespace = currentCluster.currentNamespace;
+    if (pods) {
+      return pods
+        .filter(pod => {
+          if (!namespace || namespace === 'All Namespaces') { return true; }
+          return pod.metadata.namespace === namespace;
+        })
+        .map((pod, idx) => {
+          return (
+            <TouchableOpacity
+              key={pod.metadata.name + idx}
+              style={styles.podContainer}
+              activeOpacity={0.7}
+              onPress={() => handlePodPress(pod)}>
+              <Image
+                source={require('../../../assets/pod.png')}
+                style={styles.logo}
+              />
+              <Text style={styles.podText} numberOfLines={1}>
+                {pod.metadata.name}
+              </Text>
+              <Text style={styles.statusText}>{pod.status.phase}</Text>
+              <Badge
+                status={checkStatus(pod.status.phase)}
+                badgeStyle={styles.badge}
+              />
+              <Icon
+                name="chevron-right"
+                size={15}
+                color="gray"
+                style={styles.arrow}
+              />
+            </TouchableOpacity>
+          );
+        })
+    }
+    return [];
+  }
 
   const checkStatus = text => {
     if (text === 'Running') {
@@ -52,38 +99,8 @@ const Pods = ({ navigation }) => {
       return 'error';
     }
   };
-  console.log('pods: ,', pods)
-  const podsDisplay =
-    podsList && podsList.length > 0
-      ? podsList.map((pod, idx) => {
-        return (
-          <TouchableOpacity
-            key={pod.metadata.name + idx}
-            style={styles.podContainer}
-            activeOpacity={0.7}
-            onPress={() => handlePodPress(pod)}>
-            <Image
-              source={require('../../../assets/pod.png')}
-              style={styles.logo}
-            />
-            <Text style={styles.podText} numberOfLines={1}>
-              {pod.metadata.name}
-            </Text>
-            <Text style={styles.statusText}>{pod.status.phase}</Text>
-            <Badge
-              status={checkStatus(pod.status.phase)}
-              badgeStyle={styles.badge}
-            />
-            <Icon
-              name="chevron-right"
-              size={15}
-              color="gray"
-              style={styles.arrow}
-            />
-          </TouchableOpacity>
-        );
-      })
-      : null;
+
+  if (isLoading) { return <Loading /> }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -91,20 +108,29 @@ const Pods = ({ navigation }) => {
         <View style={styles.dropDownView}>
           <Dropdown
             label="Select a Namespace"
-            value={'All Namespaces'}
-            data={[...currentCluster.namespaces, { value: 'All Namespaces' }]}
+            data={createNamespaceList(currentCluster.namespaces)}
+            value={
+              currentCluster.currentNamespace
+                ? currentCluster.currentNamespace
+                : 'All Namespaces'
+            }
             itemCount={4}
             dropdownOffset={styles.dropDownOffset}
             style={styles.dropDown}
-            onChangeText={handleNamespaceChange}
+            onChangeText={(text) => handleNamespaceChange(text)}
           />
         </View>
         <ScrollView style={styles.podScroll}>
-          {podsDisplay.length > 0 ? (
-            podsDisplay
-          ) : (
-              <ActivityIndicator size="large" style={{ marginTop: 230 }} />
-            )}
+          {renderPods().length > 0 && renderPods()}
+          {renderPods().length === 0 && (
+            <Text
+              style={{
+                textAlign: 'center',
+                marginTop: 150,
+                fontSize: 20,
+                color: 'gray',
+              }}>No Pods Found</Text>
+          )}
         </ScrollView>
 
         <View style={styles.buttonView}>
@@ -139,7 +165,10 @@ const styles = StyleSheet.create({
     height: '100%',
     marginTop: -11,
   },
-  scrollView: { marginHorizontal: 0, marginTop: 30 },
+  scrollView: {
+    marginHorizontal: 0,
+    marginTop: 30,
+  },
   namespacePickText: {
     textAlign: 'center',
     fontSize: 20,

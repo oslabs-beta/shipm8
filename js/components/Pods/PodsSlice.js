@@ -1,106 +1,55 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import K8sApi from '../../api/K8sApi';
+
+const startLoading = state => {
+  state.isLoading = true;
+}
+
+const loadingFailed = (state, action) => {
+  state.isLoading = false;
+  state.error = action.payload;
+}
+
 const Pods = createSlice({
   name: 'Pods',
   initialState: {
     current: null,
     isLoading: false,
-    byCluster: {
-      'https://testcluster.com': {
-        uuidPodA: {
-          apiVersion: "v1",
-          kind: "Pod",
-          metadata: {
-            annotations: {
-              "kubernetes.io/psp": "eks.privileged"
-            },
-            creationTimestamp: "2020-01-29T00:27:40Z",
-            generateName: "repark-deployment-7997f8b86d-",
-            labels: {
-              "pod-template-hash": "7997f8b86d", "repark": "web"
-            },
-            name: "repark-deployment-7997f8b86d-4k5dd",
-            namespace: "default",
-            ownerReferences: [[Object]],
-            resourceVersion: "5456",
-            selfLink: "/api/v1/namespaces/default/pods/repark-deployment-7997f8b86d-4k5dd",
-            uid: "287db3d7-422e-11ea-a037-02b853562b6a"
-          },
-          status: {
-            conditions: [[Object]],
-            phase: "Active",
-            qosClass: "BestEffort"
-          }
-        },
-        uuidPodB: {
-          apiVersion: "v1",
-          kind: "Pod",
-          metadata: {
-            annotations: {
-              "kubernetes.io/psp": "eks.privileged"
-            },
-            creationTimestamp: "2020-01-29T00:27:40Z",
-            generateName: "repark-deployment-7997f8b86d-",
-            labels: {
-              "pod-template-hash": "7997f8b86d", "repark": "web"
-            },
-            name: "repark-testpod-2",
-            namespace: "default",
-            ownerReferences: [[Object]],
-            resourceVersion: "5456",
-            selfLink: "/api/v1/namespaces/default/pods/repark-deployment-7997f8b86d-4k5dd",
-            uid: "287db3d7-422e-11ea-a037-02b853562b6a"
-          },
-          status: {
-            conditions: [[Object]],
-            phase: "Pending",
-            qosClass: "BestEffort"
-          }
-
-        },
-        uuidPodC: {
-          apiVersion: "v1",
-          kind: "Pod",
-          metadata: {
-            annotations: {
-              "kubernetes.io/psp": "eks.privileged"
-            },
-            creationTimestamp: "2020-01-29T00:27:40Z",
-            generateName: "repark-deployment-7997f8b86d-",
-            labels: {
-              "pod-template-hash": "7997f8b86d", "repark": "web"
-            },
-            name: "repark-testpod-3",
-            namespace: "default",
-            ownerReferences: [[Object]],
-            resourceVersion: "5456",
-            selfLink: "/api/v1/namespaces/default/pods/repark-deployment-7997f8b86d-4k5dd",
-            uid: "287db3d7-422e-11ea-a037-02b853562b6a"
-          },
-          status: {
-            conditions: [[Object]],
-            phase: "Pending",
-            qosClass: "BestEffort"
-          }
-        },
-      },
-    }
+    byCluster: {},
   },
   reducers: {
-    setCurrentPod(state, action)
+    setCurrentPod(state, action) {
+      const pod = action.payload;
+      state.current = pod.metadata.uid;
+    },
+    fetchPodsStart: startLoading,
+    fetchPodsFailed: loadingFailed,
+    fetchPodsSuccess(state, action) {
+      const { cluster, podsByUid } = action.payload;
+      state.byCluster[cluster.url] = podsByUid;
+      state.isLoading = false;
+    },
   }
 });
 
-export const { } = Pods.actions;
+export const { setCurrentPod, fetchPodsFailed, fetchPodsSuccess, fetchPodsStart } = Pods.actions;
+
 export default Pods.reducer;
 
 // Thunks
-// export const fetchPods = region =>
-//   async dispatch => {
-//     try {
-//       const clusters = await AwsApi.describeAllEksClusters(region);
-//       dispatch(getEksClusters(clusters));
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   }
+export const fetchPods = cluster =>
+  async dispatch => {
+    try {
+      dispatch(fetchPodsStart());
+      const pods = await K8sApi.fetchPods(cluster);
+      const podsByUid = {};
+      pods.forEach(pod => {
+        pod.kind = 'pods';
+        podsByUid[pod.metadata.uid] = pod;
+      });
+      dispatch(fetchPodsSuccess({ cluster, podsByUid }));
+    } catch (err) {
+      dispatch(fetchPodsFailed());
+    }
+  }

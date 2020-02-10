@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -6,26 +6,13 @@ import {
   Button,
   StyleSheet,
   ScrollView,
-  SafeAreaView,
-  ActivityIndicator
+  SafeAreaView
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import { Badge, Divider } from 'react-native-elements';
-import AsyncStorage from '@react-native-community/async-storage';
 
 const PodInfo = ({ navigation }) => {
-  const [currentPod, setCurrentPod] = useState({});
-
-  useEffect(() => {
-    getCurrentPod();
-  }, []);
-
-  const getCurrentPod = async () => {
-    const currentPod = await AsyncStorage.getItem('currentPod').then(data =>
-      JSON.parse(data),
-    );
-    console.log(currentPod);
-    setCurrentPod(currentPod);
-  };
+  const currentPod = useSelector(state => state.Pods.byCluster[state.Clusters.current][state.Pods.current])
 
   const checkStatus = text => {
     if (text === 'Running') {
@@ -40,85 +27,80 @@ const PodInfo = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.podScroll}>
-        {currentPod ? (
-          <View style={styles.outerTextView}>
-            <View style={styles.innerTextView}>
-              <Image
-                source={require('../../../assets/pod.png')}
-                style={styles.podLogo}
-              />
-              <View style={{ flexDirection: 'column' }}>
-                <Text style={styles.text} numberOfLines={2}>
-                  apiVersion: <Text style={styles.innerText}>v1</Text>
+        <View style={styles.outerTextView}>
+          <View style={styles.innerTextView}>
+            <Image
+              source={require('../../../assets/pod.png')}
+              style={styles.podLogo}
+            />
+            <View style={{ flexDirection: 'column' }}>
+              <Text style={styles.text} numberOfLines={2}>
+                Name:{' '}
+                <Text style={styles.innerText}>
+                  {currentPod.metadata.name}
                 </Text>
-                <Divider />
-                <Text style={styles.text} numberOfLines={1}>
-                  Kind: <Text style={styles.innerText}>Pod</Text>
+              </Text>
+              <Divider />
+              <Text style={styles.text} numberOfLines={2}>
+                Namespace:{' '}
+                <Text style={styles.innerText}>
+                  {currentPod.metadata.namespace}
                 </Text>
-                <Divider />
-                <Text style={styles.text} numberOfLines={2}>
-                  Name:{' '}
-                  <Text style={styles.innerText}>
-                    {currentPod.metadata ? currentPod.metadata.name : 'Loading'}
-                  </Text>
+              </Text>
+              <Divider />
+              <Text style={styles.text} numberOfLines={2}>
+                Status:{' '}
+                <Text style={styles.innerText}>
+                  {currentPod.status.phase}
                 </Text>
-                <Divider />
-                <Text style={styles.text} numberOfLines={2}>
-                  Status:{' '}
-                  <Text style={styles.innerText}>
-                    {currentPod.metadata ? currentPod.status.phase : 'Loading'}
-                  </Text>
-                  <Badge
-                    status={checkStatus(currentPod.status.phase)}
-                    badgeStyle={styles.badge}
-                  />
+                <Badge
+                  status={checkStatus(currentPod.status.phase)}
+                  badgeStyle={styles.badge}
+                />
+              </Text>
+              <Divider />
+              <Text style={styles.text} numberOfLines={2}>
+                Host IP:{' '}
+                <Text style={styles.innerText}>
+                  {currentPod.status.hostIP}
                 </Text>
-                <Divider />
-                <Text style={styles.text} numberOfLines={2}>
-                  Time Created:{' '}
-                  <Text style={styles.innerText}>
-                    {currentPod.metadata
-                      ? currentPod.metadata.creationTimestamp
-                      : 'Loading'}
-                  </Text>
+              </Text>
+              <Divider />
+              <Text style={styles.text} numberOfLines={2}>
+                Pod IP:{' '}
+                <Text style={styles.innerText}>
+                  {currentPod.status.podIP}
                 </Text>
-                <Divider />
-                <Text style={styles.text} numberOfLines={2}>
-                  Self-Link:{' '}
-                  <Text style={styles.innerText}>
-                    {currentPod.metadata
-                      ? currentPod.metadata.selfLink
-                      : 'Loading'}
-                  </Text>{' '}
+              </Text>
+              <Divider />
+              <Text style={styles.text} numberOfLines={2}>
+                Time Created:{' '}
+                <Text style={styles.innerText}>
+                  {currentPod.metadata.creationTimestamp}
                 </Text>
-                <Divider />
-                <Text style={styles.text} numberOfLines={2}>
-                  UID:{' '}
-                  <Text style={styles.innerText}>
-                    {currentPod.metadata ? currentPod.metadata.uid : 'Loading'}
-                  </Text>{' '}
-                </Text>
-                <Divider />
-                <Text style={styles.text} numberOfLines={2}>
-                  Host IP:{' '}
-                  <Text style={styles.innerText}>
-                    {currentPod.metadata ? currentPod.status.hostIP : 'Loading'}
-                  </Text>
-                </Text>
-                <Divider />
-                <Text style={styles.text} numberOfLines={2}>
-                  Pod IP:{' '}
-                  <Text style={styles.innerText}>
-                    {currentPod.metadata ? currentPod.status.podIP : 'Loading'}
-                  </Text>
-                </Text>
-              </View>
+              </Text>
+              <Divider />
+              <Text style={styles.text} numberOfLines={4}>
+                Labels:{' '}
+                <Text style={styles.innerText}>
+                  {Object.keys(currentPod.metadata.labels).length > 0 &&
+                    Object.keys(currentPod.metadata.labels)
+                      .map(label => {
+                        return `${label}:${currentPod.metadata.labels[label]}`
+                      })}
+                </Text>{' '}
+              </Text>
+              <Divider />
+              <Text style={styles.text} numberOfLines={2}>
+                UID:{' '}
+                <Text style={styles.innerText}>
+                  {currentPod.metadata.uid}
+                </Text>{' '}
+              </Text>
               <Divider />
             </View>
           </View>
-        ) : (
-            <ActivityIndicator size="large" style={{ marginTop: 230 }} />
-          )}
+        </View>
       </ScrollView>
       <View style={styles.buttonView}>
         <Button

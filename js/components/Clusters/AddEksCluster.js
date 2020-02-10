@@ -82,7 +82,6 @@ const AddEksCluster = ({ navigation }) => {
               data={Regions}
               itemCount={4}
               dropdownPosition={0}
-              // dropdownMargins={{ min: 50, max: 50 }}
               dropdownOffset={styles.dropDownOffset}
               style={styles.dropDown}
               onChangeText={text => handleRegionChange(text)}

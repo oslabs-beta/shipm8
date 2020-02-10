@@ -15,51 +15,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import AwsApi from '../../api/AwsApi';
+import { fetchNamespaces, setCurrentNamespace } from '../Clusters/ClustersSlice';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const Pods = ({ navigation }) => {
-  const [namespaces, setNamespaces] = useState([]);
-  const [podsList, setPodsList] = useState([]);
+  const dispatch = useDispatch();
+  const currentCluster = useSelector(state => state.Clusters.byUrl[state.Clusters.current]);
+  const pods = useSelector(state => Object.values(state.Pods.byCluster[currentCluster.url]));
+  const [podsList, setPodsList] = useState(pods);
 
   useEffect(() => {
-    getNamespaces();
+    console.log('testing')
+    dispatch(fetchNamespaces(currentCluster));
+    handleNamespaceChange(currentCluster.currentNamespace);
+    console.log('pods: ', pods)
   }, []);
 
-  const getNamespaces = async () => {
-    const currentCluster = await AsyncStorage.getItem(
-      'currentCluster',
-    ).then(data => JSON.parse(data));
-    const clusters = await AsyncStorage.getItem('ClustersStore').then(data =>
-      JSON.parse(data),
-    );
-    const namespaces = clusters[currentCluster.name].namespaces;
-    const namespaceList = namespaces.map(namespace => {
-      return {
-        value: namespace,
-      };
-    });
-    setNamespaces(namespaceList);
-    handleNamespaceChange(namespaces[0]);
-  };
-
-  const handleNamespaceChange = async text => {
-    const currentCluster = await AsyncStorage.getItem(
-      'currentCluster',
-    ).then(cluster => JSON.parse(cluster));
-    const pods = await AwsApi.fetchAllPodsInfo(
-      currentCluster.name,
-      currentCluster.endpointUrl,
-      text,
-    );
-    setPodsList(pods.items);
-    await AsyncStorage.setItem(
-      'currentCluster',
-      JSON.stringify({
-        ...currentCluster,
-        pods,
-      }),
-    );
+  const handleNamespaceChange = namespace => {
+    dispatch(setCurrentNamespace({ currentCluster, namespace }))
+    if (namespace === 'All Namespaces') {
+      setPodsList(pods);
+    } else {
+      setPodsList(pods
+        .filter(pod => pod.namespace === namespace))
+    }
   };
 
   const handlePodPress = async pod => {
@@ -76,39 +55,38 @@ const Pods = ({ navigation }) => {
       return 'error';
     }
   };
-
-  const podsDisplay = [];
-
-  podsList.length > 0
-    ? podsList.forEach((pod, idx) => {
-      podsDisplay.push(
-        <TouchableOpacity
-          key={pod.metadata.name + idx}
-          style={styles.podContainer}
-          activeOpacity={0.7}
-          onPress={() => handlePodPress(pod)}>
-          <Image
-            source={require('../../../assets/pod.png')}
-            style={styles.logo}
-          />
-          <Text style={styles.podText} numberOfLines={1}>
-            {pod.metadata.name}
-          </Text>
-          <Text style={styles.statusText}>{pod.status.phase}</Text>
-          <Badge
-            status={checkStatus(pod.status.phase)}
-            badgeStyle={styles.badge}
-          />
-          <Icon
-            name="chevron-right"
-            size={15}
-            color="gray"
-            style={styles.arrow}
-          />
-        </TouchableOpacity>,
-      );
-    })
-    : null;
+  console.log('pods: ,', pods)
+  const podsDisplay =
+    podsList && podsList.length > 0
+      ? podsList.map((pod, idx) => {
+        return (
+          <TouchableOpacity
+            key={pod.metadata.name + idx}
+            style={styles.podContainer}
+            activeOpacity={0.7}
+            onPress={() => handlePodPress(pod)}>
+            <Image
+              source={require('../../../assets/pod.png')}
+              style={styles.logo}
+            />
+            <Text style={styles.podText} numberOfLines={1}>
+              {pod.metadata.name}
+            </Text>
+            <Text style={styles.statusText}>{pod.status.phase}</Text>
+            <Badge
+              status={checkStatus(pod.status.phase)}
+              badgeStyle={styles.badge}
+            />
+            <Icon
+              name="chevron-right"
+              size={15}
+              color="gray"
+              style={styles.arrow}
+            />
+          </TouchableOpacity>
+        );
+      })
+      : null;
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -116,8 +94,8 @@ const Pods = ({ navigation }) => {
         <View style={styles.dropDownView}>
           <Dropdown
             label="Select a Namespace"
-            value={namespaces.length > 0 ? namespaces[0].value : ''}
-            data={namespaces}
+            value={'All Namespaces'}
+            data={currentCluster.namespaces}
             itemCount={4}
             dropdownOffset={styles.dropDownOffset}
             style={styles.dropDown}

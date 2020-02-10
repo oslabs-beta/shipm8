@@ -24,6 +24,8 @@ const Clusters = createSlice({
         status: 'ACTIVE',
         createdAt: '2020-02-01',
         cloudProvider: 'Aws',
+        namespaces: ['default'],
+        currentNamespace: 'All Namespaces',
       }
     }
   },
@@ -51,6 +53,10 @@ const Clusters = createSlice({
       const selectedCluster = action.payload;
       state.current = selectedCluster.url;
     },
+    setCurrentNamespace(state, action) {
+      const { currentCluster: cluster, namespace } = action.payload;
+      state.byUrl[cluster.url].currentNamespace = namespace;
+    },
   }
 });
 
@@ -62,6 +68,7 @@ export const {
   removeCluster,
   updateCluster,
   setCurrentCluster,
+  setCurrentNamespace
 } = Clusters.actions;
 
 export default Clusters.reducer;

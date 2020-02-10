@@ -20,7 +20,7 @@ import CloudProviders from '../../data/CloudProviders';
 const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
   const clusters = useSelector(state => Object.values(state.Clusters.byUrl));
-
+  const state = useSelector(state => state.Pods)
   const [clustersList, setClustersList] = useState(clusters);
 
   const handleProviderChange = provider => {
@@ -89,8 +89,8 @@ const ClustersIndex = ({ navigation }) => {
             />
           </View>
           <ScrollView style={styles.clusterScroll}>
-            {clustersList.length > 0 && clustersDisplay}
-            {clustersList.length === 0 && (
+            {clustersDisplay && clustersDisplay}
+            {!clustersDisplay && (
               <Text
                 style={{
                   textAlign: 'center',

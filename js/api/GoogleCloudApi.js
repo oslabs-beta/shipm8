@@ -8,12 +8,13 @@ class GoogleCloudApi {
     GoogleSignin.configure({
       scopes: ['https://www.googleapis.com/auth/cloud-platform'],
       iosClientId:
-        'com.googleusercontent.apps.303534223167-ath57063kfqkggvbuie92dta1jm6r6q2',
+        '303534223167-ath57063kfqkggvbuie92dta1jm6r6q2.apps.googleusercontent.com',
     });
   };
 
   static signIn = async () => {
     try {
+      await this.configureGoogleSignin();
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       return userInfo;

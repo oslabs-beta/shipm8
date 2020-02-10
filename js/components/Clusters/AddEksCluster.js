@@ -6,7 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Badge } from 'react-native-elements';
@@ -46,30 +46,32 @@ const AddEksCluster = ({ navigation }) => {
   const clusterList =
     clusters && clusters.length > 0
       ? clusters.map((cluster, idx) => {
-        return (
-          <TouchableOpacity
-            key={cluster.name + idx}
-            style={styles.clusterContainer}
-            activeOpacity={0.7}
-            cluster={cluster.name}
-            onPress={() => handleClusterPress(cluster)}>
-            <Text numberOfLines={1} style={styles.clusterText}>
-              {cluster.name}
-            </Text>
-            <Text style={styles.statusText}>{cluster.status}</Text>
-            <Badge
-              status={checkStatus(cluster.status)}
-              badgeStyle={styles.badge}
-            />
-            <Icon
-              name="chevron-right"
-              size={15}
-              color="gray"
-              style={styles.arrow}
-            />
-          </TouchableOpacity>
-        );
-      })
+          return (
+            <TouchableOpacity
+              key={cluster.name + idx}
+              style={styles.clusterContainer}
+              activeOpacity={0.7}
+              cluster={cluster.name}
+              onPress={() => handleClusterPress(cluster)}>
+              <Text numberOfLines={1} style={styles.clusterText}>
+                {cluster.name}
+              </Text>
+              <View styles={{ backgroundColor: 'pink' }}>
+                <Text style={styles.statusText}>{cluster.status}</Text>
+                <Badge
+                  status={checkStatus(cluster.status)}
+                  badgeStyle={styles.badge}
+                />
+                <Icon
+                  name="chevron-right"
+                  size={15}
+                  color="gray"
+                  style={styles.arrow}
+                />
+              </View>
+            </TouchableOpacity>
+          );
+        })
       : null;
 
   return (
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
     height: 48,
     width: '96%',
     paddingVertical: 12,
-    paddingLeft: 6,
+    paddingLeft: 2,
     borderStyle: 'solid',
     borderColor: '#063CB9',
     borderWidth: 1,
@@ -197,9 +199,11 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 16,
-    backgroundColor: 'white',
+    width: 100,
+    textAlign: 'left',
     color: 'gray',
-    marginRight: 3,
+    marginRight: 15,
+    marginLeft: 10,
   },
   clusterScroll: {
     marginTop: 10,
@@ -207,12 +211,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   arrow: {
-    marginLeft: 6,
-    marginTop: 3,
+    marginLeft: 90,
+    marginTop: -17,
   },
   badge: {
-    marginLeft: 6,
-    marginTop: 6,
-    marginRight: 3,
+    marginLeft: 8,
+    marginTop: -14,
+    marginLeft: 30,
   },
 });

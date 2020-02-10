@@ -89,7 +89,7 @@ const Login = ({ navigation }) => {
           style={{ width: 198, height: 52 }}
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
-          onPress={GoogleCloudApi.getToken}
+          onPress={GoogleCloudApi.signIn}
           disabled={false}
         />
       </View>

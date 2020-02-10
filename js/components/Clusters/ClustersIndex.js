@@ -7,7 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,8 +23,9 @@ const ClustersIndex = ({ navigation }) => {
   const [clustersList, setClustersList] = useState(clusters);
 
   const handleProviderChange = provider => {
-    const clustersForProvider = clusters
-      .filter(cluster => cluster.cloudProvider === provider)
+    const clustersForProvider = clusters.filter(
+      cluster => cluster.cloudProvider === provider,
+    );
     setClustersList(clustersForProvider);
   };
 
@@ -36,7 +37,10 @@ const ClustersIndex = ({ navigation }) => {
   const checkStatus = text => {
     if (text === 'ACTIVE') {
       return 'success';
-    } else {
+    } else if (text === 'CREATING') {
+      return 'warning';
+    }
+    {
       return 'error';
     }
   };
@@ -44,30 +48,30 @@ const ClustersIndex = ({ navigation }) => {
   const clustersDisplay =
     clustersList && clustersList.length > 0
       ? clustersList.map((cluster, idx) => {
-        return (
-          <TouchableOpacity
-            key={cluster.name + idx}
-            style={styles.clusterContainer}
-            activeOpacity={0.7}
-            cluster={cluster.name}
-            onPress={() => handleClusterPress(cluster)}>
-            <Text numberOfLines={1} style={styles.clusterText}>
-              {cluster.name}
-            </Text>
-            <Text style={styles.statusText}>{cluster.status}</Text>
-            <Badge
-              status={checkStatus(cluster.status)}
-              badgeStyle={styles.badge}
-            />
-            <Icon
-              name="chevron-right"
-              size={15}
-              color="gray"
-              style={styles.arrow}
-            />
-          </TouchableOpacity>
-        );
-      })
+          return (
+            <TouchableOpacity
+              key={cluster.name + idx}
+              style={styles.clusterContainer}
+              activeOpacity={0.7}
+              cluster={cluster.name}
+              onPress={() => handleClusterPress(cluster)}>
+              <Text numberOfLines={1} style={styles.clusterText}>
+                {cluster.name}
+              </Text>
+              <Text style={styles.statusText}>{cluster.status}</Text>
+              <Badge
+                status={checkStatus(cluster.status)}
+                badgeStyle={styles.badge}
+              />
+              <Icon
+                name="chevron-right"
+                size={15}
+                color="gray"
+                style={styles.arrow}
+              />
+            </TouchableOpacity>
+          );
+        })
       : null;
 
   return (
@@ -190,7 +194,7 @@ const styles = StyleSheet.create({
   clusterText: {
     fontSize: 16,
     marginLeft: 5,
-    marginRight: 96,
+    marginRight: 80,
     width: 165,
     backgroundColor: 'white',
     overflow: 'scroll',

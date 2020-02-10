@@ -56,17 +56,19 @@ const AddEksCluster = ({ navigation }) => {
               <Text numberOfLines={1} style={styles.clusterText}>
                 {cluster.name}
               </Text>
-              <Text style={styles.statusText}>{cluster.status}</Text>
-              <Badge
-                status={checkStatus(cluster.status)}
-                badgeStyle={styles.badge}
-              />
-              <Icon
-                name="chevron-right"
-                size={15}
-                color="gray"
-                style={styles.arrow}
-              />
+              <View styles={{ backgroundColor: 'pink' }}>
+                <Text style={styles.statusText}>{cluster.status}</Text>
+                <Badge
+                  status={checkStatus(cluster.status)}
+                  badgeStyle={styles.badge}
+                />
+                <Icon
+                  name="chevron-right"
+                  size={15}
+                  color="gray"
+                  style={styles.arrow}
+                />
+              </View>
             </TouchableOpacity>
           );
         })
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
     height: 48,
     width: '96%',
     paddingVertical: 12,
-    paddingLeft: 8,
+    paddingLeft: 2,
     borderStyle: 'solid',
     borderColor: '#063CB9',
     borderWidth: 1,
@@ -189,19 +191,19 @@ const styles = StyleSheet.create({
   },
   clusterText: {
     fontSize: 16,
-    marginLeft: 5,
-    marginRight: 60,
+    marginLeft: 15,
+    marginRight: 80,
     width: 165,
     backgroundColor: 'white',
     overflow: 'scroll',
   },
   statusText: {
     fontSize: 16,
-    textAlign: 'right',
-    backgroundColor: 'white',
-    width: 90,
+    width: 100,
+    textAlign: 'left',
     color: 'gray',
-    marginRight: 3,
+    marginRight: 15,
+    marginLeft: 10,
   },
   clusterScroll: {
     marginTop: 10,
@@ -209,12 +211,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   arrow: {
-    marginLeft: 6,
-    marginTop: 3,
+    marginLeft: 90,
+    marginTop: -17,
   },
   badge: {
-    marginLeft: 6,
-    marginTop: 6,
-    marginRight: 3,
+    marginLeft: 8,
+    marginTop: -14,
+    marginLeft: 30,
   },
 });

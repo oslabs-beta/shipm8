@@ -2,10 +2,11 @@ import React from 'react';
 import {
   View,
   Text,
-  KeyboardAvoidingView,
   Image,
   StyleSheet,
+  KeyboardAvoidingView
 } from 'react-native';
+
 import Login from './Login';
 
 const CloudLogin = ({ navigation }) => {

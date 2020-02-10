@@ -1,37 +1,35 @@
-//this will be our landing page we can use this to work with the MVP data we are trying to get
 import React, { useState } from 'react';
 import {
   View,
   Text,
   Button,
-  TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
-  ActivityIndicator,
+  SafeAreaView,
+  TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { Badge } from 'react-native-elements';
-import { Dropdown } from 'react-native-material-dropdown';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Dropdown } from 'react-native-material-dropdown';
 
-import { addCluster } from '../reducers/ClustersSlice';
-import AwsApi from '../api/AwsApi';
-import CloudProviders from '../CloudProviders';
+import { setCurrentCluster } from './ClustersSlice';
+import CloudProviders from '../../data/CloudProviders';
 
 const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [regionSelected, setRegionSelected] = useState(false);
-  const [clusters, setClusters] = useState(null);
+  const clusters = useSelector(state => Object.values(state.Clusters.byUrl));
+  const [clustersList, setClustersList] = useState(clusters);
 
-  const handleRegionChange = async region => {
-    setRegionSelected(true);
-    const clusters = await AwsApi.describeAllEksClusters(region);
-    setClusters(clusters);
+  const handleProviderChange = provider => {
+    const clustersForProvider = clusters
+      .filter(cluster => cluster.cloudProvider === provider)
+    setClustersList(clustersForProvider);
   };
 
   const handleClusterPress = cluster => {
-    dispatch(addCluster(cluster));
+    dispatch(setCurrentCluster(cluster));
     navigation.navigate('Pods');
   };
 
@@ -43,33 +41,33 @@ const ClustersIndex = ({ navigation }) => {
     }
   };
 
-  const clusterList =
-    clusters && clusters.length > 0
-      ? clusters.map((cluster, idx) => {
-          return (
-            <TouchableOpacity
-              key={cluster.name + idx}
-              style={styles.clusterContainer}
-              activeOpacity={0.7}
-              cluster={cluster.name}
-              onPress={() => handleClusterPress(cluster)}>
-              <Text numberOfLines={1} style={styles.clusterText}>
-                {cluster.name}
-              </Text>
-              <Text style={styles.statusText}>{cluster.status}</Text>
-              <Badge
-                status={checkStatus(cluster.status)}
-                badgeStyle={styles.badge}
-              />
-              <Icon
-                name="chevron-right"
-                size={15}
-                color="gray"
-                style={styles.arrow}
-              />
-            </TouchableOpacity>
-          );
-        })
+  const clustersDisplay =
+    clustersList && clustersList.length > 0
+      ? clustersList.map((cluster, idx) => {
+        return (
+          <TouchableOpacity
+            key={cluster.name + idx}
+            style={styles.clusterContainer}
+            activeOpacity={0.7}
+            cluster={cluster.name}
+            onPress={() => handleClusterPress(cluster)}>
+            <Text numberOfLines={1} style={styles.clusterText}>
+              {cluster.name}
+            </Text>
+            <Text style={styles.statusText}>{cluster.status}</Text>
+            <Badge
+              status={checkStatus(cluster.status)}
+              badgeStyle={styles.badge}
+            />
+            <Icon
+              name="chevron-right"
+              size={15}
+              color="gray"
+              style={styles.arrow}
+            />
+          </TouchableOpacity>
+        );
+      })
       : null;
 
   return (
@@ -80,17 +78,18 @@ const ClustersIndex = ({ navigation }) => {
             <Dropdown
               label="Select Cloud Provider"
               data={CloudProviders}
-              itemCount={3}
+              value={CloudProviders[0].value}
+              itemCount={4}
               dropdownPosition={0}
               // dropdownMargins={{ min: 50, max: 50 }}
               dropdownOffset={styles.dropDownOffset}
               style={styles.dropDown}
-              onChangeText={text => handleRegionChange(text)}
+              onChangeText={text => handleProviderChange(text)}
             />
           </View>
           <ScrollView style={styles.clusterScroll}>
-            {regionSelected && clusterList}
-            {regionSelected && !clusterList && (
+            {clustersDisplay && clustersDisplay}
+            {!clustersDisplay && (
               <Text
                 style={{
                   textAlign: 'center',

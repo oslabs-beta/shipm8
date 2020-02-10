@@ -1,32 +1,35 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { createAppContainer } from 'react-navigation';
+import { store, persistor } from './store/configureStore'
+import { PersistGate } from 'redux-persist/integration/react';
 import { createStackNavigator } from 'react-navigation-stack';
-import AsyncStorage from '@react-native-community/async-storage';
 
-import store from './store/index.js';
-import CloudLogin from './components/CloudLogin';
-import AddEksCluster from './components/AddEksCluster';
+import Pods from './components/Pods/Pods';
 import Launch from './components/Launch';
-import Pods from './components/Pods';
-import PodInfo from './components/PodInfo';
-import YourClusters from './components/YourClusters.js';
+import PodInfo from './components/Pods/PodInfo';
+import CloudLogin from './components/CloudLogin';
+import AddEksCluster from './components/Clusters/AddEksCluster';
+import ClustersIndex from './components/Clusters/ClustersIndex';
 
-const initialRoute = AsyncStorage.getItem('AWSCredentials')
-  ? 'ShipM8'
-  : 'ShipM8';
+// const onBeforeLift = () => {
+//   const state = store.getState();
+//   Object.keys(state.Clusters.byUrl).length > 0
+//     ? 'Custers'
+//     : 'ShipM8';
+// }
 
 const MainNavigator = createStackNavigator(
   {
     ShipM8: Launch,
     'Cloud Login': CloudLogin,
     'Add EKS Cluster': AddEksCluster,
-    'Your Clusters': YourClusters,
+    Clusters: ClustersIndex,
     Pods: Pods,
     'Pod Details': PodInfo,
   },
   {
-    initialRouteName: initialRoute,
+    initialRouteName: 'ShipM8',
 
     defaultNavigationOptions: {
       headerStyle: {
@@ -40,12 +43,21 @@ const MainNavigator = createStackNavigator(
     },
   },
 );
+
 const AppContainer = createAppContainer(MainNavigator);
 
 const App = () => {
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [isReady, setIsReady] = useState(false);
+
   return (
     <Provider store={store}>
-      <AppContainer />
+      <PersistGate
+        loading={null}
+        // onBeforeLift={onBeforeLift}
+        persistor={persistor}>
+        <AppContainer />
+      </PersistGate>
     </Provider>
   );
 };

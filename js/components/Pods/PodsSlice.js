@@ -1,15 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import K8sApi from '../../api/K8sApi';
-
-const startLoading = state => {
-  state.isLoading = true;
-}
-
-const loadingFailed = (state, action) => {
-  state.isLoading = false;
-  state.error = action.payload;
-}
+import { startLoading, loadingFailed } from '../../utils/LoadingUtils';
 
 const Pods = createSlice({
   name: 'Pods',

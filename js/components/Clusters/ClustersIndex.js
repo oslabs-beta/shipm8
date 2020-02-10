@@ -20,7 +20,6 @@ import CloudProviders from '../../data/CloudProviders';
 const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
   const clusters = useSelector(state => Object.values(state.Clusters.byUrl));
-  const state = useSelector(state => state.Pods)
   const [clustersList, setClustersList] = useState(clusters);
 
   const handleProviderChange = provider => {

@@ -87,7 +87,7 @@ const Pods = createSlice({
     }
   },
   reducers: {
-
+    setCurrentPod(state, action)
   }
 });
 

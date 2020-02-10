@@ -15,8 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { fetchNamespaces, setCurrentNamespace } from '../Clusters/ClustersSlice';
-import AsyncStorage from '@react-native-community/async-storage';
+import { fetchNamespaces, setCurrentNamespace, setCurrentPod } from '../Clusters/ClustersSlice';
 
 const Pods = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -25,10 +24,8 @@ const Pods = ({ navigation }) => {
   const [podsList, setPodsList] = useState(pods);
 
   useEffect(() => {
-    console.log('testing')
     dispatch(fetchNamespaces(currentCluster));
     handleNamespaceChange(currentCluster.currentNamespace);
-    console.log('pods: ', pods)
   }, []);
 
   const handleNamespaceChange = namespace => {
@@ -42,7 +39,7 @@ const Pods = ({ navigation }) => {
   };
 
   const handlePodPress = async pod => {
-    await AsyncStorage.setItem('currentPod', JSON.stringify(pod));
+    dispatch(setCurrentPod(pod))
     navigation.navigate('Pod Details');
   };
 
@@ -95,7 +92,7 @@ const Pods = ({ navigation }) => {
           <Dropdown
             label="Select a Namespace"
             value={'All Namespaces'}
-            data={currentCluster.namespaces}
+            data={[...currentCluster.namespaces, { value: 'All Namespaces' }]}
             itemCount={4}
             dropdownOffset={styles.dropDownOffset}
             style={styles.dropDown}

@@ -9,14 +9,14 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import AwsApi from '../../api/AwsApi';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const HorizontalScroll = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.buttonView}>
       <ScrollView horizontal={true}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Dummy")}
-        >
+        <TouchableOpacity>
           <Text style={styles.horizontalScrollText}>
             Pods {"         "}
           </Text>
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
+    alignContent: 'center'
   },
   test: {
     textAlign: 'center',

@@ -11,6 +11,11 @@ import PodInfo from './components/Pods/PodInfo';
 import CloudLogin from './components/CloudLogin';
 import AddEksCluster from './components/Clusters/AddEksCluster';
 import ClustersIndex from './components/Clusters/ClustersIndex';
+import Contents from './components/MainPage/Contents';
+// import Services from './components/Services/Services';
+// import ServiceInfo from './components/Services/ServiceInfo';
+// import Nodes from './components/Nodes/Nodes';
+// import NodeInfo from './components/Nodes/NodeInfo';
 
 // const onBeforeLift = () => {
 //   const state = store.getState();
@@ -25,8 +30,13 @@ const MainNavigator = createStackNavigator(
     'Cloud Login': CloudLogin,
     'Add EKS Cluster': AddEksCluster,
     Clusters: ClustersIndex,
+    Main: Contents,
     Pods: Pods,
     'Pod Details': PodInfo,
+    // Services: Services,
+    // 'Service Details': ServiceInfo,
+    // Nodes: Nodes,
+    // 'Node Details': NodeInfo
   },
   {
     initialRouteName: 'ShipM8',

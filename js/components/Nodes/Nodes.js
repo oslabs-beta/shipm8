@@ -13,10 +13,11 @@ import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import AWSApi from '../api/AWSApi';
+import AwsApi from '../../api/AwsApi';
 import AsyncStorage from '@react-native-community/async-storage';
-import getNameSpaces from './MainPage/Content';
-import handleNamespaceChange from './MainPage/Content'
+import getNameSpaces from '../MainPage/Contents';
+import handleNamespaceChange from '../MainPage/Contents';
+
 
 mapStateToProps = state => ({});
 
@@ -29,7 +30,7 @@ const Nodes = ({ navigation }) => {
 
   const handlenodesPress = async nodes => {
     await AsyncStorage.setItem('currentnodes', JSON.stringify(nodes));
-    navigation.navigate('NodeInfo');
+    navigation.navigate('Node Details');
   }
 
   const checkStatus = text => {
@@ -50,7 +51,7 @@ const Nodes = ({ navigation }) => {
         style={styles.nodesContainer}
         activeOpacity={0.7}
         onPress={e => handlenodesPress(nodes)}>
-        <Image source={require('../../assets/nodes.png')} style={styles.logo} />
+        <Image source={require('../../../assets/pod.png')} style={styles.logo} />
         <Text style={styles.nodesText} numberOfLines={1}>
           {nodes.metadata.name}
         </Text>

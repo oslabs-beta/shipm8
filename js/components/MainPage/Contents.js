@@ -14,10 +14,10 @@ import { Badge } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import AWSApi from '../../api/AWSApi';
+import AWSApi from '../../api/AwsApi';
 import AsyncStorage from '@react-native-community/async-storage';
 import HorizontalScroll from './HorizontalScroll';
-import cluster from '../ClustersList'
+import cluster from '../Clusters/ClustersIndex'
 import { StackNavigator } from 'react-navigation'
 
 mapStateToProps = state => ({});
@@ -54,7 +54,7 @@ const Content = ({ navigation }) => {
 
   // const handlePodPress = async pod => {
   //   await AsyncStorage.setItem('currentPod', JSON.stringify(pod));
-  //   navigation.navigate('Details');
+  //   navigation.navigate('Pod Details');
   // }
 
   const checkStatus = text => {

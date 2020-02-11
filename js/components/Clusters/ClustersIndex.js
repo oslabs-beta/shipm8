@@ -13,7 +13,6 @@ import { Badge } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
-
 import { setCurrentCluster } from './ClustersSlice';
 import CloudProviders from '../../data/CloudProviders';
 
@@ -30,7 +29,7 @@ const ClustersIndex = ({ navigation }) => {
 
   const handleClusterPress = cluster => {
     dispatch(setCurrentCluster(cluster));
-    navigation.navigate('Pods');
+    navigation.navigate('Main');
   };
 
   const checkStatus = text => {

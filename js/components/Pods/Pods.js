@@ -13,7 +13,6 @@ import { Badge } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 import Loading from '../common/Loading';
 import { setCurrentPod, fetchPods } from '../Pods/PodsSlice';
 import { fetchNamespaces, setCurrentNamespace } from '../Clusters/ClustersSlice';

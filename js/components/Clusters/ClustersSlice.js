@@ -4,12 +4,12 @@ import K8sApi from '../../api/K8sApi';
 
 const startLoading = state => {
   state.isLoading = true;
-}
+};
 
 const loadingFailed = (state, action) => {
   state.isLoading = false;
   state.error = action.payload;
-}
+};
 
 const Clusters = createSlice({
   name: 'Clusters',
@@ -17,7 +17,8 @@ const Clusters = createSlice({
     isLoading: false,
     current: null,
     error: null,
-    byUrl: {}
+    selectedProvider: null,
+    byUrl: {},
   },
   reducers: {
     addCluster(state, action) {
@@ -47,7 +48,11 @@ const Clusters = createSlice({
       const { currentCluster: cluster, namespace } = action.payload;
       state.byUrl[cluster.url].currentNamespace = namespace;
     },
-  }
+    setCurrentProvider(state, action) {
+      const provider = action.payload;
+      state.selectedProvider = provider;
+    },
+  },
 });
 
 export const {
@@ -58,19 +63,19 @@ export const {
   removeCluster,
   updateCluster,
   setCurrentCluster,
-  setCurrentNamespace
+  setCurrentNamespace,
+  setCurrentProvider,
 } = Clusters.actions;
 
 export default Clusters.reducer;
 
 // Thunks
-export const fetchNamespaces = cluster =>
-  async dispatch => {
-    try {
-      dispatch(fetchNamespacesStart());
-      const namespaces = await K8sApi.fetchNamespaces(cluster);
-      dispatch(fetchNamespacesSuccess({ cluster, namespaces }));
-    } catch (err) {
-      dispatch(fetchNamespacesFailed(err.toString()));
-    }
+export const fetchNamespaces = cluster => async dispatch => {
+  try {
+    dispatch(fetchNamespacesStart());
+    const namespaces = await K8sApi.fetchNamespaces(cluster);
+    dispatch(fetchNamespacesSuccess({ cluster, namespaces }));
+  } catch (err) {
+    dispatch(fetchNamespacesFailed(err.toString()));
   }
+};

@@ -1,16 +1,20 @@
-import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-community/google-signin';
 
 class GoogleCloudApi {
-
   static configureGoogleSignin = () => {
     GoogleSignin.configure({
       scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-      iosClientId: '535704856722-soaqblnbbcf050at58k7bhbenk9fui5p.apps.googleusercontent.com'
+      iosClientId:
+        '303534223167-ath57063kfqkggvbuie92dta1jm6r6q2.apps.googleusercontent.com',
     });
-  }
+  };
 
   static signIn = async () => {
     try {
+      await this.configureGoogleSignin();
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       return userInfo;
@@ -34,7 +38,7 @@ class GoogleCloudApi {
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   static signOut = async () => {
     try {
@@ -44,7 +48,6 @@ class GoogleCloudApi {
       console.error(err);
     }
   };
-
 }
 
 export default GoogleCloudApi;

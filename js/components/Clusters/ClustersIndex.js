@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { Badge } from 'react-native-elements';
+import { Badge, Button } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -106,21 +105,31 @@ const ClustersIndex = ({ navigation }) => {
             </Text>
           )}
         </ScrollView>
-        <Button
-          style={styles.addCluster}
-          title="Add Cluster"
-          onPress={() => navigation.navigate('Add EKS Cluster')}
-        />
-        <Button
+        <View
           style={{
-            flex: 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'blue',
+            marginBottom: 20,
+            width: 200,
+            alignSelf: 'center',
+          }}>
+          <Button
+            type="solid"
+            title="Add Cluster +"
+            onPress={() => navigation.navigate('Add Cluster')}
+          />
+        </View>
+        <Button
+          buttonStyle={{
+            borderColor: 'red',
+            fontWeight: 'bold',
+            borderStyle: 'solid',
+            color: 'red',
           }}
-          color="red"
+          titleStyle={{
+            color: 'red',
+          }}
+          type="raised"
           title="Sign Out"
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigation.navigate('Cloud Login')}
         />
       </SafeAreaView>
     </View>
@@ -155,7 +164,7 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     marginTop: 30,
-    backgroundColor: 'pink',
+    backgroundColor: 'white',
   },
   dropDownOffset: {
     top: 15,
@@ -174,7 +183,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginHorizontal: 0,
-    backgroundColor: 'pink',
+    backgroundColor: 'white',
   },
   regionPickText: {
     textAlign: 'center',
@@ -217,7 +226,7 @@ const styles = StyleSheet.create({
   clusterScroll: {
     marginTop: 10,
     borderRadius: 5,
-    backgroundColor: 'pink',
+    backgroundColor: 'white',
     marginBottom: 20,
   },
   arrow: {
@@ -228,12 +237,5 @@ const styles = StyleSheet.create({
     marginLeft: 6,
     marginTop: 6,
     marginRight: 3,
-  },
-  addCluster: {
-    color: 'black',
-    borderStyle: 'solid',
-    borderWidth: 4,
-    borderRadius: 8,
-    borderColor: 'black',
   },
 });

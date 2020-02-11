@@ -102,17 +102,13 @@ const AddEksCluster = ({ navigation }) => {
               </Text>
             )}
           </ScrollView>
-          <Button
-            style={{
-              flex: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'blue',
-            }}
-            color="red"
-            title="Sign Out"
-            onPress={() => navigation.navigate('Login')}
-          />
+          <View style={{ marginTop: 60 }}>
+            <Button
+              color="red"
+              title="Sign Out"
+              onPress={() => navigation.navigate('Cloud Login')}
+            />
+          </View>
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -147,7 +143,7 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     marginTop: 30,
-    backgroundColor: 'pink',
+    backgroundColor: 'white',
   },
   dropDownOffset: {
     top: 15,

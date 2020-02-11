@@ -71,33 +71,35 @@ export const {
 export default Clusters.reducer;
 
 // Thunks
-export const fetchNamespaces = cluster => async dispatch => {
-  try {
-    dispatch(fetchNamespacesStart());
-    const clusterWithToken = await dispatch(getAuthToken(cluster));
-    const namespaces = await K8sApi.fetchNamespaces(clusterWithToken);
-    dispatch(fetchNamespacesSuccess({ cluster: clusterWithToken, namespaces }));
-  } catch (err) {
-    dispatch(fetchNamespacesFailed(err.toString()));
+export const fetchNamespaces = cluster =>
+  async dispatch => {
+    try {
+      dispatch(fetchNamespacesStart());
+      const clusterWithToken = await dispatch(getAuthToken(cluster));
+      const namespaces = await K8sApi.fetchNamespaces(clusterWithToken);
+      dispatch(fetchNamespacesSuccess({ cluster: clusterWithToken, namespaces }));
+    } catch (err) {
+      dispatch(fetchNamespacesFailed(err.toString()));
+    }
+  };
+
+export const getAuthToken = cluster =>
+  async (dispatch, getState) => {
+    try {
+      let state = getState();
+      const AwsCredentials = state.Aws.credentials;
+
+      const token = cluster.cloudProvider === 'Aws'
+        ? AwsApi.getAuthToken(cluster.name, AwsCredentials)
+        : await GoogleCloudApi.getAccessToken();
+
+      dispatch(getAuthTokenSuccess({ cluster, token }));
+
+      state = getState();
+      const clusterWithToken = state.Clusters.byUrl[cluster.url];
+
+      return Promise.resolve(clusterWithToken);
+    } catch (err) {
+      dispatch(getAuthTokenFailed(err.toString()));
+    }
   }
-};
-
-export const getAuthToken = cluster => async (dispatch, getState) => {
-  try {
-    let state = getState();
-    const AwsCredentials = state.Aws.credentials;
-
-    const token = cluster.cloudProvider === 'Aws'
-      ? AwsApi.getAuthToken(cluster.name, AwsCredentials)
-      : await GoogleCloudApi.getAccessToken();
-
-    dispatch(getAuthTokenSuccess({ cluster, token }));
-
-    state = getState();
-    const clusterWithToken = state.Clusters.byUrl[cluster.url];
-
-    return Promise.resolve(clusterWithToken);
-  } catch (err) {
-    dispatch(getAuthTokenFailed(err.toString()));
-  }
-}

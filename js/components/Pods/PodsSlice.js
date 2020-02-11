@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import K8sApi from '../../api/K8sApi';
+import { getAuthToken } from '../Clusters/ClustersSlice';
 import { startLoading, loadingFailed } from '../../utils/LoadingUtils';
 
 const Pods = createSlice({
@@ -33,15 +34,16 @@ export default Pods.reducer;
 export const fetchPods = cluster =>
   async dispatch => {
     try {
-      dispatch(fetchPodsStart());
-      const pods = await K8sApi.fetchPods(cluster);
+      dispatch(fetchPodsStart())
+      const clusterWithAuth = await dispatch(getAuthToken(cluster));
+      const pods = await K8sApi.fetchPods(clusterWithAuth);
       const podsByUid = {};
       pods.forEach(pod => {
         pod.kind = 'pods';
         podsByUid[pod.metadata.uid] = pod;
       });
-      dispatch(fetchPodsSuccess({ cluster, podsByUid }));
+      dispatch(fetchPodsSuccess({ cluster: clusterWithAuth, podsByUid }));
     } catch (err) {
-      dispatch(fetchPodsFailed());
+      dispatch(fetchPodsFailed(err.toString()));
     }
   }

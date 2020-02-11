@@ -6,7 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Badge } from 'react-native-elements';
@@ -15,7 +15,7 @@ import { Dropdown } from 'react-native-material-dropdown';
 
 import AwsApi from '../../api/AwsApi';
 import Regions from '../../data/Regions';
-import { addCluster } from './ClustersSlice';
+import { addCluster, setCurrentProvider } from './ClustersSlice';
 
 const AddEksCluster = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -30,6 +30,7 @@ const AddEksCluster = ({ navigation }) => {
 
   const handleClusterPress = cluster => {
     dispatch(addCluster(cluster));
+    dispatch(setCurrentProvider(cluster.cloudProvider));
     navigation.navigate('Clusters');
   };
 
@@ -46,30 +47,30 @@ const AddEksCluster = ({ navigation }) => {
   const clusterList =
     clusters && clusters.length > 0
       ? clusters.map((cluster, idx) => {
-        return (
-          <TouchableOpacity
-            key={cluster.name + idx}
-            style={styles.clusterContainer}
-            activeOpacity={0.7}
-            cluster={cluster.name}
-            onPress={() => handleClusterPress(cluster)}>
-            <Text numberOfLines={1} style={styles.clusterText}>
-              {cluster.name}
-            </Text>
-            <Text style={styles.statusText}>{cluster.status}</Text>
-            <Badge
-              status={checkStatus(cluster.status)}
-              badgeStyle={styles.badge}
-            />
-            <Icon
-              name="chevron-right"
-              size={15}
-              color="gray"
-              style={styles.arrow}
-            />
-          </TouchableOpacity>
-        );
-      })
+          return (
+            <TouchableOpacity
+              key={cluster.name + idx}
+              style={styles.clusterContainer}
+              activeOpacity={0.7}
+              cluster={cluster.name}
+              onPress={() => handleClusterPress(cluster)}>
+              <Text numberOfLines={1} style={styles.clusterText}>
+                {cluster.name}
+              </Text>
+              <Text style={styles.statusText}>{cluster.status}</Text>
+              <Badge
+                status={checkStatus(cluster.status)}
+                badgeStyle={styles.badge}
+              />
+              <Icon
+                name="chevron-right"
+                size={15}
+                color="gray"
+                style={styles.arrow}
+              />
+            </TouchableOpacity>
+          );
+        })
       : null;
 
   return (
@@ -101,17 +102,13 @@ const AddEksCluster = ({ navigation }) => {
               </Text>
             )}
           </ScrollView>
-          <Button
-            style={{
-              flex: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'blue',
-            }}
-            color="red"
-            title="Sign Out"
-            onPress={() => navigation.navigate('Login')}
-          />
+          <View style={{ marginTop: 60 }}>
+            <Button
+              color="red"
+              title="Sign Out"
+              onPress={() => navigation.navigate('Cloud Login')}
+            />
+          </View>
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -145,6 +142,8 @@ const styles = StyleSheet.create({
   dropDownView: {
     width: '90%',
     alignSelf: 'center',
+    marginTop: 30,
+    backgroundColor: 'white',
   },
   dropDownOffset: {
     top: 15,
@@ -163,7 +162,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginHorizontal: 0,
-    marginTop: 30,
   },
   regionPickText: {
     textAlign: 'center',
@@ -180,7 +178,7 @@ const styles = StyleSheet.create({
     height: 48,
     width: '96%',
     paddingVertical: 12,
-    paddingLeft: 6,
+    paddingLeft: 8,
     borderStyle: 'solid',
     borderColor: '#063CB9',
     borderWidth: 1,
@@ -189,15 +187,17 @@ const styles = StyleSheet.create({
   },
   clusterText: {
     fontSize: 16,
-    marginLeft: 15,
-    marginRight: 80,
+    marginLeft: 5,
+    marginRight: 60,
     width: 165,
     backgroundColor: 'white',
     overflow: 'scroll',
   },
   statusText: {
     fontSize: 16,
+    textAlign: 'right',
     backgroundColor: 'white',
+    width: 90,
     color: 'gray',
     marginRight: 3,
   },

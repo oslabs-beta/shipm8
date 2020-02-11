@@ -14,19 +14,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 
-import { setCurrentCluster } from './ClustersSlice';
+import { setCurrentCluster, setCurrentProvider } from './ClustersSlice';
 import CloudProviders from '../../data/CloudProviders';
 
 const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
   const clusters = useSelector(state => Object.values(state.Clusters.byUrl));
   const [clustersList, setClustersList] = useState(clusters);
+  const provider = useSelector(state => state.Clusters.selectedProvider);
 
   const handleProviderChange = provider => {
     const clustersForProvider = clusters.filter(
       cluster => cluster.cloudProvider === provider,
     );
     setClustersList(clustersForProvider);
+    setCurrentProvider(provider);
   };
 
   const handleClusterPress = cluster => {
@@ -77,46 +79,49 @@ const ClustersIndex = ({ navigation }) => {
   return (
     <View>
       <SafeAreaView style={styles.safeArea}>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.dropDownView}>
-            <Dropdown
-              label="Select Cloud Provider"
-              data={CloudProviders}
-              value={CloudProviders[0].value}
-              itemCount={4}
-              dropdownPosition={0}
-              // dropdownMargins={{ min: 50, max: 50 }}
-              dropdownOffset={styles.dropDownOffset}
-              style={styles.dropDown}
-              onChangeText={text => handleProviderChange(text)}
-            />
-          </View>
-          <ScrollView style={styles.clusterScroll}>
-            {clustersDisplay && clustersDisplay}
-            {!clustersDisplay && (
-              <Text
-                style={{
-                  textAlign: 'center',
-                  marginTop: 150,
-                  fontSize: 20,
-                  color: 'gray',
-                }}>
-                No Clusters
-              </Text>
-            )}
-          </ScrollView>
-          <Button
-            style={{
-              flex: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'blue',
-            }}
-            color="red"
-            title="Sign Out"
-            onPress={() => navigation.navigate('Login')}
+        <View style={styles.dropDownView}>
+          <Dropdown
+            label="Select Cloud Provider"
+            data={CloudProviders}
+            value={provider}
+            itemCount={4}
+            dropdownPosition={0}
+            // dropdownMargins={{ min: 50, max: 50 }}
+            dropdownOffset={styles.dropDownOffset}
+            style={styles.dropDown}
+            onChangeText={text => handleProviderChange(text)}
           />
+        </View>
+        <ScrollView style={styles.clusterScroll}>
+          {clustersDisplay && clustersDisplay}
+          {!clustersDisplay && (
+            <Text
+              style={{
+                textAlign: 'center',
+                marginTop: 150,
+                fontSize: 20,
+                color: 'gray',
+              }}>
+              No Clusters
+            </Text>
+          )}
         </ScrollView>
+        <Button
+          style={styles.addCluster}
+          title="Add Cluster"
+          onPress={() => navigation.navigate('Add EKS Cluster')}
+        />
+        <Button
+          style={{
+            flex: 2,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'blue',
+          }}
+          color="red"
+          title="Sign Out"
+          onPress={() => navigation.navigate('Login')}
+        />
       </SafeAreaView>
     </View>
   );
@@ -149,6 +154,8 @@ const styles = StyleSheet.create({
   dropDownView: {
     width: '90%',
     alignSelf: 'center',
+    marginTop: 30,
+    backgroundColor: 'pink',
   },
   dropDownOffset: {
     top: 15,
@@ -167,7 +174,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginHorizontal: 0,
-    marginTop: 30,
+    backgroundColor: 'pink',
   },
   regionPickText: {
     textAlign: 'center',
@@ -209,8 +216,9 @@ const styles = StyleSheet.create({
   },
   clusterScroll: {
     marginTop: 10,
-    height: 580,
     borderRadius: 5,
+    backgroundColor: 'pink',
+    marginBottom: 20,
   },
   arrow: {
     marginLeft: 6,
@@ -220,5 +228,12 @@ const styles = StyleSheet.create({
     marginLeft: 6,
     marginTop: 6,
     marginRight: 3,
+  },
+  addCluster: {
+    color: 'black',
+    borderStyle: 'solid',
+    borderWidth: 4,
+    borderRadius: 8,
+    borderColor: 'black',
   },
 });

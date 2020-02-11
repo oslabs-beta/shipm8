@@ -15,7 +15,7 @@ import { Dropdown } from 'react-native-material-dropdown';
 
 import AwsApi from '../../api/AwsApi';
 import Regions from '../../data/Regions';
-import { addCluster } from './ClustersSlice';
+import { addCluster, setCurrentProvider } from './ClustersSlice';
 
 const AddEksCluster = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -30,6 +30,7 @@ const AddEksCluster = ({ navigation }) => {
 
   const handleClusterPress = cluster => {
     dispatch(addCluster(cluster));
+    dispatch(setCurrentProvider(cluster.cloudProvider));
     navigation.navigate('Clusters');
   };
 
@@ -145,6 +146,8 @@ const styles = StyleSheet.create({
   dropDownView: {
     width: '90%',
     alignSelf: 'center',
+    marginTop: 30,
+    backgroundColor: 'pink',
   },
   dropDownOffset: {
     top: 15,
@@ -163,7 +166,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginHorizontal: 0,
-    marginTop: 30,
   },
   regionPickText: {
     textAlign: 'center',

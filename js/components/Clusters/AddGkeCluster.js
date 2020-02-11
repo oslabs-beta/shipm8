@@ -17,14 +17,14 @@ import AwsApi from '../../api/AwsApi';
 import Regions from '../../data/Regions';
 import { addCluster } from './ClustersSlice';
 
-const AddEksCluster = ({ navigation }) => {
+const AddGkeCluster = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [regionSelected, setRegionSelected] = useState(false);
+  const [projectSelected, setProjectSelected] = useState(false);
   const [clusters, setClusters] = useState(null);
 
-  const handleRegionChange = async region => {
-    setRegionSelected(true);
-    const clusters = await AwsApi.describeAllEksClusters(region);
+  const handleProjectChange = async project => {
+    setProjectSelected(true);
+    const clusters = await AwsApi.describeAllGkeClusters(project);
     setClusters(clusters);
   };
 
@@ -56,19 +56,17 @@ const AddEksCluster = ({ navigation }) => {
               <Text numberOfLines={1} style={styles.clusterText}>
                 {cluster.name}
               </Text>
-              <View styles={{ backgroundColor: 'pink' }}>
-                <Text style={styles.statusText}>{cluster.status}</Text>
-                <Badge
-                  status={checkStatus(cluster.status)}
-                  badgeStyle={styles.badge}
-                />
-                <Icon
-                  name="chevron-right"
-                  size={15}
-                  color="gray"
-                  style={styles.arrow}
-                />
-              </View>
+              <Text style={styles.statusText}>{cluster.status}</Text>
+              <Badge
+                status={checkStatus(cluster.status)}
+                badgeStyle={styles.badge}
+              />
+              <Icon
+                name="chevron-right"
+                size={15}
+                color="gray"
+                style={styles.arrow}
+              />
             </TouchableOpacity>
           );
         })

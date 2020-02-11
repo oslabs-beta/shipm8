@@ -26,7 +26,12 @@ const Pods = createSlice({
   }
 });
 
-export const { setCurrentPod, fetchPodsFailed, fetchPodsSuccess, fetchPodsStart } = Pods.actions;
+export const {
+  setCurrentPod,
+  fetchPodsStart,
+  fetchPodsFailed,
+  fetchPodsSuccess,
+} = Pods.actions;
 
 export default Pods.reducer;
 

@@ -44,13 +44,13 @@ const Clusters = createSlice({
       const { cluster, token } = action.payload;
       state.byUrl[cluster.url].token = token;
     },
-  },
-  fetchNamespacesStart: startLoading,
-  fetchNamespacesFailed: loadingFailed,
-  fetchNamespacesSuccess(state, action) {
-    const { cluster, namespaces } = action.payload;
-    state.byUrl[cluster.url].namespaces = namespaces;
-    state.isLoading = false;
+    fetchNamespacesStart: startLoading,
+    fetchNamespacesFailed: loadingFailed,
+    fetchNamespacesSuccess(state, action) {
+      const { cluster, namespaces } = action.payload;
+      state.byUrl[cluster.url].namespaces = namespaces;
+      state.isLoading = false;
+    },
   },
 });
 
@@ -99,6 +99,7 @@ export const getAuthToken = cluster =>
       const clusterWithToken = state.Clusters.byUrl[cluster.url];
 
       return Promise.resolve(clusterWithToken);
+
     } catch (err) {
       dispatch(getAuthTokenFailed(err.toString()));
     }

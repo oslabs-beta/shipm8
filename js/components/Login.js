@@ -42,7 +42,7 @@ const Login = ({ navigation }) => {
         source={require('../../assets/google.png')}
         style={styles.googleLogo}
       />
-      <View style={styles.googleButtonView}>
+      <View>
         <GoogleSigninButton
           style={styles.googleSignin}
           size={GoogleSigninButton.Size.Wide}
@@ -117,9 +117,6 @@ const styles = StyleSheet.create({
   awsButtonView: {
     paddingTop: 30,
   },
-  googleButtonView: {
-    paddingTop: 3,
-  },
   textStyle: {
     textAlign: 'center',
     color: '#151B54',
@@ -172,8 +169,8 @@ const styles = StyleSheet.create({
     marginBottom: -50,
   },
   googleSignin: {
-    width: 225,
-    height: 55,
+    width: 230,
+    height: 48,
     marginBottom: 30,
     borderRadius: 15,
   },

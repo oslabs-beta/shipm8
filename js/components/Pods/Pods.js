@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,12 +16,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Loading from '../common/Loading';
 import { setCurrentPod, fetchPods } from '../Pods/PodsSlice';
-import { fetchNamespaces, setCurrentNamespace } from '../Clusters/ClustersSlice';
+import {
+  fetchNamespaces,
+  setCurrentNamespace,
+} from '../Clusters/ClustersSlice';
 
 const Pods = ({ navigation }) => {
   const dispatch = useDispatch();
   const isLoading = useSelector(state => state.Pods.isLoading);
-  const currentCluster = useSelector(state => state.Clusters.byUrl[state.Clusters.current]);
+  const currentCluster = useSelector(
+    state => state.Clusters.byUrl[state.Clusters.current],
+  );
 
   const pods = useSelector(state => {
     return state.Pods.byCluster[currentCluster.url]
@@ -35,27 +40,29 @@ const Pods = ({ navigation }) => {
   }, []);
 
   const handleNamespaceChange = namespace => {
-    dispatch(setCurrentNamespace({ currentCluster, namespace }))
+    dispatch(setCurrentNamespace({ currentCluster, namespace }));
   };
 
   const handlePodPress = pod => {
-    dispatch(setCurrentPod(pod))
+    dispatch(setCurrentPod(pod));
     navigation.navigate('Pod Details');
   };
 
   const createNamespaceList = namespaces => {
     const namespaceList = namespaces.map(namespace => {
-      return { value: namespace }
+      return { value: namespace };
     });
     return [{ value: 'All Namespaces' }, ...namespaceList];
-  }
+  };
 
   const renderPods = () => {
     const namespace = currentCluster.currentNamespace;
     if (pods) {
       return pods
         .filter(pod => {
-          if (!namespace || namespace === 'All Namespaces') { return true; }
+          if (!namespace || namespace === 'All Namespaces') {
+            return true;
+          }
           return pod.metadata.namespace === namespace;
         })
         .map((pod, idx) => {
@@ -85,10 +92,10 @@ const Pods = ({ navigation }) => {
               />
             </TouchableOpacity>
           );
-        })
+        });
     }
     return [];
-  }
+  };
 
   const checkStatus = text => {
     if (text === 'Running') {
@@ -100,7 +107,9 @@ const Pods = ({ navigation }) => {
     }
   };
 
-  if (!pods && isLoading) { return <Loading /> }
+  if (!pods && isLoading) {
+    return <Loading />;
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -117,7 +126,7 @@ const Pods = ({ navigation }) => {
             itemCount={4}
             dropdownOffset={styles.dropDownOffset}
             style={styles.dropDown}
-            onChangeText={(text) => handleNamespaceChange(text)}
+            onChangeText={text => handleNamespaceChange(text)}
           />
         </View>
         <ScrollView style={styles.podScroll}>
@@ -129,19 +138,20 @@ const Pods = ({ navigation }) => {
                 marginTop: 150,
                 fontSize: 20,
                 color: 'gray',
-              }}>No Pods Found</Text>
+              }}>
+              No Pods Found
+            </Text>
           )}
         </ScrollView>
-
-        <View style={styles.buttonView}>
-          <Button
-            style={styles.signOut}
-            color="red"
-            title="Sign Out"
-            onPress={() => navigation.navigate('Login')}
-          />
-        </View>
       </ScrollView>
+      <View style={styles.buttonView}>
+        <Button
+          style={styles.signOut}
+          color="red"
+          title="Sign Out"
+          onPress={() => navigation.navigate('Login')}
+        />
+      </View>
     </SafeAreaView>
   );
 };
@@ -221,7 +231,7 @@ const styles = StyleSheet.create({
   podText: {
     fontSize: 16,
     marginLeft: 7,
-    width: 200,
+    width: 192,
     marginRight: 25,
     backgroundColor: 'white',
     overflow: 'scroll',
@@ -230,6 +240,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: 'white',
     color: 'gray',
+    textAlign: 'right',
   },
   arrow: {
     marginLeft: 8,

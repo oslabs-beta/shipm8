@@ -21,7 +21,7 @@ import ClustersIndex from './components/Clusters/ClustersIndex';
 
 const MainNavigator = createStackNavigator(
   {
-    ShipM8: Launch,
+    Welcome: Launch,
     'Cloud Login': CloudLogin,
     'Add Cluster': AddCluster,
     Clusters: ClustersIndex,
@@ -29,11 +29,11 @@ const MainNavigator = createStackNavigator(
     'Pod Details': PodInfo,
   },
   {
-    initialRouteName: 'ShipM8',
+    initialRouteName: 'Welcome',
 
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: '#1589FF',
+        backgroundColor: '#151B54',
       },
       headerTintColor: 'white',
       headerTitleStyle: {

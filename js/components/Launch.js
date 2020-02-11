@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity
-} from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 const Launch = ({ navigation }) => {
   const getStarted = () => {
@@ -13,16 +7,30 @@ const Launch = ({ navigation }) => {
   };
   return (
     <View style={styles.container} behavior="padding" enabled>
-      <Text style={styles.banner}>Welcome to ShipM8!</Text>
+      <Image source={require('../../assets/SHIPM8.png')} style={styles.logo} />
+      <Text style={styles.banner}>Kubernetes Mobile Monitoring</Text>
+      <Text style={styles.banner}>with</Text>
 
-      <Image
-        source={require('../../assets/shipm8_logo.png')}
-        style={styles.logo}
-      />
       <View style={styles.logoContainer}>
-        <Text style={styles.textStyle}>Monitor K8s Clusters Anywhere</Text>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <Image
+            style={styles.googleCloud}
+            source={require('../../assets/googleCloud.png')}
+          />
+          <Text style={styles.textStyle}>+</Text>
+          <Image
+            style={{
+              width: 150,
+              height: 40,
+              backgroundColor: 'white',
+              marginTop: 15,
+              marginRight: 5,
+            }}
+            source={require('../../assets/aws.png')}
+          />
+        </View>
         <View style={styles.formContainer} />
-        <View style={{ paddingTop: 5 }}>
+        <View style={{ alignItems: 'center' }}>
           <TouchableOpacity
             style={styles.buttonContainer}
             activeOpacity={0.7}
@@ -45,17 +53,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 60,
   },
   buttonContainer: {
     backgroundColor: '#1589FF',
     paddingVertical: 15,
     borderRadius: 5,
-    marginTop: 10,
+    borderStyle: 'solid',
+    borderWidth: 3,
+    borderColor: '#151B54',
+    width: 300,
+    marginBottom: 650,
+    alignItems: 'center',
   },
   banner: {
-    fontSize: 50,
-    marginBottom: 50,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#151B54',
     textAlign: 'center',
@@ -74,20 +85,30 @@ const styles = StyleSheet.create({
     color: '#151B54',
     fontSize: 18,
     fontWeight: 'bold',
-    marginTop: 5,
+    marginTop: 24,
   },
   logo: {
-    width: 315,
-    height: 315,
+    width: 350,
+    height: 400,
     alignContent: 'center',
     alignItems: 'center',
     borderColor: '#151B54',
     borderWidth: 3,
-    marginBottom: 25,
+    borderRadius: 10,
+    marginTop: 600,
+    marginBottom: 50,
   },
   formContainer: {
     paddingVertical: 25,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  googleCloud: {
+    width: 150,
+    height: 40,
+    backgroundColor: 'white',
+    marginTop: 20,
+    marginRight: 10,
+    marginLeft: 6,
   },
 });

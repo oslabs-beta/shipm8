@@ -1,15 +1,9 @@
-import AwsApi from './AwsApi';
 import RNFetchBlob from 'rn-fetch-blob';
-import GoogleCloudApi from './GoogleCloudApi';
 
 class K8sApi {
 
   static apiFetch = async ({ apiUrl, cluster, method = 'get', body }) => {
-    const { name: clusterName, url, cloudProvider } = cluster;
-
-    const token = cloudProvider === 'Aws'
-      ? await AwsApi.getAuthToken(clusterName)
-      : await GoogleCloudApi.getAccessToken();
+    const { url, token } = cluster;
 
     const authHeader = {
       Authorization: `Bearer ${token}`,

@@ -5,11 +5,11 @@ import { store, persistor } from './store/configureStore';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createStackNavigator } from 'react-navigation-stack';
 
-import Pods from './components/Pods/Pods';
 import Launch from './components/Launch';
+import Pods from './components/Pods/Pods';
 import PodInfo from './components/Pods/PodInfo';
 import CloudLogin from './components/CloudLogin';
-import AddEksCluster from './components/Clusters/AddClusters';
+import AddCluster from './components/Clusters/AddCluster';
 import ClustersIndex from './components/Clusters/ClustersIndex';
 
 // const onBeforeLift = () => {
@@ -23,7 +23,7 @@ const MainNavigator = createStackNavigator(
   {
     Welcome: Launch,
     'Cloud Login': CloudLogin,
-    'Add Cluster': AddEksCluster,
+    'Add Cluster': AddCluster,
     Clusters: ClustersIndex,
     Pods: Pods,
     'Pod Details': PodInfo,

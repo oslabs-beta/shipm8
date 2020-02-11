@@ -1,15 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import K8sApi from '../../api/K8sApi';
-
-const startLoading = state => {
-  state.isLoading = true;
-}
-
-const loadingFailed = (state, action) => {
-  state.isLoading = false;
-  state.error = action.payload;
-}
+import { getAuthToken } from '../Clusters/ClustersSlice';
+import { startLoading, loadingFailed } from '../../utils/LoadingUtils';
 
 const Pods = createSlice({
   name: 'Pods',
@@ -33,7 +26,12 @@ const Pods = createSlice({
   }
 });
 
-export const { setCurrentPod, fetchPodsFailed, fetchPodsSuccess, fetchPodsStart } = Pods.actions;
+export const {
+  setCurrentPod,
+  fetchPodsStart,
+  fetchPodsFailed,
+  fetchPodsSuccess,
+} = Pods.actions;
 
 export default Pods.reducer;
 
@@ -41,15 +39,16 @@ export default Pods.reducer;
 export const fetchPods = cluster =>
   async dispatch => {
     try {
-      dispatch(fetchPodsStart());
-      const pods = await K8sApi.fetchPods(cluster);
+      dispatch(fetchPodsStart())
+      const clusterWithAuth = await dispatch(getAuthToken(cluster));
+      const pods = await K8sApi.fetchPods(clusterWithAuth);
       const podsByUid = {};
       pods.forEach(pod => {
         pod.kind = 'pods';
         podsByUid[pod.metadata.uid] = pod;
       });
-      dispatch(fetchPodsSuccess({ cluster, podsByUid }));
+      dispatch(fetchPodsSuccess({ cluster: clusterWithAuth, podsByUid }));
     } catch (err) {
-      dispatch(fetchPodsFailed());
+      dispatch(fetchPodsFailed(err.toString()));
     }
   }

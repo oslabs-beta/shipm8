@@ -6,13 +6,15 @@ import {
   Button,
   StyleSheet,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Badge, Divider } from 'react-native-elements';
 
 const PodInfo = ({ navigation }) => {
-  const currentPod = useSelector(state => state.Pods.byCluster[state.Clusters.current][state.Pods.current])
+  const currentPod = useSelector(
+    state => state.Pods.byCluster[state.Clusters.current][state.Pods.current],
+  );
 
   const checkStatus = text => {
     if (text === 'Running') {
@@ -36,9 +38,7 @@ const PodInfo = ({ navigation }) => {
             <View style={{ flexDirection: 'column' }}>
               <Text style={styles.text} numberOfLines={2}>
                 Name:{' '}
-                <Text style={styles.innerText}>
-                  {currentPod.metadata.name}
-                </Text>
+                <Text style={styles.innerText}>{currentPod.metadata.name}</Text>
               </Text>
               <Divider />
               <Text style={styles.text} numberOfLines={2}>
@@ -50,9 +50,7 @@ const PodInfo = ({ navigation }) => {
               <Divider />
               <Text style={styles.text} numberOfLines={2}>
                 Status:{' '}
-                <Text style={styles.innerText}>
-                  {currentPod.status.phase}
-                </Text>
+                <Text style={styles.innerText}>{currentPod.status.phase}</Text>
                 <Badge
                   status={checkStatus(currentPod.status.phase)}
                   badgeStyle={styles.badge}
@@ -61,16 +59,12 @@ const PodInfo = ({ navigation }) => {
               <Divider />
               <Text style={styles.text} numberOfLines={2}>
                 Host IP:{' '}
-                <Text style={styles.innerText}>
-                  {currentPod.status.hostIP}
-                </Text>
+                <Text style={styles.innerText}>{currentPod.status.hostIP}</Text>
               </Text>
               <Divider />
               <Text style={styles.text} numberOfLines={2}>
                 Pod IP:{' '}
-                <Text style={styles.innerText}>
-                  {currentPod.status.podIP}
-                </Text>
+                <Text style={styles.innerText}>{currentPod.status.podIP}</Text>
               </Text>
               <Divider />
               <Text style={styles.text} numberOfLines={2}>
@@ -84,18 +78,15 @@ const PodInfo = ({ navigation }) => {
                 Labels:{' '}
                 <Text style={styles.innerText}>
                   {Object.keys(currentPod.metadata.labels).length > 0 &&
-                    Object.keys(currentPod.metadata.labels)
-                      .map(label => {
-                        return `${label}:${currentPod.metadata.labels[label]}`
-                      })}
+                    Object.keys(currentPod.metadata.labels).map(label => {
+                      return `${label}:${currentPod.metadata.labels[label]}`;
+                    })}
                 </Text>{' '}
               </Text>
               <Divider />
               <Text style={styles.text} numberOfLines={2}>
                 UID:{' '}
-                <Text style={styles.innerText}>
-                  {currentPod.metadata.uid}
-                </Text>{' '}
+                <Text style={styles.innerText}>{currentPod.metadata.uid}</Text>{' '}
               </Text>
               <Divider />
             </View>

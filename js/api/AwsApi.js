@@ -1,7 +1,5 @@
 import { Base64 } from 'js-base64';
 import { sign } from '../utils/aws4';
-import RNFetchBlob from 'rn-fetch-blob';
-import AsyncStorage from '@react-native-community/async-storage';
 
 class AwsApi {
 
@@ -12,7 +10,7 @@ class AwsApi {
    *
    */
 
-  static getAuthToken = async clusterName => {
+  static getAuthToken = (clusterName, AwsCredentials) => {
     /* Declare options for STS API Query */
     try {
       const queryOptions = {
@@ -24,9 +22,8 @@ class AwsApi {
         },
         signQuery: true,
       };
-      const credentials = await this.getCredentials();
       /* Sign STS API Query with AWS4 Signature */
-      const signedQuery = sign(queryOptions, credentials);
+      const signedQuery = sign(queryOptions, AwsCredentials);
       /* Pull out signed host & path */
       const signedURL = `https://${signedQuery.host}${signedQuery.path}`;
       /* Base64 encode signed URL */
@@ -41,38 +38,12 @@ class AwsApi {
     }
   };
 
-  static getCredentials = async () => {
-    try {
-      const credentials = await AsyncStorage.getItem('AWSCredentials');
-      return JSON.parse(credentials);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  static apiFetch = async (url, clusterName) => {
-    const authHeader = {
-      Authorization: `Bearer ${await this.getAuthToken(clusterName)}`,
-    };
-    try {
-      const res = await RNFetchBlob.config({
-        trusty: true,
-      })
-        .fetch('GET', url, authHeader);
-      return res.json();
-    }
-    catch (err) {
-      console.log(err);
-    }
-  };
-
-  static eksFetch = async (region, path) => {
+  static eksFetch = async (region, path, AwsCredentials) => {
     const queryOptions = {
       host: `eks.${region}.amazonaws.com`,
       path: path,
     };
-    const credentials = await this.getCredentials();
-    const query = sign(queryOptions, credentials);
+    const query = sign(queryOptions, AwsCredentials);
     try {
       const res = await fetch(`https://eks.${region}.amazonaws.com${path}`, {
         headers: query.headers,
@@ -84,9 +55,9 @@ class AwsApi {
     }
   };
 
-  static fetchEksClusterNames = async region => {
+  static fetchEksClusterNames = async (region, AwsCredentials) => {
     try {
-      const clusters = await this.eksFetch(region, `/clusters`);
+      const clusters = await this.eksFetch(region, `/clusters`, AwsCredentials);
       return clusters.clusters;
     }
     catch (err) {
@@ -94,17 +65,18 @@ class AwsApi {
     }
   };
 
-  static describeAllEksClusters = async region => {
+  static describeAllEksClusters = async (region, AwsCredentials) => {
     try {
-      const clusterNameList = await this.fetchEksClusterNames(region);
+      const clusterNameList = await this.fetchEksClusterNames(region, AwsCredentials);
       const clusterList = await Promise.all(clusterNameList.map(async clusterName => {
-        const cluster = await this.eksFetch(region, `/clusters/${clusterName}`);
+        const cluster = await this.eksFetch(region, `/clusters/${clusterName}`, AwsCredentials);
         const newCluster = {
           url: cluster.cluster.endpoint,
           name: cluster.cluster.name,
           status: cluster.cluster.status,
           createdAt: cluster.cluster.createdAt,
           cloudProvider: 'Aws',
+          namespaces: [],
         }
         return newCluster;
       }));

@@ -6,7 +6,6 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
-  ActivityIndicator,
 } from 'react-native';
 import { Badge, Button } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,8 +18,8 @@ import CloudProviders from '../../data/CloudProviders';
 const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
   const clusters = useSelector(state => Object.values(state.Clusters.byUrl));
-  const [clustersList, setClustersList] = useState(clusters);
   const provider = useSelector(state => state.Clusters.selectedProvider);
+  const [clustersList, setClustersList] = useState(clusters);
 
   const handleProviderChange = provider => {
     const clustersForProvider = clusters.filter(
@@ -49,30 +48,30 @@ const ClustersIndex = ({ navigation }) => {
   const clustersDisplay =
     clustersList && clustersList.length > 0
       ? clustersList.map((cluster, idx) => {
-          return (
-            <TouchableOpacity
-              key={cluster.name + idx}
-              style={styles.clusterContainer}
-              activeOpacity={0.7}
-              cluster={cluster.name}
-              onPress={() => handleClusterPress(cluster)}>
-              <Text numberOfLines={1} style={styles.clusterText}>
-                {cluster.name}
-              </Text>
-              <Text style={styles.statusText}>{cluster.status}</Text>
-              <Badge
-                status={checkStatus(cluster.status)}
-                badgeStyle={styles.badge}
-              />
-              <Icon
-                name="chevron-right"
-                size={15}
-                color="gray"
-                style={styles.arrow}
-              />
-            </TouchableOpacity>
-          );
-        })
+        return (
+          <TouchableOpacity
+            key={cluster.name + idx}
+            style={styles.clusterContainer}
+            activeOpacity={0.7}
+            cluster={cluster.name}
+            onPress={() => handleClusterPress(cluster)}>
+            <Text numberOfLines={1} style={styles.clusterText}>
+              {cluster.name}
+            </Text>
+            <Text style={styles.statusText}>{cluster.status}</Text>
+            <Badge
+              status={checkStatus(cluster.status)}
+              badgeStyle={styles.badge}
+            />
+            <Icon
+              name="chevron-right"
+              size={15}
+              color="gray"
+              style={styles.arrow}
+            />
+          </TouchableOpacity>
+        );
+      })
       : null;
 
   return (
@@ -85,7 +84,6 @@ const ClustersIndex = ({ navigation }) => {
             value={provider}
             itemCount={4}
             dropdownPosition={0}
-            // dropdownMargins={{ min: 50, max: 50 }}
             dropdownOffset={styles.dropDownOffset}
             style={styles.dropDown}
             onChangeText={text => handleProviderChange(text)}

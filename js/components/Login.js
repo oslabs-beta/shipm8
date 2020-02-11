@@ -1,40 +1,39 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { Input, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AsyncStorage from '@react-native-community/async-storage';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 
-import AwsApi from '../api/AwsApi';
 import GoogleCloudApi from '../api/GoogleCloudApi';
+import { checkCredentials } from '../components/AwsSlice';
 
 // Load FontAwesome icons
 Icon.loadFont();
 
 const Login = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   const [loginState, setLoginState] = useState({
     accessKeyId: '',
     secretAccessKey: '',
   });
 
-  const saveData = async () => {
-    await AsyncStorage.setItem('AWSCredentials', JSON.stringify(loginState));
-  };
-
-  const checkLogin = () => {
+  const checkLogin = async () => {
     if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
-      saveData();
-      AwsApi.fetchEksClusterNames('us-west-2').then(data => {
-        if (data) {
-          navigation.navigate('Add Cluster');
-        } else {
-          alert('The Security Token Included in the Request Is Invalid');
-        }
-      });
-    } else {
-      alert('Please Input Your AWS Access and Secret Information');
-    }
-  };
+      const isValidCredentials = await dispatch(checkCredentials(loginState));
+      isValidCredentials
+        ? navigation.navigate('Add Cluster')
+        : alert('The Security Token Included in the Request Is Invalid');
+    };
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.textStyle}>Add Cluster from Provider</Text>

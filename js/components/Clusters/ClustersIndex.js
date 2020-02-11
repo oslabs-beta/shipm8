@@ -2,29 +2,32 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
-import { Badge } from 'react-native-elements';
+import { Badge, Button } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
-import { setCurrentCluster } from './ClustersSlice';
+
+import { setCurrentCluster, setCurrentProvider } from './ClustersSlice';
 import CloudProviders from '../../data/CloudProviders';
 
 const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
   const clusters = useSelector(state => Object.values(state.Clusters.byUrl));
   const [clustersList, setClustersList] = useState(clusters);
+  const provider = useSelector(state => state.Clusters.selectedProvider);
 
   const handleProviderChange = provider => {
-    const clustersForProvider = clusters
-      .filter(cluster => cluster.cloudProvider === provider)
+    const clustersForProvider = clusters.filter(
+      cluster => cluster.cloudProvider === provider,
+    );
     setClustersList(clustersForProvider);
+    setCurrentProvider(provider);
   };
 
   const handleClusterPress = cluster => {
@@ -35,7 +38,10 @@ const ClustersIndex = ({ navigation }) => {
   const checkStatus = text => {
     if (text === 'ACTIVE') {
       return 'success';
-    } else {
+    } else if (text === 'CREATING') {
+      return 'warning';
+    }
+    {
       return 'error';
     }
   };
@@ -72,46 +78,59 @@ const ClustersIndex = ({ navigation }) => {
   return (
     <View>
       <SafeAreaView style={styles.safeArea}>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.dropDownView}>
-            <Dropdown
-              label="Select Cloud Provider"
-              data={CloudProviders}
-              value={CloudProviders[0].value}
-              itemCount={4}
-              dropdownPosition={0}
-              // dropdownMargins={{ min: 50, max: 50 }}
-              dropdownOffset={styles.dropDownOffset}
-              style={styles.dropDown}
-              onChangeText={text => handleProviderChange(text)}
-            />
-          </View>
-          <ScrollView style={styles.clusterScroll}>
-            {clustersDisplay && clustersDisplay}
-            {!clustersDisplay && (
-              <Text
-                style={{
-                  textAlign: 'center',
-                  marginTop: 150,
-                  fontSize: 20,
-                  color: 'gray',
-                }}>
-                No Clusters
-              </Text>
-            )}
-          </ScrollView>
-          <Button
-            style={{
-              flex: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'blue',
-            }}
-            color="red"
-            title="Sign Out"
-            onPress={() => navigation.navigate('Login')}
+        <View style={styles.dropDownView}>
+          <Dropdown
+            label="Select Cloud Provider"
+            data={CloudProviders}
+            value={provider}
+            itemCount={4}
+            dropdownPosition={0}
+            // dropdownMargins={{ min: 50, max: 50 }}
+            dropdownOffset={styles.dropDownOffset}
+            style={styles.dropDown}
+            onChangeText={text => handleProviderChange(text)}
           />
+        </View>
+        <ScrollView style={styles.clusterScroll}>
+          {clustersDisplay && clustersDisplay}
+          {!clustersDisplay && (
+            <Text
+              style={{
+                textAlign: 'center',
+                marginTop: 150,
+                fontSize: 20,
+                color: 'gray',
+              }}>
+              No Clusters
+            </Text>
+          )}
         </ScrollView>
+        <View
+          style={{
+            marginBottom: 20,
+            width: 200,
+            alignSelf: 'center',
+          }}>
+          <Button
+            type="solid"
+            title="Add Cluster +"
+            onPress={() => navigation.navigate('Add Cluster')}
+          />
+        </View>
+        <Button
+          buttonStyle={{
+            borderColor: 'red',
+            fontWeight: 'bold',
+            borderStyle: 'solid',
+            color: 'red',
+          }}
+          titleStyle={{
+            color: 'red',
+          }}
+          type="raised"
+          title="Sign Out"
+          onPress={() => navigation.navigate('Cloud Login')}
+        />
       </SafeAreaView>
     </View>
   );
@@ -144,6 +163,8 @@ const styles = StyleSheet.create({
   dropDownView: {
     width: '90%',
     alignSelf: 'center',
+    marginTop: 30,
+    backgroundColor: 'white',
   },
   dropDownOffset: {
     top: 15,
@@ -162,7 +183,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginHorizontal: 0,
-    marginTop: 30,
+    backgroundColor: 'white',
   },
   regionPickText: {
     textAlign: 'center',
@@ -179,7 +200,7 @@ const styles = StyleSheet.create({
     height: 48,
     width: '96%',
     paddingVertical: 12,
-    paddingLeft: 6,
+    paddingLeft: 8,
     borderStyle: 'solid',
     borderColor: '#063CB9',
     borderWidth: 1,
@@ -189,21 +210,24 @@ const styles = StyleSheet.create({
   clusterText: {
     fontSize: 16,
     marginLeft: 5,
-    marginRight: 96,
+    marginRight: 60,
     width: 165,
     backgroundColor: 'white',
     overflow: 'scroll',
   },
   statusText: {
     fontSize: 16,
+    textAlign: 'right',
     backgroundColor: 'white',
+    width: 90,
     color: 'gray',
     marginRight: 3,
   },
   clusterScroll: {
     marginTop: 10,
-    height: 580,
     borderRadius: 5,
+    backgroundColor: 'white',
+    marginBottom: 20,
   },
   arrow: {
     marginLeft: 6,

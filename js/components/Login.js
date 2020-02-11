@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity
-} from 'react-native';
-
-import { Input } from 'react-native-elements';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Input, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
@@ -32,7 +26,7 @@ const Login = ({ navigation }) => {
       saveData();
       AwsApi.fetchEksClusterNames('us-west-2').then(data => {
         if (data) {
-          navigation.navigate('Add EKS Cluster');
+          navigation.navigate('Add Cluster');
         } else {
           alert('The Security Token Included in the Request Is Invalid');
         }
@@ -43,6 +37,24 @@ const Login = ({ navigation }) => {
   };
   return (
     <View style={styles.container}>
+      <Text style={styles.textStyle}>Add Cluster from Provider</Text>
+      <Image
+        source={require('../../assets/google.png')}
+        style={styles.googleLogo}
+      />
+      <View style={styles.googleButtonView}>
+        <GoogleSigninButton
+          style={styles.googleSignin}
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={GoogleCloudApi.signIn}
+          disabled={false}
+        />
+      </View>
+      <View style={styles.divider}>
+        <Divider />
+      </View>
+      <Image source={require('../../assets/aws.png')} style={styles.awsLogo} />
       <View style={styles.formOneView}>
         <Input
           onChangeText={text =>
@@ -76,22 +88,13 @@ const Login = ({ navigation }) => {
           }
         />
       </View>
-      <View style={{ paddingTop: 30 }}>
+      <View style={styles.awsButtonView}>
         <TouchableOpacity
           style={styles.buttonContainer}
           activeOpacity={0.7}
           onPress={checkLogin}>
-          <Text style={styles.buttonText}>Sign in w/ AWS</Text>
+          <Text style={styles.buttonText}>Sign in with AWS</Text>
         </TouchableOpacity>
-      </View>
-      <View style={{ paddingTop: 3 }}>
-        <GoogleSigninButton
-          style={{ width: 198, height: 52 }}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={GoogleCloudApi.getToken}
-          disabled={false}
-        />
       </View>
     </View>
   );
@@ -107,6 +110,22 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     paddingTop: 35,
   },
+  divider: {
+    width: 320,
+    marginBottom: -40,
+  },
+  awsButtonView: {
+    paddingTop: 30,
+  },
+  googleButtonView: {
+    paddingTop: 3,
+  },
+  textStyle: {
+    textAlign: 'center',
+    color: '#151B54',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
   input: {
     height: 40,
     backgroundColor: 'rgb(255, 255, 255)',
@@ -117,7 +136,8 @@ const styles = StyleSheet.create({
   },
   formOneView: {
     width: 325,
-    marginBottom: 15,
+    marginBottom: 10,
+    backgroundColor: 'white',
   },
   formTwoView: {
     width: 325,
@@ -127,8 +147,8 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 5,
     marginTop: 10,
-    width: 192,
-    height: 52,
+    width: 220,
+    height: 48,
   },
   buttonText: {
     textAlign: 'center',
@@ -141,5 +161,20 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
+  },
+  googleLogo: {
+    width: 175,
+    height: 175,
+  },
+  awsLogo: {
+    width: 225,
+    height: 220,
+    marginBottom: -50,
+  },
+  googleSignin: {
+    width: 225,
+    height: 55,
+    marginBottom: 30,
+    borderRadius: 15,
   },
 });

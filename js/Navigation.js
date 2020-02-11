@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { createAppContainer } from 'react-navigation';
-import { store, persistor } from './store/configureStore'
+import { store, persistor } from './store/configureStore';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createStackNavigator } from 'react-navigation-stack';
 
@@ -9,7 +9,7 @@ import Pods from './components/Pods/Pods';
 import Launch from './components/Launch';
 import PodInfo from './components/Pods/PodInfo';
 import CloudLogin from './components/CloudLogin';
-import AddEksCluster from './components/Clusters/AddEksCluster';
+import AddEksCluster from './components/Clusters/AddClusters';
 import ClustersIndex from './components/Clusters/ClustersIndex';
 import Contents from './components/MainPage/Contents';
 // import Services from './components/Services/Services';
@@ -28,7 +28,7 @@ const MainNavigator = createStackNavigator(
   {
     ShipM8: Launch,
     'Cloud Login': CloudLogin,
-    'Add EKS Cluster': AddEksCluster,
+    'Add Cluster': AddEksCluster,
     Clusters: ClustersIndex,
     Main: Contents,
     Pods: Pods,

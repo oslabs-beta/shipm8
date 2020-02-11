@@ -100,7 +100,7 @@ const Pods = ({ navigation }) => {
     }
   };
 
-  if (isLoading) { return <Loading /> }
+  if (!pods && isLoading) { return <Loading /> }
 
   return (
     <SafeAreaView style={styles.safeArea}>

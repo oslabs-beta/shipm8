@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Input, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { GoogleSigninButton } from '@react-native-community/google-signin';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,15 +13,19 @@ import { Badge } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 
+import Loading from '../common/Loading';
 import Regions from '../../data/Regions';
 import { fetchEksClusters } from '../../reducers/AwsSlice';
 import { addCluster, setCurrentProvider } from './ClustersSlice';
-import { fetchGkeClusters } from '../../reducers/GoogleCloudSlice';
+import { fetchGkeClusters, fetchGcpProjects } from '../../reducers/GoogleCloudSlice';
 
 const AddCluster = ({ navigation }) => {
   const dispatch = useDispatch();
   const [valueSelected, setValueSelected] = useState(false);
+
   const currentProvider = useSelector(state => state.Clusters.currentProvider);
+  const isLoading = useSelector(state => state[currentProvider].isLoading);
+  const clusters = useSelector(state => state[currentProvider].clusters);
 
   const gcpProjects = useSelector(state => state.Gcp.projects &&
     state.Gcp.projects.map(project => {
@@ -31,13 +35,12 @@ const AddCluster = ({ navigation }) => {
       }
     }));
 
-  const clusters = useSelector(state => {
-    return currentProvider === 'Aws'
-      ? state.Aws.clusters
-      : state.Gcp.clusters;
-  });
+  useEffect(() => {
+    currentProvider === 'Gcp' &&
+      dispatch(fetchGcpProjects());
+  }, [])
 
-  const handleDropdownChange = async value => {
+  const handleDropdownChange = value => {
     setValueSelected(true);
     currentProvider === 'Aws'
       ? dispatch(fetchEksClusters(value))
@@ -47,19 +50,20 @@ const AddCluster = ({ navigation }) => {
   const setDropDownValues = () => {
     return currentProvider === 'Aws'
       ? Regions
-      : gcpProjects;
+      : gcpProjects || [{ value: 'Loading' }];
   }
 
-  const setNoClustersText = () => {
-    return currentProvider === 'Aws'
-      ? 'No Clusters Found in this Region'
-      : 'No Clusters Found for this Project';
+  const regionOrProjectLabel = currentProvider === 'Aws'
+    ? 'Region'
+    : 'Project';
+
+  const setNoValueSelectedText = () => {
+    return `Please select a ${regionOrProjectLabel} to view
+    available clusters`;
   }
 
   const setDropdownLabel = () => {
-    return currentProvider === 'Aws'
-      ? 'Select a Region'
-      : 'Select a Project';
+    return `Select a ${regionOrProjectLabel}`;
   }
 
   const handleClusterPress = cluster => {
@@ -69,7 +73,7 @@ const AddCluster = ({ navigation }) => {
   };
 
   const checkStatus = text => {
-    if (text === 'ACTIVE') {
+    if (text === 'ACTIVE' || text === 'RUNNING') {
       return 'success';
     } else if (text === 'CREATING') {
       return 'warning';
@@ -122,20 +126,23 @@ const AddCluster = ({ navigation }) => {
               onChangeText={text => handleDropdownChange(text)}
             />
           </View>
-          <ScrollView style={styles.clusterScroll}>
-            {valueSelected && clusterList}
-            {valueSelected && !clusterList && (
-              <Text
-                style={{
-                  textAlign: 'center',
-                  marginTop: 150,
-                  fontSize: 20,
-                  color: 'gray',
-                }}>
-                {setNoClustersText()}
-              </Text>
-            )}
-          </ScrollView>
+          {isLoading ?
+            (
+              <ScrollView style={styles.clusterScroll}>
+                <Loading />
+              </ScrollView>
+            )
+            :
+            (
+              <ScrollView style={styles.clusterScroll}>
+                {valueSelected && clusterList}
+                {valueSelected && !clusterList &&
+                  <Text style={styles.noContentText}>No Clusters Found</Text>}
+                {!valueSelected &&
+                  <Text style={styles.noContentText}>{setNoValueSelectedText()}</Text>}
+              </ScrollView>
+            )
+          }
           <View style={{ marginTop: 60 }}>
             <Button
               color="red"
@@ -159,6 +166,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  noContentText: {
+    textAlign: 'center',
+    marginTop: 150,
+    fontSize: 20,
+    color: 'gray',
   },
   buttonsContainer: {
     backgroundColor: 'blue',

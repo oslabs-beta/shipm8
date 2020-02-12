@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import GoogleCloudApi from '../api/GoogleCloudApi';
 import { startLoading, loadingFailed } from '../utils/LoadingUtils';
 
 const GoogleCloud = createSlice({
@@ -46,3 +47,15 @@ export const {
 } = GoogleCloud.actions;
 
 export default GoogleCloud.reducer;
+
+// Thunks
+const fetchGkeClusters = (projectId, zone) =>
+  async dispatch => {
+    try {
+      dispatch(fetchGkeClustersStart());
+      const clusters = await GoogleCloudApi.fetchClusters(projectId, zone);
+      dispatch(fetchGkeClustersSuccess(clusters));
+    } catch (err) {
+      dispatch(fetchGkeClustersFailed(err.toString()));
+    }
+  }

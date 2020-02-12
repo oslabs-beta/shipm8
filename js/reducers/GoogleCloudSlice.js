@@ -49,7 +49,7 @@ export const {
 export default GoogleCloud.reducer;
 
 // Thunks
-const fetchGkeClusters = (projectId, zone) =>
+export const fetchGkeClusters = (projectId, zone) =>
   async dispatch => {
     try {
       dispatch(fetchGkeClustersStart());
@@ -60,7 +60,7 @@ const fetchGkeClusters = (projectId, zone) =>
     }
   }
 
-const fetchProjects = pageToken =>
+export const fetchProjects = pageToken =>
   async dispatch => {
     try {
       dispatch(fetchProjectsStart());

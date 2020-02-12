@@ -5,6 +5,10 @@ class K8sApi {
   static apiFetch = async ({ apiUrl, cluster, method = 'get', body }) => {
     const { url, token } = cluster;
 
+    url = url.indexOf('https') !== -1
+      ? url
+      : `https://${url}`;
+
     const authHeader = {
       Authorization: `Bearer ${token}`,
     };

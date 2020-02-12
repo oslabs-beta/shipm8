@@ -7,14 +7,18 @@ const Aws = createSlice({
   name: 'Aws',
   initialState: {
     isLoading: false,
+    error: null,
     selectedRegion: null,
     credentials: null,
     clusters: null,
   },
   reducers: {
-    setCredentials(state, action) {
+    checkAwsCredentialsStart: startLoading,
+    checkAwsCredentialsFailed: loadingFailed,
+    checkAwsCredentialsSuccess(state, action) {
       const credentials = action.payload;
       state.credentials = credentials;
+      state.isLoading = false;
     },
     deleteCredentials(state, action) {
       state.credentials = null;
@@ -24,12 +28,15 @@ const Aws = createSlice({
     fetchEksClustersSuccess(state, action) {
       const clusters = action.payload;
       state.clusters = clusters;
+      state.isLoading = false;
     },
   }
 });
 
 export const {
-  setCredentials,
+  checkAwsCredentialsStart,
+  checkAwsCredentialsFailed,
+  checkAwsCredentialsSuccess,
   deleteCredentials,
   fetchEksClustersStart,
   fetchEksClustersFailed,
@@ -38,17 +45,20 @@ export const {
 
 export default Aws.reducer;
 
-export const checkCredentials = credentials =>
+export const checkAwsCredentials = credentials =>
   async dispatch => {
     try {
+      dispatch(checkAwsCredentialsStart());
       const data = await AwsApi.fetchEksClusterNames('us-west-2', credentials);
       if (data) {
-        dispatch(setCredentials(credentials));
+        dispatch(checkAwsCredentialsSuccess(credentials));
         return true;
       } else {
+        dispatch(checkAwsCredentialsFailed());
         return false;
       }
     } catch (err) {
+      dispatch(checkAwsCredentialsFailed());
       return Promise.resolve(err);
     }
   }
@@ -56,6 +66,7 @@ export const checkCredentials = credentials =>
 export const fetchEksClusters = region =>
   async (dispatch, getState) => {
     try {
+      dispatch(fetchEksClustersStart());
       const state = getState();
       const AwsCredentials = state.Aws.credentials;
       const clusters = await AwsApi.describeAllEksClusters(region, AwsCredentials);

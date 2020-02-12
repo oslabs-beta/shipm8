@@ -1,7 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import awsReducer from '../components/AwsSlice';
-import gcpReducer from '../reducers/GoogleCloudSlice';
+import awsReducer from './AwsSlice';
+import gcpReducer from './GoogleCloudSlice';
 import podsReducer from '../components/Pods/PodsSlice';
 import clustersReducer from '../components/Clusters/ClustersSlice';
 

@@ -12,9 +12,32 @@ import Pods from './components/Pods';
 import PodInfo from './components/PodInfo';
 import YourClusters from './components/YourClusters.js';
 
-const initialRoute = AsyncStorage.getItem('AWSCredentials')
-  ? 'ShipM8'
-  : 'ShipM8';
+let initialRoute;
+
+const findRoute = async () => {
+  try {
+    let value = await AsyncStorage.getItem('AWSCredentials')
+    console.log('THIS IS VALUE', value)
+    if (value != null) {
+      initialRoute = 'Your Clusters'
+      return initialRoute
+    }
+    else {
+      initialRoute = 'ShipM8'
+    }
+  }
+  catch (error) {
+    return alert(error)
+  }
+}
+findRoute()
+console.log("this is the route", initialRoute)
+
+
+
+// const initialRoute = AsyncStorage.getItem('AWSCredentials')
+//   ? 'Your Clusters'
+//   : 'ShipM8';
 
 const MainNavigator = createStackNavigator(
   {

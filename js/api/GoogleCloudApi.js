@@ -104,9 +104,10 @@ class GoogleCloudApi {
   static fetchGkeClusters = async (projectId, zone = '-') => {
     try {
       const clusters = await this.gcpFetch(`https://container.googleapis.com/v1/projects/${projectId}/locations/${zone}/clusters`);
+      if (!clusters.clusters) { return []; }
       const clusterList = clusters.clusters.map(cluster => {
         return {
-          url: cluster.selfLink,
+          url: cluster.endpoint,
           name: cluster.name,
           status: cluster.status,
           createdAt: cluster.createTime,

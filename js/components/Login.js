@@ -11,9 +11,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import GoogleCloudApi from '../api/GoogleCloudApi';
-import { checkCredentials } from '../components/AwsSlice';
-
+import { checkAwsCredentials } from '../reducers/AwsSlice';
+import { googleSignIn, fetchGcpProjects } from '../reducers/GoogleCloudSlice';
+import { setCurrentProvider } from '../components/Clusters/ClustersSlice';
 // Load FontAwesome icons
 Icon.loadFont();
 
@@ -25,13 +25,29 @@ const Login = ({ navigation }) => {
     secretAccessKey: '',
   });
 
-  const checkLogin = async () => {
+  const handleAwsLoginPress = async () => {
     if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
-      const isValidCredentials = await dispatch(checkCredentials(loginState));
-      isValidCredentials
-        ? navigation.navigate('Add Cluster')
-        : alert('The Security Token Included in the Request Is Invalid');
-    };
+      const isValidCredentials = await dispatch(checkAwsCredentials(loginState));
+      if (isValidCredentials) {
+        dispatch(setCurrentProvider('Aws'));
+        navigation.navigate('Add Cluster');
+      } else {
+        alert('The Security Token Included in the Request Is Invalid');
+      }
+    } else {
+      alert(`Please Enter Valid AWS Credentials`);
+    }
+  }
+
+  const handleGoogleSigninPress = async () => {
+    const signInStatus = await dispatch(googleSignIn());
+    if (signInStatus === true) {
+      dispatch(setCurrentProvider('Gcp'));
+      await dispatch(fetchGcpProjects());
+      navigation.navigate('Add Cluster');
+    } else {
+      alert(signInStatus);
+    }
   }
 
   return (
@@ -46,7 +62,7 @@ const Login = ({ navigation }) => {
           style={styles.googleSignin}
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
-          onPress={GoogleCloudApi.signIn}
+          onPress={() => handleGoogleSigninPress()}
           disabled={false}
         />
       </View>
@@ -91,7 +107,7 @@ const Login = ({ navigation }) => {
         <TouchableOpacity
           style={styles.buttonContainer}
           activeOpacity={0.7}
-          onPress={checkLogin}>
+          onPress={() => handleAwsLoginPress()}>
           <Text style={styles.buttonText}>Sign in with AWS</Text>
         </TouchableOpacity>
       </View>

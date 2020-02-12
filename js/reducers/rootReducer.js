@@ -1,13 +1,15 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import clustersReducer from '../components/Clusters/ClustersSlice';
+import awsReducer from './AwsSlice';
+import gcpReducer from './GoogleCloudSlice';
 import podsReducer from '../components/Pods/PodsSlice';
-import AwsReducer from '../components/AwsSlice';
+import clustersReducer from '../components/Clusters/ClustersSlice';
 
 const rootReducer = combineReducers({
   Clusters: clustersReducer,
   Pods: podsReducer,
-  Aws: AwsReducer,
+  Aws: awsReducer,
+  Gcp: gcpReducer,
 });
 
 export default rootReducer;

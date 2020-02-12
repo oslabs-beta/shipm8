@@ -5,9 +5,14 @@ class K8sApi {
   static apiFetch = async ({ apiUrl, cluster, method = 'get', body }) => {
     const { url, token } = cluster;
 
+    url = url.indexOf('https') !== -1
+      ? url
+      : `https://${url}`;
+
     const authHeader = {
       Authorization: `Bearer ${token}`,
     };
+
     try {
       const res = await RNFetchBlob.config({
         trusty: true,
@@ -81,22 +86,6 @@ class K8sApi {
   static fetchSecrets = async cluster => {
     return await this.get(`/api/v1/secrets`, cluster);
   }
-
-  static fetchEndpoints = async cluster => {
-    return await this.get(`/api/v1/endpoints`, cluster);
-  }
-
-  static fetchEndpoints = async cluster => {
-    return await this.get(`/api/v1/endpoints`, cluster);
-  }
-
-  static fetchEndpoints = async cluster => {
-    return await this.get(`/api/v1/endpoints`, cluster);
-  }
-
-
-
-
 
 }
 

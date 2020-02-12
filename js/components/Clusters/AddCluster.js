@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,19 +13,58 @@ import { Badge } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 
+import Loading from '../common/Loading';
 import Regions from '../../data/Regions';
+import { fetchEksClusters } from '../../reducers/AwsSlice';
 import { addCluster, setCurrentProvider } from './ClustersSlice';
-import { fetchEksClusters } from '../AwsSlice';
+import { fetchGkeClusters, fetchGcpProjects } from '../../reducers/GoogleCloudSlice';
 
-const AddEksCluster = ({ navigation }) => {
+const AddCluster = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [regionSelected, setRegionSelected] = useState(false);
-  const clusters = useSelector(state => state.Aws.clusters);
+  const [valueSelected, setValueSelected] = useState(false);
 
-  const handleRegionChange = async region => {
-    setRegionSelected(true);
-    dispatch(fetchEksClusters(region));
+  const currentProvider = useSelector(state => state.Clusters.currentProvider);
+  const isLoading = useSelector(state => state[currentProvider].isLoading);
+  const clusters = useSelector(state => state[currentProvider].clusters);
+
+  const gcpProjects = useSelector(state => state.Gcp.projects &&
+    state.Gcp.projects.map(project => {
+      return {
+        label: project.name,
+        value: project.projectId
+      }
+    }));
+
+  useEffect(() => {
+    currentProvider === 'Gcp' &&
+      dispatch(fetchGcpProjects());
+  }, [])
+
+  const handleDropdownChange = value => {
+    setValueSelected(true);
+    currentProvider === 'Aws'
+      ? dispatch(fetchEksClusters(value))
+      : dispatch(fetchGkeClusters(value));
   };
+
+  const setDropDownValues = () => {
+    return currentProvider === 'Aws'
+      ? Regions
+      : gcpProjects || [{ value: 'Loading' }];
+  }
+
+  const regionOrProjectLabel = currentProvider === 'Aws'
+    ? 'Region'
+    : 'Project';
+
+  const setNoValueSelectedText = () => {
+    return `Please select a ${regionOrProjectLabel} to view
+    available clusters`;
+  }
+
+  const setDropdownLabel = () => {
+    return `Select a ${regionOrProjectLabel}`;
+  }
 
   const handleClusterPress = cluster => {
     dispatch(addCluster(cluster));
@@ -34,7 +73,7 @@ const AddEksCluster = ({ navigation }) => {
   };
 
   const checkStatus = text => {
-    if (text === 'ACTIVE') {
+    if (text === 'ACTIVE' || text === 'RUNNING') {
       return 'success';
     } else if (text === 'CREATING') {
       return 'warning';
@@ -78,29 +117,32 @@ const AddEksCluster = ({ navigation }) => {
         <ScrollView style={styles.scrollView}>
           <View style={styles.dropDownView}>
             <Dropdown
-              label="Please Select a Region"
-              data={Regions}
+              label={setDropdownLabel()}
+              data={setDropDownValues()}
               itemCount={4}
               dropdownPosition={0}
               dropdownOffset={styles.dropDownOffset}
               style={styles.dropDown}
-              onChangeText={text => handleRegionChange(text)}
+              onChangeText={text => handleDropdownChange(text)}
             />
           </View>
-          <ScrollView style={styles.clusterScroll}>
-            {regionSelected && clusterList}
-            {regionSelected && !clusterList && (
-              <Text
-                style={{
-                  textAlign: 'center',
-                  marginTop: 150,
-                  fontSize: 20,
-                  color: 'gray',
-                }}>
-                No Clusters in this Region{' '}
-              </Text>
-            )}
-          </ScrollView>
+          {isLoading ?
+            (
+              <ScrollView style={styles.clusterScroll}>
+                <Loading />
+              </ScrollView>
+            )
+            :
+            (
+              <ScrollView style={styles.clusterScroll}>
+                {valueSelected && clusterList}
+                {valueSelected && !clusterList &&
+                  <Text style={styles.noContentText}>No Clusters Found</Text>}
+                {!valueSelected &&
+                  <Text style={styles.noContentText}>{setNoValueSelectedText()}</Text>}
+              </ScrollView>
+            )
+          }
           <View style={{ marginTop: 60 }}>
             <Button
               color="red"
@@ -114,7 +156,7 @@ const AddEksCluster = ({ navigation }) => {
   );
 };
 
-export default React.memo(AddEksCluster);
+export default React.memo(AddCluster);
 
 const styles = StyleSheet.create({
   clusterButton: {
@@ -124,6 +166,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  noContentText: {
+    textAlign: 'center',
+    marginTop: 150,
+    fontSize: 20,
+    color: 'gray',
   },
   buttonsContainer: {
     backgroundColor: 'blue',

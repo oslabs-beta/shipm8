@@ -75,3 +75,18 @@ export const fetchProjects = pageToken =>
       return Promise.reject(err);
     }
   }
+
+export const fetchZones = (projectId, pageToken) =>
+  async dispatch => {
+    try {
+      const zones = await GoogleCloudApi.fetchZones(projectId, pageToken);
+      dispatch(fetchZonesSuccess(zones.zones));
+      if (zones.nextPageToken) {
+        return dispatch(fetchZones(projectId, zones.nextPageToken));
+      }
+      return Promise.resolve();
+    } catch (err) {
+      dispatch(fetchZonesFailed(err.toString()));
+      return Promise.reject(err)
+    }
+  }

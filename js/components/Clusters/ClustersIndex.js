@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 
-import Loading from '../common/Loading';
 import CloudProviders from '../../data/CloudProviders';
 import { setCurrentCluster, setCurrentProvider } from './ClustersSlice';
 
@@ -42,7 +41,7 @@ const ClustersIndex = ({ navigation }) => {
   };
 
   const renderClusters = () => {
-    if (clusters) {
+    if (clusters.length) {
       return clusters
         .filter(cluster =>
           cluster.cloudProvider === currentProvider)

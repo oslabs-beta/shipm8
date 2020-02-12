@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
@@ -14,6 +14,7 @@ import {
 import { checkAwsCredentials } from '../reducers/AwsSlice';
 import { googleSignIn, fetchGcpProjects } from '../reducers/GoogleCloudSlice';
 import { setCurrentProvider } from '../components/Clusters/ClustersSlice';
+
 // Load FontAwesome icons
 Icon.loadFont();
 
@@ -43,7 +44,7 @@ const Login = ({ navigation }) => {
     const signInStatus = await dispatch(googleSignIn());
     if (signInStatus === true) {
       dispatch(setCurrentProvider('Gcp'));
-      await dispatch(fetchGcpProjects());
+      dispatch(fetchGcpProjects());
       navigation.navigate('Add Cluster');
     } else {
       alert(signInStatus);

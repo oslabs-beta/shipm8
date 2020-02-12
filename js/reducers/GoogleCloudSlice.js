@@ -59,3 +59,19 @@ const fetchGkeClusters = (projectId, zone) =>
       dispatch(fetchGkeClustersFailed(err.toString()));
     }
   }
+
+const fetchProjects = pageToken =>
+  async dispatch => {
+    try {
+      dispatch(fetchProjectsStart());
+      const projects = await GoogleCloudApi.fetchProjects(pageToken);
+      dispatch(fetchProjectsSuccess(projects.projects));
+      if (projects.nextPageToken) {
+        return dispatch(fetchProjects(projects.nextPageToken));
+      }
+      return Promise.resolve();
+    } catch (err) {
+      dispatch(fetchGkeClustersFailed(err.toString()));
+      return Promise.reject(err);
+    }
+  }

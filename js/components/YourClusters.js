@@ -8,6 +8,7 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Badge } from 'react-native-elements';
@@ -16,9 +17,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { addCluster } from '../reducers/ClustersSlice';
 import AwsApi from '../api/AwsApi';
-import Regions from '../Regions';
+import CloudProviders from '../CloudProviders';
 
-const AddEksCluster = ({ navigation }) => {
+const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
   const [regionSelected, setRegionSelected] = useState(false);
   const [clusters, setClusters] = useState(null);
@@ -31,14 +32,12 @@ const AddEksCluster = ({ navigation }) => {
 
   const handleClusterPress = cluster => {
     dispatch(addCluster(cluster));
-    navigation.navigate('Your Clusters');
+    navigation.navigate('Pods');
   };
 
   const checkStatus = text => {
     if (text === 'ACTIVE') {
       return 'success';
-    } else if (text === 'CREATING') {
-      return 'warning';
     } else {
       return 'error';
     }
@@ -47,30 +46,30 @@ const AddEksCluster = ({ navigation }) => {
   const clusterList =
     clusters && clusters.length > 0
       ? clusters.map((cluster, idx) => {
-        return (
-          <TouchableOpacity
-            key={cluster.name + idx}
-            style={styles.clusterContainer}
-            activeOpacity={0.7}
-            cluster={cluster.name}
-            onPress={() => handleClusterPress(cluster)}>
-            <Text numberOfLines={1} style={styles.clusterText}>
-              {cluster.name}
-            </Text>
-            <Text style={styles.statusText}>{cluster.status}</Text>
-            <Badge
-              status={checkStatus(cluster.status)}
-              badgeStyle={styles.badge}
-            />
-            <Icon
-              name="chevron-right"
-              size={15}
-              color="gray"
-              style={styles.arrow}
-            />
-          </TouchableOpacity>
-        );
-      })
+          return (
+            <TouchableOpacity
+              key={cluster.name + idx}
+              style={styles.clusterContainer}
+              activeOpacity={0.7}
+              cluster={cluster.name}
+              onPress={() => handleClusterPress(cluster)}>
+              <Text numberOfLines={1} style={styles.clusterText}>
+                {cluster.name}
+              </Text>
+              <Text style={styles.statusText}>{cluster.status}</Text>
+              <Badge
+                status={checkStatus(cluster.status)}
+                badgeStyle={styles.badge}
+              />
+              <Icon
+                name="chevron-right"
+                size={15}
+                color="gray"
+                style={styles.arrow}
+              />
+            </TouchableOpacity>
+          );
+        })
       : null;
 
   return (
@@ -79,8 +78,8 @@ const AddEksCluster = ({ navigation }) => {
         <ScrollView style={styles.scrollView}>
           <View style={styles.dropDownView}>
             <Dropdown
-              label="Please Select a Region"
-              data={Regions}
+              label="Select Cloud Provider"
+              data={CloudProviders}
               itemCount={3}
               dropdownPosition={0}
               // dropdownMargins={{ min: 50, max: 50 }}
@@ -99,7 +98,7 @@ const AddEksCluster = ({ navigation }) => {
                   fontSize: 20,
                   color: 'gray',
                 }}>
-                No Clusters in this Region{' '}
+                No Clusters
               </Text>
             )}
           </ScrollView>
@@ -120,7 +119,7 @@ const AddEksCluster = ({ navigation }) => {
   );
 };
 
-export default React.memo(AddEksCluster);
+export default React.memo(ClustersIndex);
 
 const styles = StyleSheet.create({
   clusterButton: {
@@ -191,8 +190,8 @@ const styles = StyleSheet.create({
   },
   clusterText: {
     fontSize: 16,
-    marginLeft: 15,
-    marginRight: 80,
+    marginLeft: 5,
+    marginRight: 96,
     width: 165,
     backgroundColor: 'white',
     overflow: 'scroll',

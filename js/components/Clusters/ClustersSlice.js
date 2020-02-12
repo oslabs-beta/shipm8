@@ -11,7 +11,7 @@ const Clusters = createSlice({
     isLoading: false,
     current: null,
     error: null,
-    selectedProvider: null,
+    currentProvider: null,
     byUrl: {},
   },
   reducers: {
@@ -37,7 +37,7 @@ const Clusters = createSlice({
     },
     setCurrentProvider(state, action) {
       const provider = action.payload;
-      state.selectedProvider = provider;
+      state.currentProvider = provider;
     },
     getAuthTokenFailed: loadingFailed,
     getAuthTokenSuccess(state, action) {
@@ -102,5 +102,6 @@ export const getAuthToken = cluster =>
 
     } catch (err) {
       dispatch(getAuthTokenFailed(err.toString()));
+      return Promise.reject(err);
     }
   }

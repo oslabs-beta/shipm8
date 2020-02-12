@@ -80,6 +80,7 @@ export const fetchNamespaces = cluster =>
       dispatch(fetchNamespacesSuccess({ cluster: clusterWithToken, namespaces }));
     } catch (err) {
       dispatch(fetchNamespacesFailed(err.toString()));
+      return Promise.reject(err)
     }
   };
 

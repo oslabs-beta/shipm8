@@ -53,7 +53,7 @@ export const fetchGkeClusters = (projectId, zone) =>
   async dispatch => {
     try {
       dispatch(fetchGkeClustersStart());
-      const clusters = await GoogleCloudApi.fetchClusters(projectId, zone);
+      const clusters = await GoogleCloudApi.fetchGkeClusters(projectId, zone);
       dispatch(fetchGkeClustersSuccess(clusters));
     } catch (err) {
       dispatch(fetchGkeClustersFailed(err.toString()));

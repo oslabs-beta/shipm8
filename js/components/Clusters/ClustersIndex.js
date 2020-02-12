@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -12,21 +12,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 
-import { setCurrentCluster, setCurrentProvider } from './ClustersSlice';
+import Loading from '../common/Loading';
 import CloudProviders from '../../data/CloudProviders';
+import { setCurrentCluster, setCurrentProvider } from './ClustersSlice';
 
 const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
   const clusters = useSelector(state => Object.values(state.Clusters.byUrl));
-  const provider = useSelector(state => state.Clusters.selectedProvider);
-  const [clustersList, setClustersList] = useState(clusters);
+  const currentProvider = useSelector(state => state.Clusters.currentProvider);
 
   const handleProviderChange = provider => {
-    const clustersForProvider = clusters.filter(
-      cluster => cluster.cloudProvider === provider,
-    );
-    setClustersList(clustersForProvider);
-    setCurrentProvider(provider);
+    dispatch(setCurrentProvider(provider));
   };
 
   const handleClusterPress = cluster => {
@@ -35,7 +31,7 @@ const ClustersIndex = ({ navigation }) => {
   };
 
   const checkStatus = text => {
-    if (text === 'ACTIVE') {
+    if (text === 'ACTIVE' || text === 'RUNNING') {
       return 'success';
     } else if (text === 'CREATING') {
       return 'warning';
@@ -45,34 +41,39 @@ const ClustersIndex = ({ navigation }) => {
     }
   };
 
-  const clustersDisplay =
-    clustersList && clustersList.length > 0
-      ? clustersList.map((cluster, idx) => {
-        return (
-          <TouchableOpacity
-            key={cluster.name + idx}
-            style={styles.clusterContainer}
-            activeOpacity={0.7}
-            cluster={cluster.name}
-            onPress={() => handleClusterPress(cluster)}>
-            <Text numberOfLines={1} style={styles.clusterText}>
-              {cluster.name}
-            </Text>
-            <Text style={styles.statusText}>{cluster.status}</Text>
-            <Badge
-              status={checkStatus(cluster.status)}
-              badgeStyle={styles.badge}
-            />
-            <Icon
-              name="chevron-right"
-              size={15}
-              color="gray"
-              style={styles.arrow}
-            />
-          </TouchableOpacity>
-        );
-      })
-      : null;
+  const renderClusters = () => {
+    if (clusters) {
+      return clusters
+        .filter(cluster =>
+          cluster.cloudProvider === currentProvider)
+        .map((cluster, idx) => {
+          return (
+            <TouchableOpacity
+              key={cluster.name + idx}
+              style={styles.clusterContainer}
+              activeOpacity={0.7}
+              cluster={cluster.name}
+              onPress={() => handleClusterPress(cluster)}>
+              <Text numberOfLines={1} style={styles.clusterText}>
+                {cluster.name}
+              </Text>
+              <Text style={styles.statusText}>{cluster.status}</Text>
+              <Badge
+                status={checkStatus(cluster.status)}
+                badgeStyle={styles.badge}
+              />
+              <Icon
+                name="chevron-right"
+                size={15}
+                color="gray"
+                style={styles.arrow}
+              />
+            </TouchableOpacity>
+          );
+        })
+    }
+    return [];
+  }
 
   return (
     <View>
@@ -81,7 +82,7 @@ const ClustersIndex = ({ navigation }) => {
           <Dropdown
             label="Select Cloud Provider"
             data={CloudProviders}
-            value={provider}
+            value={currentProvider}
             itemCount={4}
             dropdownPosition={0}
             dropdownOffset={styles.dropDownOffset}
@@ -90,18 +91,10 @@ const ClustersIndex = ({ navigation }) => {
           />
         </View>
         <ScrollView style={styles.clusterScroll}>
-          {clustersDisplay && clustersDisplay}
-          {!clustersDisplay && (
-            <Text
-              style={{
-                textAlign: 'center',
-                marginTop: 150,
-                fontSize: 20,
-                color: 'gray',
-              }}>
-              No Clusters
-            </Text>
-          )}
+          {renderClusters().length > 0 && renderClusters()}
+          {renderClusters().length === 0 &&
+            <Text style={styles.noContentText}>No Clusters Found. Please add a Cluster.</Text>
+          }
         </ScrollView>
         <View
           style={{
@@ -118,14 +111,12 @@ const ClustersIndex = ({ navigation }) => {
         <Button
           buttonStyle={{
             borderColor: 'red',
-            fontWeight: 'bold',
             borderStyle: 'solid',
-            color: 'red',
           }}
           titleStyle={{
             color: 'red',
           }}
-          type="raised"
+          type="solid"
           title="Sign Out"
           onPress={() => navigation.navigate('Cloud Login')}
         />
@@ -144,6 +135,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  noContentText: {
+    textAlign: 'center',
+    marginTop: 150,
+    fontSize: 20,
+    color: 'gray',
   },
   buttonsContainer: {
     backgroundColor: 'blue',

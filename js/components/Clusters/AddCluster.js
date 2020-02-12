@@ -27,13 +27,17 @@ const AddCluster = ({ navigation }) => {
   const isLoading = useSelector(state => state[currentProvider].isLoading);
   const clusters = useSelector(state => state[currentProvider].clusters);
 
-  const gcpProjects = useSelector(state => state.Gcp.projects &&
-    state.Gcp.projects.map(project => {
-      return {
-        label: project.name,
-        value: project.projectId
-      }
-    }));
+  const gcpProjects = useSelector(state => {
+    if (state.Gcp.projects) {
+      return state.Gcp.projects.map(project => {
+        return {
+          label: project.name,
+          value: project.projectId
+        }
+      });
+    }
+    return null;
+  });
 
   useEffect(() => {
     currentProvider === 'Gcp' &&

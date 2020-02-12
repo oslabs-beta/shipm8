@@ -14,6 +14,7 @@ import {
 import { checkAwsCredentials } from '../reducers/AwsSlice';
 import { googleSignIn, fetchGcpProjects } from '../reducers/GoogleCloudSlice';
 import { setCurrentProvider } from '../components/Clusters/ClustersSlice';
+
 // Load FontAwesome icons
 Icon.loadFont();
 
@@ -43,7 +44,7 @@ const Login = ({ navigation }) => {
     const signInStatus = await dispatch(googleSignIn());
     if (signInStatus === true) {
       dispatch(setCurrentProvider('Gcp'));
-      await dispatch(fetchGcpProjects());
+      dispatch(fetchGcpProjects());
       navigation.navigate('Add Cluster');
     } else {
       alert(signInStatus);

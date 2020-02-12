@@ -3,11 +3,11 @@ import RNFetchBlob from 'rn-fetch-blob';
 class K8sApi {
 
   static apiFetch = async ({ apiUrl, cluster, method = 'get', body }) => {
-    const { url, token } = cluster;
+    const { url: endpoint, token } = cluster;
 
-    url = url.indexOf('https') !== -1
-      ? url
-      : `https://${url}`;
+    const url = endpoint.indexOf('https') !== -1
+      ? endpoint
+      : `https://${endpoint}`;
 
     const authHeader = {
       Authorization: `Bearer ${token}`,

@@ -8,6 +8,7 @@ class K8sApi {
     const authHeader = {
       Authorization: `Bearer ${token}`,
     };
+
     try {
       const res = await RNFetchBlob.config({
         trusty: true,
@@ -81,22 +82,6 @@ class K8sApi {
   static fetchSecrets = async cluster => {
     return await this.get(`/api/v1/secrets`, cluster);
   }
-
-  static fetchEndpoints = async cluster => {
-    return await this.get(`/api/v1/endpoints`, cluster);
-  }
-
-  static fetchEndpoints = async cluster => {
-    return await this.get(`/api/v1/endpoints`, cluster);
-  }
-
-  static fetchEndpoints = async cluster => {
-    return await this.get(`/api/v1/endpoints`, cluster);
-  }
-
-
-
-
 
 }
 

@@ -1,5 +1,8 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
+
+EStyleSheet.build(); // need this to be in
 
 const Launch = ({ navigation }) => {
   const getStarted = () => {
@@ -8,38 +11,24 @@ const Launch = ({ navigation }) => {
   return (
     <View style={styles.container} behavior="padding" enabled>
       <Image source={require('../../assets/SHIPM8.png')} style={styles.logo} />
-      <Text style={styles.banner}>Kubernetes Mobile Monitoring</Text>
-      <Text style={styles.banner}>with</Text>
+      <Text style={styles.bannerLineOne}>Kubernetes Mobile Monitoring</Text>
+      <Text style={styles.bannerLineTwo}>with</Text>
 
-      <View style={styles.logoContainer}>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <Image
-            style={styles.googleCloud}
-            source={require('../../assets/googleCloud.png')}
-          />
-          <Text style={styles.textStyle}>+</Text>
-          <Image
-            style={{
-              width: 150,
-              height: 40,
-              backgroundColor: 'white',
-              marginTop: 15,
-              marginRight: 5,
-            }}
-            source={require('../../assets/aws.png')}
-          />
-        </View>
-        <View style={styles.formContainer} />
-        <View style={{ alignItems: 'center' }}>
-          <TouchableOpacity
-            style={styles.buttonContainer}
-            activeOpacity={0.7}
-            behavior="padding"
-            enabled
-            onPress={getStarted}>
-            <Text style={styles.buttonText}>Get Started</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.cloudLogoContainer}>
+        <Image
+          style={styles.googleCloud}
+          source={require('../../assets/googleCloud.png')}
+        />
+        <Text style={styles.textStyle}>+</Text>
+        <Image
+          style={styles.awsLogo}
+          source={require('../../assets/aws.png')}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity>
+          <Text style={styles.getStartedText}>Get Started</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -47,35 +36,50 @@ const Launch = ({ navigation }) => {
 
 export default React.memo(Launch);
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonContainer: {
-    backgroundColor: '#1589FF',
-    paddingVertical: 15,
-    borderRadius: 5,
-    borderStyle: 'solid',
-    borderWidth: 3,
-    borderColor: '#151B54',
-    width: 300,
-    marginBottom: 650,
-    alignItems: 'center',
+  getStartedText: {
+    fontSize: '1.2rem',
+    color: 'white',
   },
-  banner: {
-    fontSize: 18,
+  buttonContainer: {
+    alignItems: 'center',
+    width: '70%',
+    borderStyle: 'solid',
+    borderColor: '#151B54',
+    borderWidth: '.2rem',
+    borderRadius: '.5rem',
+    padding: '1rem',
+    textAlign: 'center',
+    backgroundColor: '#1589FF',
+    marginBottom: '5.5rem',
+  },
+  bannerLineOne: {
+    fontSize: '1.1rem',
     fontWeight: 'bold',
     color: '#151B54',
     textAlign: 'center',
   },
+  bannerLineTwo: {
+    fontSize: '1.1rem',
+    fontWeight: 'bold',
+    color: '#151B54',
+    textAlign: 'center',
+    marginBottom: '-1rem',
+  },
   buttonText: {
     textAlign: 'center',
     color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
+    fontSize: '.3rem',
+  },
+  cloudLogoContainer: {
+    flex: 1,
+    flexDirection: 'row',
   },
   textStyle: {
     textAlign: 'center',
@@ -83,32 +87,33 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     color: '#151B54',
-    fontSize: 18,
+    fontSize: '1.3rem',
     fontWeight: 'bold',
-    marginTop: 24,
+    marginTop: '8%',
   },
   logo: {
-    width: 350,
-    height: 400,
+    width: '85%',
+    height: '55%',
     alignContent: 'center',
     alignItems: 'center',
     borderColor: '#151B54',
-    borderWidth: 3,
-    borderRadius: 10,
-    marginTop: 600,
-    marginBottom: 50,
-  },
-  formContainer: {
-    paddingVertical: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderWidth: '.2rem',
+    borderRadius: '.2rem',
+    marginTop: '8%',
+    marginBottom: '10%',
   },
   googleCloud: {
-    width: 150,
-    height: 40,
+    width: '37%',
+    height: '27%',
     backgroundColor: 'white',
-    marginTop: 20,
-    marginRight: 10,
-    marginLeft: 6,
+    marginRight: '4%',
+    marginTop: '8.5%',
+    marginLeft: '-.4rem',
+  },
+  awsLogo: {
+    width: '38%',
+    height: '39%',
+    backgroundColor: 'white',
+    marginTop: '1.6rem',
   },
 });

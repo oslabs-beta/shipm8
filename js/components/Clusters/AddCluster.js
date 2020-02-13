@@ -165,7 +165,7 @@ export default React.memo(AddCluster);
 const styles = EStyleSheet.create({
   noContentText: {
     textAlign: 'center',
-    marginTop: '8rem',
+    marginTop: '9rem',
     fontSize: '1.3rem',
     color: 'gray',
   },

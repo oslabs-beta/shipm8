@@ -95,12 +95,7 @@ const ClustersIndex = ({ navigation }) => {
             <Text style={styles.noContentText}>No Clusters Found</Text>
           )}
         </ScrollView>
-        <View
-          style={{
-            marginBottom: 20,
-            width: 200,
-            alignSelf: 'center',
-          }}>
+        <View>
           <TouchableOpacity onPress={() => navigation.navigate('Add Cluster')}>
             <Icon
               style={styles.addClusterIcon}
@@ -127,7 +122,7 @@ export default React.memo(ClustersIndex);
 const styles = EStyleSheet.create({
   noContentText: {
     textAlign: 'center',
-    marginTop: '8rem',
+    marginTop: '9rem',
     fontSize: '1.3rem',
     color: 'gray',
   },
@@ -155,20 +150,21 @@ const styles = EStyleSheet.create({
     marginTop: '3%',
     backgroundColor: 'white',
     flexDirection: 'row',
-    height: '40%',
+    height: '48%',
     width: '96%',
-    paddingVertical: 12,
     paddingLeft: 8,
     borderStyle: 'solid',
     borderColor: '#063CB9',
     borderWidth: 1,
     borderRadius: 8,
     alignSelf: 'center',
+    alignItems: 'center',
   },
   clusterText: {
     fontSize: '1rem',
     marginRight: '3.8rem',
     width: '46%',
+    height: '50%',
     backgroundColor: 'white',
     overflow: 'scroll',
   },
@@ -177,6 +173,7 @@ const styles = EStyleSheet.create({
     textAlign: 'right',
     backgroundColor: 'white',
     width: '5.65rem',
+    height: '50%',
     color: 'gray',
     marginRight: '.18rem',
   },
@@ -188,11 +185,11 @@ const styles = EStyleSheet.create({
   },
   arrow: {
     marginLeft: '.4rem',
-    marginTop: '.2rem',
+    marginTop: '-.4rem',
   },
   badge: {
     marginLeft: '.4rem',
-    marginTop: '.37rem',
+    marginTop: '-.4rem',
     marginRight: '.2rem',
   },
   signOut: {
@@ -203,6 +200,6 @@ const styles = EStyleSheet.create({
   },
   addClusterIcon: {
     alignSelf: 'center',
-    marginBottom: '-3rem',
+    marginBottom: '-1.7rem',
   },
 });

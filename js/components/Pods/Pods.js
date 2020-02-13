@@ -4,7 +4,6 @@ import {
   Text,
   Image,
   Button,
-  StyleSheet,
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
@@ -13,6 +12,7 @@ import { Badge } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import Loading from '../common/Loading';
 import { setCurrentPod, fetchPods } from '../Pods/PodsSlice';
@@ -109,45 +109,34 @@ const Pods = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.dropDownView}>
-          <Dropdown
-            label="Select a Namespace"
-            data={createNamespaceList(currentCluster.namespaces)}
-            value={
-              currentCluster.currentNamespace
-                ? currentCluster.currentNamespace
-                : 'All Namespaces'
-            }
-            itemCount={4}
-            dropdownOffset={styles.dropDownOffset}
-            style={styles.dropDown}
-            onChangeText={text => handleNamespaceChange(text)}
-          />
-        </View>
-        {!pods && isLoading && (
-          <ScrollView style={styles.podScroll}>
-            <Loading />
-          </ScrollView>
-        )}
+      <View style={styles.dropDownView}>
+        <Dropdown
+          label="Select a Namespace"
+          data={createNamespaceList(currentCluster.namespaces)}
+          value={
+            currentCluster.currentNamespace
+              ? currentCluster.currentNamespace
+              : 'All Namespaces'
+          }
+          itemCount={4}
+          dropdownOffset={styles.dropDownOffset}
+          style={styles.dropDown}
+          onChangeText={text => handleNamespaceChange(text)}
+        />
+      </View>
+      {!pods && isLoading && (
         <ScrollView style={styles.podScroll}>
-          {renderPods().length > 0 && renderPods()}
-          {renderPods().length === 0 && (
-            <Text
-              style={{
-                textAlign: 'center',
-                marginTop: 150,
-                fontSize: 20,
-                color: 'gray',
-              }}>
-              No Pods Found
-            </Text>
-          )}
+          <Loading />
         </ScrollView>
+      )}
+      <ScrollView style={styles.podScroll}>
+        {renderPods().length > 0 && renderPods()}
+        {renderPods().length === 0 && (
+          <Text style={styles.noPodsFound}>No Pods Found</Text>
+        )}
       </ScrollView>
-      <View style={styles.buttonView}>
+      <View style={styles.signOut}>
         <Button
-          style={styles.signOut}
           color="red"
           title="Sign Out"
           onPress={() => navigation.navigate('Cloud Login')}
@@ -159,101 +148,90 @@ const Pods = ({ navigation }) => {
 
 export default React.memo(Pods);
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  test: {
-    textAlign: 'center',
-    fontSize: 20,
-  },
   safeArea: {
     backgroundColor: 'white',
-    marginHorizontal: 10,
+    marginHorizontal: '3%',
     height: '100%',
-    marginTop: -11,
-  },
-  scrollView: {
-    marginHorizontal: 0,
-    marginTop: 30,
-  },
-  namespacePickText: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  signOut: {
-    flex: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontWeight: 'bold',
-    color: 'red',
-  },
-  buttonView: {
-    marginTop: 20,
-  },
-  dropDown: {
-    textAlign: 'center',
-    alignItems: 'center',
   },
   dropDownView: {
     width: '90%',
     alignSelf: 'center',
+    marginTop: '8%',
+    backgroundColor: 'white',
   },
   dropDownOffset: {
     top: 15,
     left: 0,
   },
+  dropDown: {
+    textAlign: 'center',
+    alignItems: 'center',
+  },
+  noPodsFound: {
+    textAlign: 'center',
+    marginTop: '9rem',
+    fontSize: '1.3rem',
+    color: 'gray',
+  },
   podScroll: {
+    marginTop: '3%',
     borderRadius: 5,
-    marginTop: 10,
-    height: 600,
+    marginBottom: '.2rem',
+    backgroundColor: 'white',
+    marginBottom: '1.2rem',
   },
   podContainer: {
-    marginTop: 10,
+    marginTop: '.7rem',
     backgroundColor: 'white',
     flexDirection: 'row',
-    marginBottom: 1,
-    marginLeft: 6,
-    height: 48,
+    height: '3rem',
     width: '96%',
-    paddingVertical: 12,
-    paddingLeft: 6,
+    paddingLeft: '1%',
     borderStyle: 'solid',
     borderColor: '#063CB9',
     borderWidth: 1,
     borderRadius: 8,
-    alignContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
+  logo: {
+    width: '2.4rem',
+    height: '2.4rem',
   },
   podText: {
-    fontSize: 16,
-    marginLeft: 7,
-    width: 192,
-    marginRight: 25,
+    fontSize: '1rem',
+    marginLeft: '.5rem',
+    width: '12.2rem',
+    marginRight: '1.2rem',
     backgroundColor: 'white',
     overflow: 'scroll',
   },
   statusText: {
-    fontSize: 16,
+    fontSize: '1rem',
     backgroundColor: 'white',
     color: 'gray',
     textAlign: 'right',
   },
-  arrow: {
-    marginLeft: 8,
-    marginTop: 4,
-  },
   badge: {
-    marginLeft: 8,
-    marginTop: 7,
+    marginLeft: '.6rem',
+    marginTop: '.1rem',
+    marginRight: '.2rem',
   },
-  logo: {
-    width: 38,
-    height: 38,
-    marginTop: -7,
+  arrow: {
+    marginLeft: '.4rem',
+    marginTop: '.2rem',
+  },
+  signOut: {
+    marginTop: '1.2rem',
+    backgroundColor: 'white',
+    width: '30%',
+    alignSelf: 'center',
   },
 });

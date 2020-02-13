@@ -1,59 +1,53 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { store, persistor } from './store/configureStore';
+import { PersistGate } from 'redux-persist/integration/react';
 import { createStackNavigator } from 'react-navigation-stack';
-import AsyncStorage from '@react-native-community/async-storage';
 
-import store from './store/index.js';
-import CloudLogin from './components/CloudLogin';
-import AddEksCluster from './components/AddEksCluster';
 import Launch from './components/Launch';
-import Pods from './components/Pods';
-import PodInfo from './components/PodInfo';
-import YourClusters from './components/YourClusters.js';
+import Pods from './components/Pods/Pods';
+import PodInfo from './components/Pods/PodInfo';
+import CloudLogin from './components/CloudLogin';
+import AddCluster from './components/Clusters/AddCluster';
+import ClustersIndex from './components/Clusters/ClustersIndex';
+import AsyncStorage from '@react-native-community/async-storage';
+import AuthLoading from './components/AuthLoading';
 
-let initialRoute;
+// let initialRoute = 'Welcome';
 
-const findRoute = async () => {
-  try {
-    let value = await AsyncStorage.getItem('AWSCredentials')
-    console.log('THIS IS VALUE', value)
-    if (value != null) {
-      initialRoute = 'Your Clusters'
-      return initialRoute
-    }
-    else {
-      initialRoute = 'ShipM8'
-    }
-  }
-  catch (error) {
-    return alert(error)
-  }
-}
-findRoute()
-console.log("this is the route", initialRoute)
+// const onBeforeLift = async () => {
+//   const state = store.getState();
+//   console.log('THIS IS STATE', state.Clusters.byUrl[0])
+//   // Object.keys(state.Clusters.byUrl) !== 0
+//   //   ? initialRoute = 'Clusters'
+//   //   : initialRoute = 'Welcome';
+//   if (state.Clusters.byUrl[0] === undefined) {
+//     initialRoute = 'Clusters'
+//     console.log(initialRoute)
+//   }
+//   else {
+//     initialRoute = 'Welcome'
+//   }
+//   return initialRoute
+// }
 
-
-
-// const initialRoute = AsyncStorage.getItem('AWSCredentials')
-//   ? 'Your Clusters'
-//   : 'ShipM8';
 
 const MainNavigator = createStackNavigator(
   {
-    ShipM8: Launch,
+    Welcome: Launch,
     'Cloud Login': CloudLogin,
-    'Add EKS Cluster': AddEksCluster,
-    'Your Clusters': YourClusters,
+    'Add Cluster': AddCluster,
+    Clusters: ClustersIndex,
     Pods: Pods,
     'Pod Details': PodInfo,
   },
   {
-    initialRouteName: initialRoute,
+    // initialRouteName: initialRoute,
 
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: '#1589FF',
+        backgroundColor: '#151B54',
       },
       headerTintColor: 'white',
       headerTitleStyle: {
@@ -63,12 +57,31 @@ const MainNavigator = createStackNavigator(
     },
   },
 );
-const AppContainer = createAppContainer(MainNavigator);
+
+const AuthStack = createStackNavigator({ Clusters: ClustersIndex, })
+
+const AppContainer = createAppContainer(
+  createSwitchNavigator(
+    {
+      AuthLoading: AuthLoading,
+      MainNavigator: MainNavigator,
+      AuthStack: AuthStack,
+    },
+    { initialRoute: 'AuthLoading' }
+  )
+);
 
 const App = () => {
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [isReady, setIsReady] = useState(false);
   return (
     <Provider store={store}>
-      <AppContainer />
+      <PersistGate
+        loading={null}
+        // onBeforeLift={onBeforeLift}
+        persistor={persistor}>
+        <AppContainer />
+      </PersistGate>
     </Provider>
   );
 };

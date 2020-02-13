@@ -17,7 +17,9 @@ const Regions = [
 
 export default Regions;
 
-// { value: 'me-south-1', label: 'Middle East(Bahrain)' },
-// { value: 'us-west-1', label: 'US West (N.California)' },
-// { value: 'ap-east-1', label: 'Asia Pacific (Hong Kong)' },
-// { value: 'eu - central - 1', label: 'Europe(Frankfurt)' },
+/* Unsupported Regions */
+
+// { value: 'me-south-1', label: 'Middle East(Bahrain)' }
+// { value: 'us-west-1', label: 'US West (N.California)' }
+// { value: 'ap-east-1', label: 'Asia Pacific (Hong Kong)' }
+// { value: 'eu - central - 1', label: 'Europe(Frankfurt)' }

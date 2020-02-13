@@ -4,17 +4,17 @@ import {
 } from '@react-native-community/google-signin';
 
 class GoogleCloudApi {
-
   static configureGoogleSignin = () => {
     GoogleSignin.configure({
       scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-      iosClientId: '303534223167-ath57063kfqkggvbuie92dta1jm6r6q2.apps.googleusercontent.com'
+      iosClientId:
+        '535704856722-soaqblnbbcf050at58k7bhbenk9fui5p.apps.googleusercontent.com',
     });
-  }
+  };
 
   static signIn = async () => {
     try {
-      this.configureGoogleSignin()
+      this.configureGoogleSignin();
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       return userInfo;
@@ -33,12 +33,13 @@ class GoogleCloudApi {
 
   static getAccessToken = async () => {
     try {
-      const accessToken = (await GoogleSignin.getTokens()).accessToken;
+      const tokens = await GoogleSignin.getTokens();
+      const accessToken = tokens.accessToken;
       return accessToken;
     } catch (err) {
-      console.log(err);
+      Promise.reject(err);
     }
-  }
+  };
 
   static getProjects = async () => {
     const headers = {
@@ -56,6 +57,80 @@ class GoogleCloudApi {
     }
   };
 
+  static gcpFetch = async (url, method = 'get', body) => {
+    const accessToken = await this.getAccessToken();
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
+    }
+
+    const res = await fetch(url, {
+      headers,
+      method,
+      body,
+    });
+
+    return res.json();
+  }
+
+  static fetchProjects = async pageToken => {
+    const qs = pageToken
+      ? `https://cloudresourcemanager.googleapis.com/v1/projects?pageSize=50&pageToken=${pageToken}`
+      : `https://cloudresourcemanager.googleapis.com/v1/projects?pageSize=50`;
+
+    try {
+      const projects = await this.gcpFetch(qs);
+
+      if (projects.error) {
+        return alert(projects.error.message)
+      }
+      return projects;
+
+    } catch (err) {
+      Promise.reject(err);
+    }
+  }
+
+  static fetchZones = async (projectId, pageToken) => {
+    const qs = pageToken
+      ? `&pageToken=${pageToken}`
+      : undefined;
+
+    try {
+      const zones = await this.gcpFetch(`https://compute.googleapis.com/compute/v1/projects/${projectId}/zones`);
+      if (zones.error) {
+        return alert(zones.error.message)
+      }
+      return zones;
+
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  static fetchGkeClusters = async (projectId, zone = '-') => {
+    try {
+      const clusters = await this.gcpFetch(`https://container.googleapis.com/v1/projects/${projectId}/locations/${zone}/clusters`);
+      if (!clusters.clusters) { return []; }
+      const clusterList = clusters.clusters.map(cluster => {
+        return {
+          url: cluster.endpoint,
+          name: cluster.name,
+          status: cluster.status,
+          createdAt: cluster.createTime,
+          cloudProvider: 'Gcp',
+          namespaces: [],
+        }
+      });
+      if (clusters.error) {
+        return alert(clusters.error.message);
+      }
+      return clusterList;
+
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
 }
 
 export default GoogleCloudApi;

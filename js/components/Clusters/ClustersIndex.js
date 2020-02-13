@@ -92,7 +92,7 @@ const ClustersIndex = ({ navigation }) => {
         <ScrollView style={styles.clusterScroll}>
           {renderClusters().length > 0 && renderClusters()}
           {renderClusters().length === 0 &&
-            <Text style={styles.noContentText}>No Clusters Found. Please add a Cluster.</Text>
+            <Text style={styles.noContentText}>No Clusters Found</Text>
           }
         </ScrollView>
         <View

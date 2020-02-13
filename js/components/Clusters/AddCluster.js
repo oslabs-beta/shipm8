@@ -73,7 +73,7 @@ const AddCluster = ({ navigation }) => {
   const handleClusterPress = cluster => {
     dispatch(addCluster(cluster));
     dispatch(setCurrentProvider(cluster.cloudProvider));
-    navigation.navigate('Clusters');
+    navigation.navigate('ShipM8');
   };
 
   const checkStatus = text => {

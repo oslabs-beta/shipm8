@@ -18,7 +18,6 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* shipm8Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* shipm8Tests.m */; };
 		2DDFE9781F7E9F8C54C94E7F /* libPods-shipm8Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49857A13F097888D25F94720 /* libPods-shipm8Tests.a */; };
-		F2C41EDB2DCBCD47A11C55BC /* libPods-shipm8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB42AE91D416B98F534E20CC /* libPods-shipm8.a */; };
 		FA583F30C381498611F9F855 /* libPods-shipm8-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90566CE9CD77D0887192FEB1 /* libPods-shipm8-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
@@ -82,7 +81,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F2C41EDB2DCBCD47A11C55BC /* libPods-shipm8.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,7 +296,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = SKMMRTZU77;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = SKMMRTZU77;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -642,6 +644,7 @@
 			baseConfigurationReference = 4C985C7733DC572DCCDFF740 /* Pods-shipm8Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = SKMMRTZU77;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -666,6 +669,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = SKMMRTZU77;
 				INFOPLIST_FILE = shipm8Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -686,7 +690,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = SKMMRTZU77;
 				INFOPLIST_FILE = shipm8/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -694,7 +699,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shipm8.shipm8;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shipm8.shipm8.shipm8;
 				PRODUCT_NAME = shipm8;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -706,6 +711,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SKMMRTZU77;
 				INFOPLIST_FILE = shipm8/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -713,7 +719,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shipm8.shipm8;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shipm8.shipm8.shipm8;
 				PRODUCT_NAME = shipm8;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

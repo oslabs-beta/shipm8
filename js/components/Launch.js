@@ -92,8 +92,8 @@ const styles = EStyleSheet.create({
     marginTop: '8%',
   },
   logo: {
-    width: '85%',
-    height: '55%',
+    width: '24rem',
+    height: '28rem',
     alignContent: 'center',
     alignItems: 'center',
     borderColor: '#151B54',

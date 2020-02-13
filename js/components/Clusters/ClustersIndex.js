@@ -6,8 +6,9 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
+  Button,
 } from 'react-native';
-import { Badge, Button } from 'react-native-elements';
+import { Badge } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -43,8 +44,7 @@ const ClustersIndex = ({ navigation }) => {
   const renderClusters = () => {
     if (clusters.length) {
       return clusters
-        .filter(cluster =>
-          cluster.cloudProvider === currentProvider)
+        .filter(cluster => cluster.cloudProvider === currentProvider)
         .map((cluster, idx) => {
           return (
             <TouchableOpacity
@@ -69,10 +69,10 @@ const ClustersIndex = ({ navigation }) => {
               />
             </TouchableOpacity>
           );
-        })
+        });
     }
     return [];
-  }
+  };
 
   return (
     <View>
@@ -91,9 +91,11 @@ const ClustersIndex = ({ navigation }) => {
         </View>
         <ScrollView style={styles.clusterScroll}>
           {renderClusters().length > 0 && renderClusters()}
-          {renderClusters().length === 0 &&
-            <Text style={styles.noContentText}>No Clusters Found. Please add a Cluster.</Text>
-          }
+          {renderClusters().length === 0 && (
+            <Text style={styles.noContentText}>
+              No Clusters Found. Please add a Cluster.
+            </Text>
+          )}
         </ScrollView>
         <View
           style={{
@@ -101,24 +103,24 @@ const ClustersIndex = ({ navigation }) => {
             width: 200,
             alignSelf: 'center',
           }}>
+          <TouchableOpacity onPress={() => navigation.navigate('Add Cluster')}>
+            <Icon
+              style={{
+                alignSelf: 'center',
+              }}
+              name="plus-circle"
+              size={50}
+              color="#1589FF"
+            />
+          </TouchableOpacity>
+        </View>
+        <View>
           <Button
-            type="solid"
-            title="Add Cluster +"
-            onPress={() => navigation.navigate('Add Cluster')}
+            color="red"
+            title="Sign Out"
+            onPress={() => navigation.navigate('Cloud Login')}
           />
         </View>
-        <Button
-          buttonStyle={{
-            borderColor: 'red',
-            borderStyle: 'solid',
-          }}
-          titleStyle={{
-            color: 'red',
-          }}
-          type="solid"
-          title="Sign Out"
-          onPress={() => navigation.navigate('Cloud Login')}
-        />
       </SafeAreaView>
     </View>
   );
@@ -135,6 +137,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  signOut: {},
   noContentText: {
     textAlign: 'center',
     marginTop: 150,

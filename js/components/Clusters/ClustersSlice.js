@@ -8,6 +8,7 @@ import { startLoading, loadingFailed } from '../../utils/LoadingUtils';
 const Clusters = createSlice({
   name: 'Clusters',
   initialState: {
+    isReady: true,
     isLoading: false,
     current: null,
     error: null,

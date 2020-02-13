@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 
-import Loading from '../common/Loading';
 import CloudProviders from '../../data/CloudProviders';
 import { setCurrentCluster, setCurrentProvider } from './ClustersSlice';
 
@@ -42,7 +41,7 @@ const ClustersIndex = ({ navigation }) => {
   };
 
   const renderClusters = () => {
-    if (clusters) {
+    if (clusters.length) {
       return clusters
         .filter(cluster =>
           cluster.cloudProvider === currentProvider)
@@ -93,7 +92,7 @@ const ClustersIndex = ({ navigation }) => {
         <ScrollView style={styles.clusterScroll}>
           {renderClusters().length > 0 && renderClusters()}
           {renderClusters().length === 0 &&
-            <Text style={styles.noContentText}>No Clusters Found. Please add a Cluster.</Text>
+            <Text style={styles.noContentText}>No Clusters Found</Text>
           }
         </ScrollView>
         <View

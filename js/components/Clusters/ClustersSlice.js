@@ -8,6 +8,7 @@ import { startLoading, loadingFailed } from '../../utils/LoadingUtils';
 const Clusters = createSlice({
   name: 'Clusters',
   initialState: {
+    isReady: true,
     isLoading: false,
     current: null,
     error: null,
@@ -80,6 +81,7 @@ export const fetchNamespaces = cluster =>
       dispatch(fetchNamespacesSuccess({ cluster: clusterWithToken, namespaces }));
     } catch (err) {
       dispatch(fetchNamespacesFailed(err.toString()));
+      return Promise.reject(err)
     }
   };
 

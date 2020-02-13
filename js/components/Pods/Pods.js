@@ -16,16 +16,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Loading from '../common/Loading';
 import { setCurrentPod, fetchPods } from '../Pods/PodsSlice';
-import {
-  fetchNamespaces,
-  setCurrentNamespace,
-} from '../Clusters/ClustersSlice';
+import { fetchNamespaces, setCurrentNamespace } from '../Clusters/ClustersSlice';
 
 const Pods = ({ navigation }) => {
   const dispatch = useDispatch();
   const isLoading = useSelector(state => state.Pods.isLoading);
   const currentCluster = useSelector(
-    state => state.Clusters.byUrl[state.Clusters.current],
+    state => state.Clusters.byUrl[state.Clusters.current]
   );
 
   const pods = useSelector(state => {
@@ -60,9 +57,7 @@ const Pods = ({ navigation }) => {
     if (pods) {
       return pods
         .filter(pod => {
-          if (!namespace || namespace === 'All Namespaces') {
-            return true;
-          }
+          if (!namespace || namespace === 'All Namespaces') { return true; }
           return pod.metadata.namespace === namespace;
         })
         .map((pod, idx) => {
@@ -107,10 +102,6 @@ const Pods = ({ navigation }) => {
     }
   };
 
-  if (!pods && isLoading) {
-    return <Loading />;
-  }
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.scrollView}>
@@ -129,6 +120,11 @@ const Pods = ({ navigation }) => {
             onChangeText={text => handleNamespaceChange(text)}
           />
         </View>
+        {!pods && isLoading &&
+          <ScrollView style={styles.podScroll}>
+            <Loading />
+          </ScrollView>
+        }
         <ScrollView style={styles.podScroll}>
           {renderPods().length > 0 && renderPods()}
           {renderPods().length === 0 && (

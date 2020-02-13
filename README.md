@@ -35,3 +35,14 @@ Finally, cd back to main project directory and run the app on iOS
 
 These regions are not currently supported: 
   [Northern California, Hong Kong, Frankfurt, Bahrain]
+
+# Contributors
+
+* **JJ Friedman** - [GitHub](https://github.com/jkool99)
+* **Luke Van Bergen** - [GitHub](https://github.com/lukepvb)
+* **Taylor Rodrigues** - [GitHub](https://github.com/infiniti33)
+* **Will Jefferson** - [GitHub](https://github.com/kingdome4577)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details

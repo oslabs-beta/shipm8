@@ -26,7 +26,7 @@ const Launch = ({ navigation }) => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => getStarted()}>
           <Text style={styles.getStartedText}>Get Started</Text>
         </TouchableOpacity>
       </View>

@@ -3,13 +3,8 @@ import { useDispatch } from 'react-redux';
 import { Input, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import { checkAwsCredentials } from '../reducers/AwsSlice';
 import { googleSignIn, fetchGcpProjects } from '../reducers/GoogleCloudSlice';
@@ -17,6 +12,7 @@ import { setCurrentProvider } from '../components/Clusters/ClustersSlice';
 
 // Load FontAwesome icons
 Icon.loadFont();
+EStyleSheet.build();
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -28,7 +24,9 @@ const Login = ({ navigation }) => {
 
   const handleAwsLoginPress = async () => {
     if (loginState.accessKeyId !== '' && loginState.secretAccessKey !== '') {
-      const isValidCredentials = await dispatch(checkAwsCredentials(loginState));
+      const isValidCredentials = await dispatch(
+        checkAwsCredentials(loginState),
+      );
       if (isValidCredentials) {
         dispatch(setCurrentProvider('Aws'));
         navigation.navigate('Add Cluster');
@@ -38,7 +36,7 @@ const Login = ({ navigation }) => {
     } else {
       alert(`Please Enter Valid AWS Credentials`);
     }
-  }
+  };
 
   const handleGoogleSigninPress = async () => {
     const signInStatus = await dispatch(googleSignIn());
@@ -49,7 +47,7 @@ const Login = ({ navigation }) => {
     } else {
       alert(signInStatus);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -76,13 +74,11 @@ const Login = ({ navigation }) => {
           onChangeText={text =>
             setLoginState({ ...loginState, accessKeyId: text })
           }
-          style={{ marginBottom: 20 }}
           label="Access Key ID"
           placeholder="Enter Access Key ID Here"
           leftIcon={{
             type: 'font-awesome',
             name: 'chevron-right',
-            marginRight: 10,
             color: 'gray',
           }}
         />
@@ -92,16 +88,9 @@ const Login = ({ navigation }) => {
           onChangeText={text =>
             setLoginState({ ...loginState, secretAccessKey: text })
           }
-          style={{ marginTop: 20 }}
           label="Secret Access Key"
           placeholder="Enter Secret Access Key Here"
-          leftIcon={
-            <Icon
-              name="lock"
-              size={24}
-              style={{ marginRight: 10, color: 'gray' }}
-            />
-          }
+          leftIcon={<Icon name="lock" size={24} style={styles.icon} />}
         />
       </View>
       <View style={styles.awsButtonView}>
@@ -118,76 +107,67 @@ const Login = ({ navigation }) => {
 
 export default React.memo(Login);
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 40,
-    paddingTop: 35,
   },
   divider: {
-    width: 320,
-    marginBottom: -40,
+    width: '135%',
+    marginBottom: '-15%',
   },
   awsButtonView: {
-    paddingTop: 30,
+    marginTop: '8%',
+  },
+  icon: {
+    marginRight: '1rem',
+    color: 'gray',
   },
   textStyle: {
     textAlign: 'center',
     color: '#151B54',
-    fontSize: 18,
+    fontSize: '1.2rem',
     fontWeight: 'bold',
-  },
-  input: {
-    height: 40,
-    backgroundColor: 'rgb(255, 255, 255)',
-    marginBottom: 20,
-    width: 200,
-    paddingHorizontal: 10,
-    color: 'black',
+    marginTop: '1%',
+    marginBottom: '10%',
   },
   formOneView: {
-    width: 325,
-    marginBottom: 10,
+    width: '135%',
+    marginBottom: '1rem',
     backgroundColor: 'white',
   },
   formTwoView: {
-    width: 325,
+    width: '135%',
   },
   buttonContainer: {
     backgroundColor: '#1589FF',
-    paddingVertical: 15,
-    borderRadius: 5,
-    marginTop: 10,
-    width: 220,
-    height: 48,
+    paddingVertical: '.9rem',
+    borderRadius: '.4rem',
+    marginTop: '8%',
+    width: '13.8rem',
+    height: '3rem',
   },
   buttonText: {
     textAlign: 'center',
     color: 'white',
     fontWeight: '700',
-    fontSize: 16,
-  },
-  addText: {
-    textAlign: 'center',
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
+    fontSize: '.95rem',
   },
   googleLogo: {
-    width: 175,
-    height: 175,
+    width: '60%',
+    height: '20%',
+    marginBottom: '4%',
   },
   awsLogo: {
-    width: 225,
-    height: 220,
-    marginBottom: -50,
+    width: '72%',
+    height: '34%',
+    marginBottom: '-16%',
   },
   googleSignin: {
-    width: 230,
-    height: 48,
-    marginBottom: 30,
-    borderRadius: 15,
+    width: '14rem',
+    height: '3.2rem',
+    marginBottom: '1.5rem',
+    borderRadius: '.3rem',
   },
 });

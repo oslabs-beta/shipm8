@@ -1,18 +1,13 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  KeyboardAvoidingView,
-} from 'react-native';
+import { View, KeyboardAvoidingView } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import Login from './Login';
 
 const CloudLogin = ({ navigation }) => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-      <View style={styles.formContainer}>
+      <View>
         <Login navigation={navigation} />
       </View>
     </KeyboardAvoidingView>
@@ -21,7 +16,7 @@ const CloudLogin = ({ navigation }) => {
 
 export default React.memo(CloudLogin);
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
@@ -32,10 +27,5 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  formContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: -60,
   },
 });

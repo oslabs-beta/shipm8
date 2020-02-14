@@ -4,12 +4,12 @@ import {
   Text,
   Image,
   Button,
-  StyleSheet,
   ScrollView,
   SafeAreaView,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Badge, Divider } from 'react-native-elements';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const PodInfo = ({ navigation }) => {
   const currentPod = useSelector(
@@ -48,13 +48,12 @@ const PodInfo = ({ navigation }) => {
                 </Text>
               </Text>
               <Divider />
-              <Text style={styles.text} numberOfLines={2}>
+              <Text style={styles.text} numberOfLines={1}>
                 Status:{' '}
                 <Text style={styles.innerText}>{currentPod.status.phase}</Text>
-                <Badge
-                  status={checkStatus(currentPod.status.phase)}
-                  badgeStyle={styles.badge}
-                />
+                <View style={{ marginBottom: 2, marginLeft: 10 }}>
+                  <Badge status={checkStatus(currentPod.status.phase)} />
+                </View>
               </Text>
               <Divider />
               <Text style={styles.text} numberOfLines={2}>
@@ -93,12 +92,11 @@ const PodInfo = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
-      <View style={styles.buttonView}>
+      <View style={styles.signOut}>
         <Button
-          style={styles.signOut}
           title="Sign Out"
           color="red"
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigation.navigate('Cloud Login')}
         />
       </View>
     </SafeAreaView>
@@ -107,7 +105,7 @@ const PodInfo = ({ navigation }) => {
 
 export default React.memo(PodInfo);
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
@@ -120,57 +118,46 @@ const styles = StyleSheet.create({
     borderColor: '#063CB9',
     borderWidth: 2,
     borderRadius: 10,
-    marginTop: 32,
-    height: 590,
-    width: 380,
-    alignSelf: 'center',
-    marginHorizontal: 4,
+    marginTop: '10%',
+    marginHorizontal: '0%',
     color: 'white',
   },
   safeArea: {
     backgroundColor: 'white',
-    height: '95%',
+    marginHorizontal: '3%',
+    height: '100%',
   },
   text: {
-    fontSize: 15.1,
-    marginBottom: 15,
-    marginTop: 20,
+    fontSize: '.95rem',
+    marginBottom: '1rem',
+    marginTop: '1.4rem',
     color: 'gray',
   },
   outerTextView: {
-    marginHorizontal: 10,
-    marginTop: 20,
+    marginHorizontal: '3%',
+    marginTop: '6%',
   },
   innerTextView: {
     backgroundColor: 'white',
-    marginTop: 20,
+    marginTop: '6%',
     borderRadius: 5,
     height: '100%',
-  },
-  buttonView: {
-    marginTop: 20,
-    marginBottom: 20,
-    width: '24%',
-    alignSelf: 'center',
   },
   innerText: {
     color: 'black',
     overflow: 'scroll',
   },
-  badge: {
-    marginLeft: 8,
-    marginBottom: 3,
-  },
+
   podLogo: {
-    width: 100,
-    height: 100,
+    width: '7rem',
+    height: '7rem',
     alignSelf: 'center',
-    marginTop: -9,
+    marginTop: '-1rem',
   },
-  header: {
-    fontSize: 29,
-    textAlign: 'left',
-    marginTop: -70,
-    marginBottom: 45,
+  signOut: {
+    marginTop: '1.2rem',
+    backgroundColor: 'white',
+    width: '30%',
+    alignSelf: 'center',
   },
 });

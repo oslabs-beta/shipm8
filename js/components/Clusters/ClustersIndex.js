@@ -2,15 +2,16 @@ import React from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
+  Button,
 } from 'react-native';
-import { Badge, Button } from 'react-native-elements';
+import { Badge } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import CloudProviders from '../../data/CloudProviders';
 import { setCurrentCluster, setCurrentProvider } from './ClustersSlice';
@@ -43,8 +44,7 @@ const ClustersIndex = ({ navigation }) => {
   const renderClusters = () => {
     if (clusters.length) {
       return clusters
-        .filter(cluster =>
-          cluster.cloudProvider === currentProvider)
+        .filter(cluster => cluster.cloudProvider === currentProvider)
         .map((cluster, idx) => {
           return (
             <TouchableOpacity
@@ -69,10 +69,10 @@ const ClustersIndex = ({ navigation }) => {
               />
             </TouchableOpacity>
           );
-        })
+        });
     }
     return [];
-  }
+  };
 
   return (
     <View>
@@ -91,34 +91,30 @@ const ClustersIndex = ({ navigation }) => {
         </View>
         <ScrollView style={styles.clusterScroll}>
           {renderClusters().length > 0 && renderClusters()}
+          {renderClusters().length === 0 && (
+            <Text style={styles.noContentText}>No Clusters Found</Text>
+          )}
           {renderClusters().length === 0 &&
             <Text style={styles.noContentText}>No Clusters Found</Text>
           }
         </ScrollView>
-        <View
-          style={{
-            marginBottom: 20,
-            width: 200,
-            alignSelf: 'center',
-          }}>
+        <View>
+          <TouchableOpacity onPress={() => navigation.navigate('Add Cluster')}>
+            <Icon
+              style={styles.addClusterIcon}
+              name="plus-circle"
+              size={50}
+              color="#1589FF"
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.signOut}>
           <Button
-            type="solid"
-            title="Add Cluster +"
-            onPress={() => navigation.navigate('Add Cluster')}
+            color="red"
+            title="Sign Out"
+            onPress={() => navigation.navigate('Cloud Login')}
           />
         </View>
-        <Button
-          buttonStyle={{
-            borderColor: 'red',
-            borderStyle: 'solid',
-          }}
-          titleStyle={{
-            color: 'red',
-          }}
-          type="solid"
-          title="Sign Out"
-          onPress={() => navigation.navigate('Cloud Login')}
-        />
       </SafeAreaView>
     </View>
   );
@@ -126,110 +122,87 @@ const ClustersIndex = ({ navigation }) => {
 
 export default React.memo(ClustersIndex);
 
-const styles = StyleSheet.create({
-  clusterButton: {
-    backgroundColor: 'grey',
-    paddingVertical: 15,
-    borderRadius: 5,
-    marginTop: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const styles = EStyleSheet.create({
   noContentText: {
     textAlign: 'center',
-    marginTop: 150,
-    fontSize: 20,
+    marginTop: '9rem',
+    fontSize: '1.3rem',
     color: 'gray',
-  },
-  buttonsContainer: {
-    backgroundColor: 'blue',
-    paddingVertical: 15,
-    borderRadius: 5,
-    marginTop: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   dropDown: {
     textAlign: 'center',
     alignItems: 'center',
-    fontSize: 18,
+    fontSize: '1.1rem',
   },
   dropDownView: {
     width: '90%',
     alignSelf: 'center',
-    marginTop: 30,
+    marginTop: '8%',
     backgroundColor: 'white',
   },
   dropDownOffset: {
     top: 15,
     left: 0,
   },
-  buttonsText: {
-    textAlign: 'center',
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
-  },
   safeArea: {
     backgroundColor: 'white',
-    marginHorizontal: 10,
+    marginHorizontal: '3%',
     height: '100%',
   },
-  scrollView: {
-    marginHorizontal: 0,
-    backgroundColor: 'white',
-  },
-  regionPickText: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
   clusterContainer: {
-    marginTop: 10,
+    marginTop: '3%',
     backgroundColor: 'white',
     flexDirection: 'row',
-    marginBottom: 2,
-    marginLeft: 6,
-    height: 48,
+    height: '48%',
     width: '96%',
-    paddingVertical: 12,
     paddingLeft: 8,
     borderStyle: 'solid',
     borderColor: '#063CB9',
     borderWidth: 1,
     borderRadius: 8,
-    alignContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center',
   },
   clusterText: {
-    fontSize: 16,
-    marginLeft: 5,
-    marginRight: 60,
-    width: 165,
+    fontSize: '1rem',
+    marginRight: '3.8rem',
+    width: '46%',
+    height: '50%',
     backgroundColor: 'white',
     overflow: 'scroll',
   },
   statusText: {
-    fontSize: 16,
+    fontSize: '1rem',
     textAlign: 'right',
     backgroundColor: 'white',
-    width: 90,
+    width: '5.65rem',
+    height: '50%',
     color: 'gray',
-    marginRight: 3,
+    marginRight: '.18rem',
   },
   clusterScroll: {
-    marginTop: 10,
+    marginTop: '3%',
     borderRadius: 5,
+    marginBottom: '.2rem',
     backgroundColor: 'white',
-    marginBottom: 20,
   },
   arrow: {
-    marginLeft: 6,
-    marginTop: 3,
+    marginLeft: '.4rem',
+    marginTop: '-.4rem',
   },
   badge: {
-    marginLeft: 6,
-    marginTop: 6,
-    marginRight: 3,
+    marginLeft: '.4rem',
+    marginTop: '-.4rem',
+    marginRight: '.2rem',
+  },
+  signOut: {
+    marginTop: '3rem',
+    backgroundColor: 'white',
+    width: '30%',
+    alignSelf: 'center',
+  },
+  addClusterIcon: {
+    alignSelf: 'center',
+    marginBottom: '-1.7rem',
   },
 });

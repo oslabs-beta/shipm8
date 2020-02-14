@@ -94,9 +94,9 @@ const ClustersIndex = ({ navigation }) => {
           {renderClusters().length === 0 && (
             <Text style={styles.noContentText}>No Clusters Found</Text>
           )}
-          {renderClusters().length === 0 &&
+          {renderClusters().length === 0 && (
             <Text style={styles.noContentText}>No Clusters Found</Text>
-          }
+          )}
         </ScrollView>
         <View>
           <TouchableOpacity onPress={() => navigation.navigate('Add Cluster')}>
@@ -153,7 +153,7 @@ const styles = EStyleSheet.create({
     marginTop: '3%',
     backgroundColor: 'white',
     flexDirection: 'row',
-    height: '48%',
+    height: '3rem',
     width: '96%',
     paddingLeft: 8,
     borderStyle: 'solid',
@@ -188,11 +188,11 @@ const styles = EStyleSheet.create({
   },
   arrow: {
     marginLeft: '.4rem',
-    marginTop: '-.4rem',
+    marginTop: '-.6rem',
   },
   badge: {
     marginLeft: '.4rem',
-    marginTop: '-.4rem',
+    marginTop: '-.6rem',
     marginRight: '.2rem',
   },
   signOut: {

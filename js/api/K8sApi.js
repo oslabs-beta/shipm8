@@ -21,7 +21,7 @@ class K8sApi {
       return res.json();
     }
     catch (err) {
-      console.log(err);
+      return Promise.reject(err);
     }
   };
 

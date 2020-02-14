@@ -34,7 +34,7 @@ class AwsApi {
       const authToken = `k8s-aws-v1.${token}`;
       return authToken;
     } catch (err) {
-      console.log('err: ', err)
+      return Promise.reject(err);
     }
   };
 
@@ -51,7 +51,7 @@ class AwsApi {
       return res.json();
     }
     catch (err) {
-      return console.log('err: ', err);
+      return Promise.reject(err);
     }
   };
 
@@ -61,7 +61,7 @@ class AwsApi {
       return clusters.clusters;
     }
     catch (err) {
-      return console.log('err: ', err);
+      return Promise.reject(err);
     }
   };
 
@@ -83,7 +83,7 @@ class AwsApi {
       return clusterList;
     }
     catch (err) {
-      return console.log('err: ', err);
+      return Promise.reject(err);
     }
   };
 }

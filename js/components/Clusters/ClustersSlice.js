@@ -89,19 +89,18 @@ export const getAuthToken = cluster =>
   async (dispatch, getState) => {
     try {
       let state = getState();
-      const AwsCredentials = state.Aws.credentials;
+      let token;
 
-      const token = cluster.cloudProvider === 'Aws'
-        ? AwsApi.getAuthToken(cluster.name, AwsCredentials)
-        : await GoogleCloudApi.getAccessToken();
+      if (cluster.cloudProvider === 'Aws') {
+        token = AwsApi.getAuthToken(cluster.name, state.Aws.credentials);
+      } else if (cluster.cloudProvider === 'Gcp') {
+        token = await GoogleCloudApi.refreshAccessToken(state.Gcp.user.refreshToken);
+      }
 
       dispatch(getAuthTokenSuccess({ cluster, token }));
-
       state = getState();
       const clusterWithToken = state.Clusters.byUrl[cluster.url];
-
       return Promise.resolve(clusterWithToken);
-
     } catch (err) {
       dispatch(getAuthTokenFailed(err.toString()));
       return Promise.reject(err);

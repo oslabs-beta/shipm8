@@ -94,6 +94,9 @@ const ClustersIndex = ({ navigation }) => {
           {renderClusters().length === 0 && (
             <Text style={styles.noContentText}>No Clusters Found</Text>
           )}
+          {renderClusters().length === 0 &&
+            <Text style={styles.noContentText}>No Clusters Found</Text>
+          }
         </ScrollView>
         <View>
           <TouchableOpacity onPress={() => navigation.navigate('Add Cluster')}>

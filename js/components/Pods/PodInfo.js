@@ -48,13 +48,12 @@ const PodInfo = ({ navigation }) => {
                 </Text>
               </Text>
               <Divider />
-              <Text style={styles.text} numberOfLines={2}>
+              <Text style={styles.text} numberOfLines={1}>
                 Status:{' '}
                 <Text style={styles.innerText}>{currentPod.status.phase}</Text>
-                <Badge
-                  status={checkStatus(currentPod.status.phase)}
-                  badgeStyle={styles.badge}
-                />
+                <View style={{ marginBottom: 2, marginLeft: 10 }}>
+                  <Badge status={checkStatus(currentPod.status.phase)} />
+                </View>
               </Text>
               <Divider />
               <Text style={styles.text} numberOfLines={2}>
@@ -97,7 +96,7 @@ const PodInfo = ({ navigation }) => {
         <Button
           title="Sign Out"
           color="red"
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigation.navigate('Cloud Login')}
         />
       </View>
     </SafeAreaView>
@@ -130,7 +129,7 @@ const styles = EStyleSheet.create({
   },
   text: {
     fontSize: '.95rem',
-    marginBottom: '.8rem',
+    marginBottom: '1rem',
     marginTop: '1.4rem',
     color: 'gray',
   },
@@ -148,10 +147,7 @@ const styles = EStyleSheet.create({
     color: 'black',
     overflow: 'scroll',
   },
-  badge: {
-    marginLeft: '.2rem',
-    marginTop: '.05rem',
-  },
+
   podLogo: {
     width: '7rem',
     height: '7rem',

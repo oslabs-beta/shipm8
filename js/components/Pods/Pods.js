@@ -73,7 +73,7 @@ const Pods = ({ navigation }) => {
               activeOpacity={0.7}
               onPress={() => handlePodPress(pod)}>
               <Image
-                source={require('../../../assets/pod.png')}
+                source={require('../../../images/pod.png')}
                 style={styles.logo}
               />
               <Text style={styles.podText} numberOfLines={1}>

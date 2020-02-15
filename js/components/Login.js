@@ -53,7 +53,7 @@ const Login = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.textStyle}>Add Cluster from Provider</Text>
       <Image
-        source={require('../../assets/google.png')}
+        source={require('../../images/google.png')}
         style={styles.googleLogo}
       />
       <View>
@@ -68,14 +68,14 @@ const Login = ({ navigation }) => {
       <View style={styles.divider}>
         <Divider />
       </View>
-      <Image source={require('../../assets/aws.png')} style={styles.awsLogo} />
+      <Image source={require('../../images/aws.png')} style={styles.awsLogo} />
       <View style={styles.formOneView}>
         <Input
           onChangeText={text =>
             setLoginState({ ...loginState, accessKeyId: text })
           }
           label="Access Key ID"
-          placeholder="Enter Access Key ID Here"
+          placeholder="   Enter Access Key ID Here"
           leftIcon={{
             type: 'font-awesome',
             name: 'chevron-right',

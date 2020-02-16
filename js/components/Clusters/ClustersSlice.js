@@ -81,7 +81,7 @@ export const fetchNamespaces = cluster =>
       dispatch(fetchNamespacesSuccess({ cluster: clusterWithToken, namespaces }));
     } catch (err) {
       dispatch(fetchNamespacesFailed(err.toString()));
-      return Promise.reject(err)
+      return Promise.reject(err);
     }
   };
 
@@ -105,4 +105,4 @@ export const getAuthToken = cluster =>
       dispatch(getAuthTokenFailed(err.toString()));
       return Promise.reject(err);
     }
-  }
+  };

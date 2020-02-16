@@ -14,7 +14,11 @@ import { Dropdown } from 'react-native-material-dropdown';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 import CloudProviders from '../../data/CloudProviders';
-import { setCurrentCluster, setCurrentProvider } from './ClustersSlice';
+import {
+  setCurrentCluster,
+  setCurrentProvider,
+  fetchNamespaces,
+} from './ClustersSlice';
 
 const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -27,6 +31,7 @@ const ClustersIndex = ({ navigation }) => {
 
   const handleClusterPress = cluster => {
     dispatch(setCurrentCluster(cluster));
+    dispatch(fetchNamespaces(cluster));
     navigation.navigate('Pods');
   };
 
@@ -36,9 +41,7 @@ const ClustersIndex = ({ navigation }) => {
     } else if (text === 'CREATING') {
       return 'warning';
     }
-    {
-      return 'error';
-    }
+    return 'error';
   };
 
   const renderClusters = () => {

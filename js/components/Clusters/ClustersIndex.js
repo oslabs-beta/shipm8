@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,17 +13,23 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
+import StatusUtils from '../../utils/StatusUtils';
 import CloudProviders from '../../data/CloudProviders';
 import {
+  checkClusters,
+  fetchNamespaces,
   setCurrentCluster,
   setCurrentProvider,
-  fetchNamespaces,
 } from './ClustersSlice';
 
 const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
   const clusters = useSelector(state => Object.values(state.Clusters.byUrl));
   const currentProvider = useSelector(state => state.Clusters.currentProvider);
+
+  useEffect(() => {
+    dispatch(checkClusters());
+  }, [dispatch]);
 
   const handleProviderChange = provider => {
     dispatch(setCurrentProvider(provider));
@@ -33,15 +39,6 @@ const ClustersIndex = ({ navigation }) => {
     dispatch(setCurrentCluster(cluster));
     dispatch(fetchNamespaces(cluster));
     navigation.navigate('Pods');
-  };
-
-  const checkStatus = text => {
-    if (text === 'ACTIVE' || text === 'RUNNING') {
-      return 'success';
-    } else if (text === 'CREATING') {
-      return 'warning';
-    }
-    return 'error';
   };
 
   const renderClusters = () => {
@@ -61,7 +58,7 @@ const ClustersIndex = ({ navigation }) => {
               </Text>
               <Text style={styles.statusText}>{cluster.status}</Text>
               <Badge
-                status={checkStatus(cluster.status)}
+                status={StatusUtils.statusForBadge(cluster.status)}
                 badgeStyle={styles.badge}
               />
               <Icon
@@ -94,9 +91,6 @@ const ClustersIndex = ({ navigation }) => {
         </View>
         <ScrollView style={styles.clusterScroll}>
           {renderClusters().length > 0 && renderClusters()}
-          {renderClusters().length === 0 && (
-            <Text style={styles.noContentText}>No Clusters Found</Text>
-          )}
           {renderClusters().length === 0 && (
             <Text style={styles.noContentText}>No Clusters Found</Text>
           )}

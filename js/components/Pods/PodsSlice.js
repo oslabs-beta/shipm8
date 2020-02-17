@@ -37,14 +37,16 @@ export default Pods.reducer;
 
 // Thunks
 export const fetchPods = cluster =>
-  async dispatch => {
+  async (dispatch, getState) => {
     try {
+      const state = getState();
+      if (state.Pods.isLoading) { return; }
       dispatch(fetchPodsStart())
       const clusterWithAuth = await dispatch(getAuthToken(cluster));
       const pods = await K8sApi.fetchPods(clusterWithAuth);
       const podsByUid = {};
       pods.forEach(pod => {
-        pod.kind = 'pods';
+        pod.kind = 'Pods';
         podsByUid[pod.metadata.uid] = pod;
       });
       dispatch(fetchPodsSuccess({ cluster: clusterWithAuth, podsByUid }));

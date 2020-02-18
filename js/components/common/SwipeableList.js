@@ -49,8 +49,8 @@ const SwipeableList = ({ entities, handleItemPress, handleTrashPress }) => {
           </View>
         </View>
       </TouchableHighlight>
-    )
-  }
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -100,7 +100,7 @@ const SwipeableList = ({ entities, handleItemPress, handleTrashPress }) => {
       />
     </View>
   );
-}
+};
 
 export default React.memo(SwipeableList);
 
@@ -117,19 +117,19 @@ const styles = EStyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    marginRight: '.6rem'
+    marginRight: '.6rem',
   },
   containerLeft: {
     flex: 3,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   containerLeftNoStatus: {
     flex: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   badge: {
     marginLeft: '.6rem',

@@ -22,6 +22,7 @@ const Pods = createSlice({
     deletePodSuccess(state, action) {
       const { cluster, uid } = action.payload;
       delete state.byCluster[cluster.url][uid];
+      state.isLoading = false;
     },
     fetchPodsStart: startLoading,
     fetchPodsFailed: loadingFailed,
@@ -51,7 +52,7 @@ export const fetchPods = cluster =>
     try {
       const state = getState();
       if (state.Pods.isLoading) { return; }
-      dispatch(fetchPodsStart())
+      dispatch(fetchPodsStart());
       const clusterWithAuth = await dispatch(getAuthToken(cluster));
       const pods = await K8sApi.fetchPods(clusterWithAuth);
       const podsByUid = {};
@@ -71,11 +72,12 @@ export const deletePod = (cluster, pod) =>
       dispatch(deletePodStart());
       const clusterWithAuth = await dispatch(getAuthToken(cluster));
       const response = await K8sApi.deleteEntity(clusterWithAuth, pod);
-      // Delete successful
       if (response.kind === 'Pod') {
         const uid = response.metadata.uid;
         dispatch(deletePodSuccess({ cluster, uid }));
         return AlertUtils.deleteSuccessAlert(pod.metadata.name);
+      } else {
+        return AlertUtils.deleteFailedAlert(response);
       }
     } catch (err) {
       dispatch(deletePodFailed(err.toString()));

@@ -67,6 +67,12 @@ class K8sApi {
     return podsList.items;
   }
 
+  static deleteEntity = async (cluster, entity) => {
+    const entityType = entity.kind.toLowerCase();
+    const url = `/api/v1/namespaces/${entity.metadata.namespace}/${entityType}/${entity.metadata.name}`;
+    return await this.delete(url, cluster);
+  }
+
   static fetchNodes = async cluster => {
     return await this.get('/api/v1/nodes', cluster);
   }

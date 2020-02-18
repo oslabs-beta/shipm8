@@ -6,9 +6,9 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import Launch from './components/Launch';
-import Pods from './components/Pods/Pods';
 import PodInfo from './components/Pods/PodInfo';
 import CloudLogin from './components/CloudLogin';
+import PodsDisplay from './components/Pods/PodsDisplay';
 import AddCluster from './components/Clusters/AddCluster';
 import LaunchLoading from './components/common/LaunchLoading';
 import ClustersIndex from './components/Clusters/ClustersIndex';
@@ -17,7 +17,7 @@ const InitialStack = createStackNavigator(
   {
     'Welcome to ShipM8!': Launch,
     'Cloud Login': CloudLogin,
-    'Add Cluster': AddCluster
+    'Add Cluster': AddCluster,
   },
   {
     defaultNavigationOptions: {
@@ -36,7 +36,7 @@ const InitialStack = createStackNavigator(
 const AddClusterStack = createStackNavigator(
   {
     'Cloud Login': CloudLogin,
-    'Add Cluster': AddCluster
+    'Add Cluster': AddCluster,
   },
   {
     defaultNavigationOptions: {
@@ -55,7 +55,7 @@ const AddClusterStack = createStackNavigator(
 const AppStack = createStackNavigator(
   {
     ShipM8: ClustersIndex,
-    Pods: Pods,
+    Pods: PodsDisplay,
     'Pod Details': PodInfo,
   },
   {

@@ -46,45 +46,63 @@ class K8sApi {
   }
 
   static fetchNamespaces = async cluster => {
-    const res = await this.get(`/api/v1/namespaces`, cluster);
+    const res = await this.get('/api/v1/namespaces', cluster);
     return res.items.map(namespace => namespace.metadata.name);
   }
 
+  static checkCluster = async cluster => {
+    try {
+      const response = await this.get('/api/v1', cluster);
+      return Promise.resolve({ up: true, response });
+    } catch (err) {
+      if (err.message.indexOf('Unauthorized') !== -1) {
+        return Promise.resolve({ up: true, response: 'Unauthorized' });
+      }
+      return Promise.resolve({ up: false });
+    }
+  }
+
   static fetchPods = async cluster => {
-    const podsList = await this.get(`/api/v1/pods`, cluster);
+    const podsList = await this.get('/api/v1/pods', cluster);
     return podsList.items;
   }
 
+  static deleteEntity = async (cluster, entity) => {
+    const entityType = entity.kind.toLowerCase();
+    const url = `/api/v1/namespaces/${entity.metadata.namespace}/${entityType}/${entity.metadata.name}`;
+    return await this.delete(url, cluster);
+  }
+
   static fetchNodes = async cluster => {
-    return await this.get(`/api/v1/nodes`, cluster);
+    return await this.get('/api/v1/nodes', cluster);
   }
 
   static fetchServices = async cluster => {
-    return await this.get(`/api/v1/services`, cluster);
+    return await this.get('/api/v1/services', cluster);
   }
 
   static fetchDeployments = async cluster => {
-    return await this.get(`/apis/apps/v1/deployments`, cluster);
+    return await this.get('/apis/apps/v1/deployments', cluster);
   }
 
   static fetchReplicaSets = async cluster => {
-    return await this.get(`/apis/apps/v1/replicasets`, cluster);
+    return await this.get('/apis/apps/v1/replicasets', cluster);
   }
 
   static fetchReplicationControllers = async cluster => {
-    return await this.get(`/api/v1/replicationcontrollers`, cluster);
+    return await this.get('/api/v1/replicationcontrollers', cluster);
   }
 
   static fetchIngresses = async cluster => {
-    return await this.get(`/apis/networking.k8s.io/v1beta1/ingresses`, cluster);
+    return await this.get('/apis/networking.k8s.io/v1beta1/ingresses', cluster);
   }
 
   static fetchEndpoints = async cluster => {
-    return await this.get(`/api/v1/endpoints`, cluster);
+    return await this.get('/api/v1/endpoints', cluster);
   }
 
   static fetchSecrets = async cluster => {
-    return await this.get(`/api/v1/secrets`, cluster);
+    return await this.get('/api/v1/secrets', cluster);
   }
 
 }

@@ -2,34 +2,35 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-EStyleSheet.build(); // need this to be in
+EStyleSheet.build();
 
 const Launch = ({ navigation }) => {
   const getStarted = () => {
     navigation.navigate('Cloud Login');
   };
+
   return (
     <View style={styles.container} behavior="padding" enabled>
-      <Image source={require('../../assets/SHIPM8.png')} style={styles.logo} />
+      <Image source={require('../../images/SHIPM8.png')} style={styles.logo} />
       <Text style={styles.bannerLineOne}>Kubernetes Mobile Monitoring</Text>
       <Text style={styles.bannerLineTwo}>with</Text>
 
       <View style={styles.cloudLogoContainer}>
         <Image
           style={styles.googleCloud}
-          source={require('../../assets/googleCloud.png')}
+          source={require('../../images/googleCloud.png')}
         />
         <Text style={styles.textStyle}>+</Text>
         <Image
           style={styles.awsLogo}
-          source={require('../../assets/aws.png')}
+          source={require('../../images/aws.png')}
         />
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => getStarted()}>
+      <TouchableOpacity style={styles.buttonContainer} onPress={() => getStarted()}>
+        <View >
           <Text style={styles.getStartedText}>Get Started</Text>
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };

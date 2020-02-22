@@ -1,110 +1,72 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {
   View,
   Text,
-  Image,
   Button,
   ScrollView,
-  SafeAreaView,
-  TouchableOpacity,
+  SafeAreaView
 } from 'react-native';
-import { Badge } from 'react-native-elements';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 import Loading from '../common/Loading';
-import { setCurrentPod, fetchPods } from '../Pods/PodsSlice';
-import {
-  fetchNamespaces,
-  setCurrentNamespace,
-} from '../Clusters/ClustersSlice';
+import SwipeableList from '../common/SwipeableList';
+import AlertUtils from '../../utils/AlertUtils';
+import { setCurrentPod, fetchPods, deletePod } from './PodsSlice';
+import { setCurrentNamespace } from '../Clusters/ClustersSlice';
 
-const Pods = ({ navigation }) => {
+const PodsDisplay = ({ navigation }) => {
   const dispatch = useDispatch();
   const isLoading = useSelector(state => state.Pods.isLoading);
   const currentCluster = useSelector(
     state => state.Clusters.byUrl[state.Clusters.current],
   );
-
-  const pods = useSelector(state => {
-    return state.Pods.byCluster[currentCluster.url]
-      ? Object.values(state.Pods.byCluster[currentCluster.url])
-      : null;
-  });
+  const currentNamespace = useSelector(
+    state => state.Clusters.byUrl[state.Clusters.current].currentNamespace
+  );
 
   useEffect(() => {
     dispatch(fetchPods(currentCluster));
-    dispatch(fetchNamespaces(currentCluster));
-  }, []);
+  }, [currentCluster, dispatch]);
+
+  const filterPods = podsToFilter => {
+    return podsToFilter
+      .filter(pod => {
+        if (!currentNamespace || currentNamespace === 'All Namespaces') { return true; }
+        return pod.metadata.namespace === currentNamespace;
+      });
+  };
+
+  const pods = useSelector(state => {
+    if (state.Pods.byCluster[currentCluster.url]) {
+      const allPods = Object.values(state.Pods.byCluster[currentCluster.url]);
+      return filterPods(allPods);
+    }
+    return [];
+  }, shallowEqual);
 
   const handleNamespaceChange = namespace => {
     dispatch(setCurrentNamespace({ currentCluster, namespace }));
   };
 
-  const handlePodPress = pod => {
+  const handlePodPress = useCallback(pod => {
     dispatch(setCurrentPod(pod));
     navigation.navigate('Pod Details');
-  };
+  }, [dispatch, navigation]);
+
+  const handleTrashPress = useCallback(pod => {
+    AlertUtils.deleteEntityPrompt(
+      pod.metadata.name,
+      () => dispatch(deletePod(currentCluster, pod))
+    );
+  }, [currentCluster, dispatch]);
 
   const createNamespaceList = namespaces => {
     const namespaceList = namespaces.map(namespace => {
       return { value: namespace };
     });
     return [{ value: 'All Namespaces' }, ...namespaceList];
-  };
-
-  const renderPods = () => {
-    const namespace = currentCluster.currentNamespace;
-    if (pods) {
-      return pods
-        .filter(pod => {
-          if (!namespace || namespace === 'All Namespaces') {
-            return true;
-          }
-          return pod.metadata.namespace === namespace;
-        })
-        .map((pod, idx) => {
-          return (
-            <TouchableOpacity
-              key={pod.metadata.name + idx}
-              style={styles.podContainer}
-              activeOpacity={0.7}
-              onPress={() => handlePodPress(pod)}>
-              <Image
-                source={require('../../../assets/pod.png')}
-                style={styles.logo}
-              />
-              <Text style={styles.podText} numberOfLines={1}>
-                {pod.metadata.name}
-              </Text>
-              <Text style={styles.statusText}>{pod.status.phase}</Text>
-              <Badge
-                status={checkStatus(pod.status.phase)}
-                badgeStyle={styles.badge}
-              />
-              <Icon
-                name="chevron-right"
-                size={15}
-                color="gray"
-                style={styles.arrow}
-              />
-            </TouchableOpacity>
-          );
-        });
-    }
-    return [];
-  };
-
-  const checkStatus = text => {
-    if (text === 'Running') {
-      return 'success';
-    } else if (text === 'Pending') {
-      return 'warning';
-    } else {
-      return 'error';
-    }
   };
 
   return (
@@ -124,17 +86,25 @@ const Pods = ({ navigation }) => {
           onChangeText={text => handleNamespaceChange(text)}
         />
       </View>
-      {!pods && isLoading && (
-        <ScrollView style={styles.podScroll}>
-          <Loading />
-        </ScrollView>
-      )}
-      <ScrollView style={styles.podScroll}>
-        {renderPods().length > 0 && renderPods()}
-        {renderPods().length === 0 && (
-          <Text style={styles.noPodsFound}>No Pods Found</Text>
+      <View style={styles.podScroll}>
+        {pods.length === 0 && isLoading && (
+          <ScrollView>
+            <Loading />
+          </ScrollView>
         )}
-      </ScrollView>
+        {pods.length > 0 && (
+          <SwipeableList
+            entities={pods}
+            handleItemPress={handlePodPress}
+            handleTrashPress={handleTrashPress}
+          />
+        )}
+        {pods.length === 0 && !isLoading && (
+          <ScrollView>
+            <Text style={styles.noPodsFound}>No Pods Found</Text>
+          </ScrollView>
+        )}
+      </View>
       <View style={styles.signOut}>
         <Button
           color="red"
@@ -146,25 +116,21 @@ const Pods = ({ navigation }) => {
   );
 };
 
-export default React.memo(Pods);
+export default React.memo(PodsDisplay);
 
 const styles = EStyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   safeArea: {
-    backgroundColor: 'white',
-    marginHorizontal: '3%',
     height: '100%',
+    flex: 1,
   },
   dropDownView: {
     width: '90%',
     alignSelf: 'center',
-    marginTop: '8%',
-    backgroundColor: 'white',
+    marginTop: '7%',
+  },
+  loading: {
+    alignItems: 'center',
+    flex: 1,
   },
   dropDownOffset: {
     top: 15,
@@ -181,10 +147,13 @@ const styles = EStyleSheet.create({
     color: 'gray',
   },
   podScroll: {
-    marginTop: '3%',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    flex: 1,
+    height: '100%',
+    width: '94%',
+    marginTop: '1%',
     borderRadius: 5,
-    marginBottom: '.2rem',
-    backgroundColor: 'white',
     marginBottom: '1.2rem',
   },
   podContainer: {
@@ -230,7 +199,6 @@ const styles = EStyleSheet.create({
   },
   signOut: {
     marginTop: '1.2rem',
-    backgroundColor: 'white',
     width: '30%',
     alignSelf: 'center',
   },

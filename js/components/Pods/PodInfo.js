@@ -32,7 +32,7 @@ const PodInfo = ({ navigation }) => {
         <View style={styles.outerTextView}>
           <View style={styles.innerTextView}>
             <Image
-              source={require('../../../assets/pod.png')}
+              source={require('../../../images/pod.png')}
               style={styles.podLogo}
             />
             <View style={{ flexDirection: 'column' }}>

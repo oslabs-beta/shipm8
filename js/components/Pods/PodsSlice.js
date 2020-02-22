@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import K8sApi from '../../api/K8sApi';
+import AlertUtils from '../../utils/AlertUtils';
 import { getAuthToken } from '../Clusters/ClustersSlice';
 import { startLoading, loadingFailed } from '../../utils/LoadingUtils';
 
@@ -16,6 +17,13 @@ const Pods = createSlice({
       const pod = action.payload;
       state.current = pod.metadata.uid;
     },
+    deletePodStart: startLoading,
+    deletePodFailed: loadingFailed,
+    deletePodSuccess(state, action) {
+      const { cluster, uid } = action.payload;
+      delete state.byCluster[cluster.url][uid];
+      state.isLoading = false;
+    },
     fetchPodsStart: startLoading,
     fetchPodsFailed: loadingFailed,
     fetchPodsSuccess(state, action) {
@@ -23,11 +31,14 @@ const Pods = createSlice({
       state.byCluster[cluster.url] = podsByUid;
       state.isLoading = false;
     },
-  }
+  },
 });
 
 export const {
   setCurrentPod,
+  deletePodStart,
+  deletePodFailed,
+  deletePodSuccess,
   fetchPodsStart,
   fetchPodsFailed,
   fetchPodsSuccess,
@@ -37,18 +48,38 @@ export default Pods.reducer;
 
 // Thunks
 export const fetchPods = cluster =>
-  async dispatch => {
+  async (dispatch, getState) => {
     try {
-      dispatch(fetchPodsStart())
+      const state = getState();
+      if (state.Pods.isLoading) { return; }
+      dispatch(fetchPodsStart());
       const clusterWithAuth = await dispatch(getAuthToken(cluster));
       const pods = await K8sApi.fetchPods(clusterWithAuth);
       const podsByUid = {};
       pods.forEach(pod => {
-        pod.kind = 'pods';
+        pod.kind = 'Pods';
         podsByUid[pod.metadata.uid] = pod;
       });
-      dispatch(fetchPodsSuccess({ cluster: clusterWithAuth, podsByUid }));
+      dispatch(fetchPodsSuccess({ cluster, podsByUid }));
     } catch (err) {
       dispatch(fetchPodsFailed(err.toString()));
     }
-  }
+  };
+
+export const deletePod = (cluster, pod) =>
+  async dispatch => {
+    try {
+      dispatch(deletePodStart());
+      const clusterWithAuth = await dispatch(getAuthToken(cluster));
+      const response = await K8sApi.deleteEntity(clusterWithAuth, pod);
+      if (response.kind === 'Pod') {
+        const uid = response.metadata.uid;
+        dispatch(deletePodSuccess({ cluster, uid }));
+        return AlertUtils.deleteSuccessAlert(pod.metadata.name);
+      } else {
+        return AlertUtils.deleteFailedAlert(response);
+      }
+    } catch (err) {
+      dispatch(deletePodFailed(err.toString()));
+    }
+  };

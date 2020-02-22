@@ -45,6 +45,20 @@ const Clusters = createSlice({
       const { cluster, token } = action.payload;
       state.byUrl[cluster.url].token = token;
     },
+    checkClusterStart(state, action) {
+      const cluster = action.payload;
+      state.byUrl[cluster.url].status = 'CHECKING';
+    },
+    checkClusterSuccess(state, action) {
+      const { cluster, up, response } = action.payload;
+      if (state.byUrl[cluster.url]) {
+        let newStatus = up ? 'RUNNING' : 'DOWN';
+        if (response === 'Unauthorized') {
+          newStatus = 'UNAUTHORIZED';
+        }
+        state.byUrl[cluster.url].status = newStatus;
+      }
+    },
     fetchNamespacesStart: startLoading,
     fetchNamespacesFailed: loadingFailed,
     fetchNamespacesSuccess(state, action) {
@@ -64,6 +78,8 @@ export const {
   setCurrentProvider,
   getAuthTokenSuccess,
   getAuthTokenFailed,
+  checkClusterStart,
+  checkClusterSuccess,
   fetchNamespacesStart,
   fetchNamespacesSuccess,
   fetchNamespacesFailed,
@@ -72,6 +88,23 @@ export const {
 export default Clusters.reducer;
 
 // Thunks
+export const checkClusters = () =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const clusters = Object.values(state.Clusters.byUrl);
+    return Promise.all(clusters.map(cluster => {
+      return dispatch(checkCluster(cluster));
+    }));
+  };
+
+export const checkCluster = cluster =>
+  async dispatch => {
+    dispatch(checkClusterStart(cluster));
+    const { up, response } = await K8sApi.checkCluster(cluster);
+    dispatch(checkClusterSuccess({ cluster, up, response }));
+    return Promise.resolve();
+  };
+
 export const fetchNamespaces = cluster =>
   async dispatch => {
     try {
@@ -81,7 +114,7 @@ export const fetchNamespaces = cluster =>
       dispatch(fetchNamespacesSuccess({ cluster: clusterWithToken, namespaces }));
     } catch (err) {
       dispatch(fetchNamespacesFailed(err.toString()));
-      return Promise.reject(err)
+      return Promise.reject(err);
     }
   };
 
@@ -105,4 +138,4 @@ export const getAuthToken = cluster =>
       dispatch(getAuthTokenFailed(err.toString()));
       return Promise.reject(err);
     }
-  }
+  };

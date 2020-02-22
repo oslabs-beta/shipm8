@@ -44,7 +44,7 @@ const AddCluster = ({ navigation }) => {
 
   useEffect(() => {
     currentProvider === 'Gcp' && dispatch(fetchGcpProjects());
-  }, []);
+  }, [currentProvider, dispatch]);
 
   const handleDropdownChange = value => {
     setValueSelected(true);
@@ -89,30 +89,30 @@ const AddCluster = ({ navigation }) => {
   const clusterList =
     clusters && clusters.length > 0
       ? clusters.map((cluster, idx) => {
-          return (
-            <TouchableOpacity
-              key={cluster.name + idx}
-              style={styles.clusterContainer}
-              activeOpacity={0.7}
-              cluster={cluster.name}
-              onPress={() => handleClusterPress(cluster)}>
-              <Text numberOfLines={1} style={styles.clusterText}>
-                {cluster.name}
-              </Text>
-              <Text style={styles.statusText}>{cluster.status}</Text>
-              <Badge
-                status={checkStatus(cluster.status)}
-                badgeStyle={styles.badge}
-              />
-              <Icon
-                name="chevron-right"
-                size={15}
-                color="gray"
-                style={styles.arrow}
-              />
-            </TouchableOpacity>
-          );
-        })
+        return (
+          <TouchableOpacity
+            key={cluster.name + idx}
+            style={styles.clusterContainer}
+            activeOpacity={0.7}
+            cluster={cluster.name}
+            onPress={() => handleClusterPress(cluster)}>
+            <Text numberOfLines={1} style={styles.clusterText}>
+              {cluster.name}
+            </Text>
+            <Text style={styles.statusText}>{cluster.status}</Text>
+            <Badge
+              status={checkStatus(cluster.status)}
+              badgeStyle={styles.badge}
+            />
+            <Icon
+              name="chevron-right"
+              size={15}
+              color="gray"
+              style={styles.arrow}
+            />
+          </TouchableOpacity>
+        );
+      })
       : null;
 
   return (
@@ -135,18 +135,18 @@ const AddCluster = ({ navigation }) => {
               <Loading />
             </ScrollView>
           ) : (
-            <ScrollView style={styles.clusterScroll}>
-              {valueSelected && clusterList}
-              {valueSelected && !clusterList && (
-                <Text style={styles.noContentText}>No Clusters Found</Text>
-              )}
-              {!valueSelected && (
-                <Text style={styles.noContentText}>
-                  {setNoValueSelectedText()}
-                </Text>
-              )}
-            </ScrollView>
-          )}
+              <ScrollView style={styles.clusterScroll}>
+                {valueSelected && clusterList}
+                {valueSelected && !clusterList && (
+                  <Text style={styles.noContentText}>No Clusters Found</Text>
+                )}
+                {!valueSelected && (
+                  <Text style={styles.noContentText}>
+                    {setNoValueSelectedText()}
+                  </Text>
+                )}
+              </ScrollView>
+            )}
         </ScrollView>
         <View style={styles.signOut}>
           <Button
@@ -194,7 +194,7 @@ const styles = EStyleSheet.create({
     marginTop: '3%',
     backgroundColor: 'white',
     flexDirection: 'row',
-    height: '82%',
+    height: '3rem',
     width: '96%',
     paddingVertical: 12,
     paddingLeft: 8,

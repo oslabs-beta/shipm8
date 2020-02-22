@@ -122,11 +122,13 @@ const styles = EStyleSheet.create({
   safeArea: {
     height: '100%',
     flex: 1,
+    backgroundColor: 'white'
   },
   dropDownView: {
     width: '90%',
     alignSelf: 'center',
     marginTop: '7%',
+    backgroundColor: 'white',
   },
   loading: {
     alignItems: 'center',
@@ -139,6 +141,7 @@ const styles = EStyleSheet.create({
   dropDown: {
     textAlign: 'center',
     alignItems: 'center',
+    backgroundColor: 'white',
   },
   noPodsFound: {
     textAlign: 'center',

@@ -9,6 +9,8 @@ import {
 import { useDispatch } from 'react-redux';
 import { Input, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+// import { Icon as Icon5 } from 'react-native-vector-icons/FontAwesome5';
+
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
 
@@ -81,12 +83,8 @@ const Login = ({ navigation }) => {
             setLoginState({ ...loginState, accessKeyId: text })
           }
           label="Access Key ID"
-          placeholder="   Enter Access Key ID Here"
-          leftIcon={{
-            type: 'font-awesome',
-            name: 'chevron-right',
-            color: 'gray',
-          }}
+          placeholder="Enter Access Key ID Here"
+          leftIcon={<Icon name="chevron-right" size={24} style={styles.icon} />}
         />
       </View>
       <View style={styles.formTwoView}>

@@ -25,10 +25,10 @@ import CloudProviders from '../../data/CloudProviders';
 
 const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
-  const currentProvider = useSelector(state => state.Clusters.currentProvider);
+  const currentProvider = useSelector(state => state.clusters.currentProvider);
 
   const clusters = useSelector(state => {
-    return Object.values(state.Clusters.byUrl)
+    return Object.values(state.clusters.byUrl)
       .filter(cluster => cluster.cloudProvider === currentProvider);
   });
 

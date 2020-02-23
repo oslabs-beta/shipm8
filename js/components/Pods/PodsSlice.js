@@ -51,13 +51,13 @@ export const fetchPods = cluster =>
   async (dispatch, getState) => {
     try {
       const state = getState();
-      if (state.Pods.isLoading) { return; }
+      if (state.pods.isLoading) { return; }
       dispatch(fetchPodsStart());
       const clusterWithAuth = await dispatch(getAuthToken(cluster));
       const pods = await K8sApi.fetchPods(clusterWithAuth);
       const podsByUid = {};
       pods.forEach(pod => {
-        pod.kind = 'Pods';
+        pod.kind = 'pods';
         podsByUid[pod.metadata.uid] = pod;
       });
       dispatch(fetchPodsSuccess({ cluster, podsByUid }));

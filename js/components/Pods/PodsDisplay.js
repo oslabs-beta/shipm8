@@ -18,12 +18,12 @@ import { setCurrentPod, fetchPods, deletePod } from './PodsSlice';
 
 const PodsDisplay = ({ navigation }) => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(state => state.Pods.isLoading);
+  const isLoading = useSelector(state => state.pods.isLoading);
   const currentCluster = useSelector(state =>
-    state.Clusters.byUrl[state.Clusters.current]
+    state.clusters.byUrl[state.clusters.current]
   );
   const currentNamespace = useSelector(state =>
-    state.Clusters.byUrl[state.Clusters.current].currentNamespace
+    state.clusters.byUrl[state.clusters.current].currentNamespace
   );
 
   useEffect(() => {
@@ -39,8 +39,8 @@ const PodsDisplay = ({ navigation }) => {
   };
 
   const pods = useSelector(state => {
-    if (state.Pods.byCluster[currentCluster.url]) {
-      const allPods = Object.values(state.Pods.byCluster[currentCluster.url]);
+    if (state.pods.byCluster[currentCluster.url]) {
+      const allPods = Object.values(state.pods.byCluster[currentCluster.url]);
       return filterPods(allPods);
     }
     return [];

@@ -1,18 +1,19 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Badge } from 'react-native-elements'
+import { Badge } from 'react-native-elements';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import StatusUtils from '../../utils/StatusUtils';
 
 const EntityStatus = ({ status }) => {
   if (typeof status !== 'string') { return false; }
-  const statusText = status.toUpperCase();
+  const badgeStatusText = status.toUpperCase();
+  const statusText = status[0].toUpperCase() + status.slice(1).toLowerCase();
 
   return (
     <View style={styles.status}>
       <Text style={styles.statusText}>{statusText}</Text>
       <Badge
-        status={StatusUtils.statusForBadge(statusText)}
+        status={StatusUtils.statusForBadge(badgeStatusText)}
         badgeStyle={styles.badge}
       />
     </View>
@@ -34,5 +35,5 @@ const styles = EStyleSheet.create({
   statusText: {
     fontSize: 14,
     color: '#929292',
-  }
+  },
 });

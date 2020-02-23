@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -7,95 +7,80 @@ import {
   TouchableOpacity,
   Button,
 } from 'react-native';
-import { Badge } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-import StatusUtils from '../../utils/StatusUtils';
-import CloudProviders from '../../data/CloudProviders';
 import {
   checkClusters,
+  removeCluster,
   fetchNamespaces,
   setCurrentCluster,
   setCurrentProvider,
 } from './ClustersSlice';
+import AlertUtils from '../../utils/AlertUtils';
+import SwipeableList from '../common/SwipeableList';
+import CloudProviders from '../../data/CloudProviders';
 
 const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
-  const clusters = useSelector(state => Object.values(state.Clusters.byUrl));
   const currentProvider = useSelector(state => state.Clusters.currentProvider);
+
+  const clusters = useSelector(state => {
+    return Object.values(state.Clusters.byUrl)
+      .filter(cluster => cluster.cloudProvider === currentProvider);
+  });
 
   useEffect(() => {
     dispatch(checkClusters());
   }, [dispatch]);
 
-  const handleProviderChange = provider => {
+  const handleProviderChange = useCallback(provider => {
     dispatch(setCurrentProvider(provider));
-  };
+  }, [dispatch]);
 
-  const handleClusterPress = cluster => {
+  const handleClusterPress = useCallback(cluster => {
     dispatch(setCurrentCluster(cluster));
     dispatch(fetchNamespaces(cluster));
     navigation.navigate('Pods');
-  };
+  }, [dispatch, navigation]);
 
-  const renderClusters = () => {
-    if (clusters.length) {
-      return clusters
-        .filter(cluster => cluster.cloudProvider === currentProvider)
-        .map((cluster, idx) => {
-          return (
-            <TouchableOpacity
-              key={cluster.name + idx}
-              style={styles.clusterContainer}
-              activeOpacity={0.7}
-              cluster={cluster.name}
-              onPress={() => handleClusterPress(cluster)}>
-              <Text numberOfLines={1} style={styles.clusterText}>
-                {cluster.name}
-              </Text>
-              <Text style={styles.statusText}>{cluster.status}</Text>
-              <Badge
-                status={StatusUtils.statusForBadge(cluster.status)}
-                badgeStyle={styles.badge}
-              />
-              <Icon
-                name="chevron-right"
-                size={15}
-                color="gray"
-                style={styles.arrow}
-              />
-            </TouchableOpacity>
-          );
-        });
-    }
-    return [];
-  };
+  const handleDeletePress = useCallback(cluster => {
+    AlertUtils.deleteEntityPrompt(
+      cluster.name,
+      () => dispatch(removeCluster(cluster))
+    );
+  }, [dispatch]);
 
   return (
     <View>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.dropDownView}>
           <Dropdown
-            label="Select Cloud Provider"
+            label={'Select Cloud Provider'}
             data={CloudProviders}
             value={currentProvider}
             itemCount={4}
             dropdownPosition={0}
             dropdownOffset={styles.dropDownOffset}
             style={styles.dropDown}
-            onChangeText={text => handleProviderChange(text)}
+            onChangeText={handleProviderChange}
           />
         </View>
-        <ScrollView style={styles.clusterScroll}>
-          {renderClusters().length > 0 && renderClusters()}
-          {renderClusters().length === 0 && (
+        {clusters.length > 0 && (
+          <SwipeableList
+            listData={clusters}
+            handleItemPress={handleClusterPress}
+            handleDeletePress={handleDeletePress}
+          />
+        )}
+        {!clusters.length && (
+          <ScrollView style={styles.clusterScroll}>
             <Text style={styles.noContentText}>No Clusters Found</Text>
-          )}
-        </ScrollView>
-        <View>
+          </ScrollView>
+        )}
+        < View >
           <TouchableOpacity onPress={() => navigation.navigate('Add Cluster')}>
             <Icon
               style={styles.addClusterIcon}
@@ -113,7 +98,7 @@ const ClustersIndex = ({ navigation }) => {
           />
         </View>
       </SafeAreaView>
-    </View>
+    </View >
   );
 };
 
@@ -146,51 +131,11 @@ const styles = EStyleSheet.create({
     marginHorizontal: '3%',
     height: '100%',
   },
-  clusterContainer: {
-    marginTop: '3%',
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    height: '3rem',
-    width: '96%',
-    paddingLeft: 8,
-    borderStyle: 'solid',
-    borderColor: '#063CB9',
-    borderWidth: 1,
-    borderRadius: 8,
-    alignSelf: 'center',
-    alignItems: 'center',
-  },
-  clusterText: {
-    fontSize: '1rem',
-    marginRight: '3.8rem',
-    width: '46%',
-    height: '50%',
-    backgroundColor: 'white',
-    overflow: 'scroll',
-  },
-  statusText: {
-    fontSize: '1rem',
-    textAlign: 'right',
-    backgroundColor: 'white',
-    width: '5.65rem',
-    height: '50%',
-    color: 'gray',
-    marginRight: '.18rem',
-  },
   clusterScroll: {
     marginTop: '3%',
     borderRadius: 5,
     marginBottom: '.2rem',
     backgroundColor: 'white',
-  },
-  arrow: {
-    marginLeft: '.4rem',
-    marginTop: '-.6rem',
-  },
-  badge: {
-    marginLeft: '.4rem',
-    marginTop: '-.6rem',
-    marginRight: '.2rem',
   },
   signOut: {
     marginTop: '3rem',

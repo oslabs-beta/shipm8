@@ -4,20 +4,24 @@ import {
   Text,
   Image,
   Animated,
-  TouchableOpacity,
   TouchableHighlight,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 
-import EntityStatus from './EntityStatus';
+import EntityStatus from '../common/EntityStatus';
+const iconPod = require('../../../images/pod.png');
 
-const SwipeableList = ({ entities, handleItemPress, handleTrashPress }) => {
+const SwipeableList = ({ listData, handleItemPress, handleDeletePress }) => {
   const rowSwipeAnimatedValues = {};
 
-  entities.forEach(entity => {
-    rowSwipeAnimatedValues[`${entity.metadata.uid}`] = new Animated.Value(0);
+  listData.forEach(item => {
+    const name = item.name
+      ? item.name
+      : item.metadata.name;
+    rowSwipeAnimatedValues[`${name}`] = new Animated.Value(0);
   });
 
   const onSwipeValueChange = swipeData => {
@@ -26,79 +30,90 @@ const SwipeableList = ({ entities, handleItemPress, handleTrashPress }) => {
   };
 
   const renderItem = data => {
+    const status = typeof data.item.status === 'string'
+      ? data.item.status
+      : data.item.status.phase
+        ? data.item.status.phase
+        : false;
+
+    const name = data.item.name
+      ? data.item.name
+      : data.item.metadata.name;
+
     return (
-      <TouchableHighlight
-        onPress={() => handleItemPress(data.item)}
-        style={styles.listItemButton}
-        underlayColor={'#AAA'}
-        key={data.item.metadata.name}
+      <SwipeRow
+        style={styles.btnContainer}
+        disableRightSwipe
+        rightOpenValue={-75}
+        // rightOpenValue={-Dimensions.get('window').width} /** will be used if swipe to delete is implemented */
+        friction={10}
+        swipeKey={name}
+        onSwipeValueChange={onSwipeValueChange}
       >
-        <View style={styles.itemContainer}>
-          <View style={typeof data.item.status.phase === 'string' ? styles.containerLeft : styles.containerLeftNoStatus}>
-            <Image style={styles.itemIcon} source={require('../../../images/pod.png')} />
-            <Text style={styles.itemText} numberOfLines={1}>{data.item.metadata.name}</Text>
-          </View>
-          <View style={styles.containerRight}>
-            <EntityStatus status={data.item.status.phase} />
-            <Icon
-              name="chevron-right"
-              size={15}
-              color="gray"
-              style={styles.arrow}
+        <TouchableOpacity
+          onPress={() => handleDeletePress(data.item)}
+          style={[styles.listItemButton, styles.backRightBtn]}
+        >
+          <Animated.View
+            style={[
+              styles.trash,
+              {
+                transform: [
+                  {
+                    scale: rowSwipeAnimatedValues[
+                      name
+                    ].interpolate({
+                      inputRange: [
+                        0,
+                        75,
+                      ],
+                      outputRange: [0, 1],
+                      extrapolate:
+                        'clamp',
+                    }),
+                  },
+                ],
+              },
+            ]}
+          >
+            <Image
+              source={require('../../../images/trash.png')}
+              style={styles.trash}
             />
+          </Animated.View>
+        </TouchableOpacity>
+        <TouchableHighlight
+          style={styles.listItemButton}
+          underlayColor={'#AAA'}
+          onPress={() => handleItemPress(data.item)}
+          key={name}
+        >
+          <View style={styles.itemContainer}>
+            <View style={status ? styles.containerLeft : styles.containerLeftNoStatus}>
+              {data.item.kind === 'Pods' && <Image style={styles.itemIcon} source={iconPod} />}
+              <Text style={styles.itemText} numberOfLines={1}>{name}</Text>
+            </View>
+            <View style={styles.containerRight}>
+              <EntityStatus status={status} />
+              <Icon
+                name="chevron-right"
+                size={15}
+                color="gray"
+                style={styles.arrow}
+              />
+            </View>
           </View>
-        </View>
-      </TouchableHighlight>
+        </TouchableHighlight>
+      </SwipeRow>
     );
   };
 
   return (
-    <View style={styles.container}>
-      <SwipeListView
-        disableRightSwipe={true}
-        data={entities}
-        keyExtractor={item => item.metadata.uid}
-        renderItem={renderItem}
-        renderHiddenItem={(data, rowMap) => (
-          <TouchableOpacity
-            style={[styles.listItemButton, styles.backRightBtn]}
-            onPress={() =>
-              handleTrashPress(data.item)
-            }
-          >
-            <Animated.View
-              style={[
-                styles.trash,
-                {
-                  transform: [
-                    {
-                      scale: rowSwipeAnimatedValues[
-                        data.item.metadata.uid
-                      ].interpolate({
-                        inputRange: [
-                          0,
-                          75,
-                        ],
-                        outputRange: [0, 1],
-                        extrapolate:
-                          'clamp',
-                      }),
-                    },
-                  ],
-                },
-              ]}
-            >
-              <Image
-                source={require('../../../images/trash.png')}
-                style={styles.trash}
-              />
-            </Animated.View>
-          </TouchableOpacity>
-        )}
-        rightOpenValue={-75}
-        onSwipeValueChange={onSwipeValueChange}
-      />
-    </View>
+    <SwipeListView
+      data={listData}
+      renderItem={renderItem}
+      keyExtractor={item => item.name || item.metadata.name}
+    />
   );
 };
 

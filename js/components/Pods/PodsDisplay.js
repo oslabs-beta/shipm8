@@ -4,26 +4,26 @@ import {
   Text,
   Button,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 import Loading from '../common/Loading';
-import SwipeableList from '../common/SwipeableList';
 import AlertUtils from '../../utils/AlertUtils';
-import { setCurrentPod, fetchPods, deletePod } from './PodsSlice';
+import SwipeableList from '../common/SwipeableList';
 import { setCurrentNamespace } from '../Clusters/ClustersSlice';
+import { setCurrentPod, fetchPods, deletePod } from './PodsSlice';
 
 const PodsDisplay = ({ navigation }) => {
   const dispatch = useDispatch();
   const isLoading = useSelector(state => state.Pods.isLoading);
-  const currentCluster = useSelector(
-    state => state.Clusters.byUrl[state.Clusters.current],
+  const currentCluster = useSelector(state =>
+    state.Clusters.byUrl[state.Clusters.current]
   );
-  const currentNamespace = useSelector(
-    state => state.Clusters.byUrl[state.Clusters.current].currentNamespace
+  const currentNamespace = useSelector(state =>
+    state.Clusters.byUrl[state.Clusters.current].currentNamespace
   );
 
   useEffect(() => {
@@ -46,18 +46,18 @@ const PodsDisplay = ({ navigation }) => {
     return [];
   }, shallowEqual);
 
-  const handleNamespaceChange = namespace => {
+  const handleNamespaceChange = useCallback(namespace => {
     dispatch(setCurrentNamespace({ currentCluster, namespace }));
-  };
+  }, [currentCluster, dispatch]);
 
   const handlePodPress = useCallback(pod => {
     dispatch(setCurrentPod(pod));
     navigation.navigate('Pod Details');
   }, [dispatch, navigation]);
 
-  const handleTrashPress = useCallback(pod => {
+  const handleDeletePress = useCallback(pod => {
     AlertUtils.deleteEntityPrompt(
-      pod.metadata.name,
+      pod,
       () => dispatch(deletePod(currentCluster, pod))
     );
   }, [currentCluster, dispatch]);
@@ -83,7 +83,7 @@ const PodsDisplay = ({ navigation }) => {
           itemCount={4}
           dropdownOffset={styles.dropDownOffset}
           style={styles.dropDown}
-          onChangeText={text => handleNamespaceChange(text)}
+          onChangeText={handleNamespaceChange}
         />
       </View>
       <View style={styles.podScroll}>
@@ -94,9 +94,9 @@ const PodsDisplay = ({ navigation }) => {
         )}
         {pods.length > 0 && (
           <SwipeableList
-            entities={pods}
+            listData={pods}
             handleItemPress={handlePodPress}
-            handleTrashPress={handleTrashPress}
+            handleDeletePress={handleDeletePress}
           />
         )}
         {pods.length === 0 && !isLoading && (
@@ -122,7 +122,7 @@ const styles = EStyleSheet.create({
   safeArea: {
     height: '100%',
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   dropDownView: {
     width: '90%',

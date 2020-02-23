@@ -3,9 +3,13 @@ import { Alert } from 'react-native';
 class AlertUtils {
 
   static deleteEntityPrompt = (item, callback) => {
+    const message = item.kind
+      ? `This will delete ${item.name || item.metadata.name} from your cluster`
+      : `This will remove ${item} from your added clusters`;
+
     return Alert.alert(
       'Are you sure?',
-      `This will delete ${item} from your cluster`,
+      message,
       [
         {
           text: 'Cancel',
@@ -24,9 +28,17 @@ class AlertUtils {
   };
 
   static deleteSuccessAlert = item => {
+    const messageTitle = item.kind
+      ? 'Delete Successful'
+      : 'Remove Successful';
+
+    const message = item.kind
+      ? `${item.name || item.metadata.name} has been deleted.`
+      : `${item} has been removed.`;
+
     return Alert.alert(
-      'Delete Successful',
-      `${item} has been deleted.`,
+      messageTitle,
+      message,
       [
         {
           text: 'OK',

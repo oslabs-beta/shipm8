@@ -75,7 +75,7 @@ export const deletePod = (cluster, pod) =>
       if (response.kind === 'Pod') {
         const uid = response.metadata.uid;
         dispatch(deletePodSuccess({ cluster, uid }));
-        return AlertUtils.deleteSuccessAlert(pod.metadata.name);
+        return AlertUtils.deleteSuccessAlert(pod);
       } else {
         return AlertUtils.deleteFailedAlert(response);
       }

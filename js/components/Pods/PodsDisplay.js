@@ -46,9 +46,9 @@ const PodsDisplay = ({ navigation }) => {
     return [];
   }, shallowEqual);
 
-  const handleNamespaceChange = namespace => {
+  const handleNamespaceChange = useCallback(namespace => {
     dispatch(setCurrentNamespace({ currentCluster, namespace }));
-  };
+  }, [currentCluster, dispatch]);
 
   const handlePodPress = useCallback(pod => {
     dispatch(setCurrentPod(pod));
@@ -57,7 +57,7 @@ const PodsDisplay = ({ navigation }) => {
 
   const handleDeletePress = useCallback(pod => {
     AlertUtils.deleteEntityPrompt(
-      pod.metadata.name,
+      pod,
       () => dispatch(deletePod(currentCluster, pod))
     );
   }, [currentCluster, dispatch]);

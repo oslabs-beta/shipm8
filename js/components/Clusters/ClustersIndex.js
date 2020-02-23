@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -14,10 +14,12 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 
 import {
   checkClusters,
+  removeCluster,
   fetchNamespaces,
   setCurrentCluster,
   setCurrentProvider,
 } from './ClustersSlice';
+import AlertUtils from '../../utils/AlertUtils';
 import SwipeableList from '../common/SwipeableList';
 import CloudProviders from '../../data/CloudProviders';
 
@@ -34,15 +36,22 @@ const ClustersIndex = ({ navigation }) => {
     dispatch(checkClusters());
   }, [dispatch]);
 
-  const handleProviderChange = provider => {
+  const handleProviderChange = useCallback(provider => {
     dispatch(setCurrentProvider(provider));
-  };
+  }, [dispatch]);
 
-  const handleClusterPress = cluster => {
+  const handleClusterPress = useCallback(cluster => {
     dispatch(setCurrentCluster(cluster));
     dispatch(fetchNamespaces(cluster));
     navigation.navigate('Pods');
-  };
+  }, [dispatch, navigation]);
+
+  const handleDeletePress = useCallback(cluster => {
+    AlertUtils.deleteEntityPrompt(
+      cluster.name,
+      () => dispatch(removeCluster(cluster))
+    );
+  }, [dispatch]);
 
   return (
     <View>
@@ -63,7 +72,7 @@ const ClustersIndex = ({ navigation }) => {
           <SwipeableList
             listData={clusters}
             handleItemPress={handleClusterPress}
-            handleDeletePress={null}
+            handleDeletePress={handleDeletePress}
           />
         )}
         {!clusters.length && (

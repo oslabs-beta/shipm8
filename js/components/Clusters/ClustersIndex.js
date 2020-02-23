@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Button,
 } from 'react-native';
-import { Badge } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -19,7 +18,6 @@ import {
   setCurrentCluster,
   setCurrentProvider,
 } from './ClustersSlice';
-import StatusUtils from '../../utils/StatusUtils';
 import SwipeableList from '../common/SwipeableList';
 import CloudProviders from '../../data/CloudProviders';
 
@@ -124,51 +122,11 @@ const styles = EStyleSheet.create({
     marginHorizontal: '3%',
     height: '100%',
   },
-  clusterContainer: {
-    marginTop: '3%',
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    height: '3rem',
-    width: '96%',
-    paddingLeft: 8,
-    borderStyle: 'solid',
-    borderColor: '#063CB9',
-    borderWidth: 1,
-    borderRadius: 8,
-    alignSelf: 'center',
-    alignItems: 'center',
-  },
-  clusterText: {
-    fontSize: '1rem',
-    marginRight: '3.8rem',
-    width: '46%',
-    height: '50%',
-    backgroundColor: 'white',
-    overflow: 'scroll',
-  },
-  statusText: {
-    fontSize: '1rem',
-    textAlign: 'right',
-    backgroundColor: 'white',
-    width: '5.65rem',
-    height: '50%',
-    color: 'gray',
-    marginRight: '.18rem',
-  },
   clusterScroll: {
     marginTop: '3%',
     borderRadius: 5,
     marginBottom: '.2rem',
     backgroundColor: 'white',
-  },
-  arrow: {
-    marginLeft: '.4rem',
-    marginTop: '-.6rem',
-  },
-  badge: {
-    marginLeft: '.4rem',
-    marginTop: '-.6rem',
-    marginRight: '.2rem',
   },
   signOut: {
     marginTop: '3rem',

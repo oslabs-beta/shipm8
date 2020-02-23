@@ -6,13 +6,14 @@ import StatusUtils from '../../utils/StatusUtils';
 
 const EntityStatus = ({ status }) => {
   if (typeof status !== 'string') { return false; }
-  const statusText = status.toUpperCase();
+  const badgeStatusText = status.toUpperCase();
+  const statusText = status[0].toUpperCase() + status.slice(1).toLowerCase();
 
   return (
     <View style={styles.status}>
       <Text style={styles.statusText}>{statusText}</Text>
       <Badge
-        status={StatusUtils.statusForBadge(statusText)}
+        status={StatusUtils.statusForBadge(badgeStatusText)}
         badgeStyle={styles.badge}
       />
     </View>

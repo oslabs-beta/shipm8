@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Badge } from 'react-native-elements'
+import { Badge } from 'react-native-elements';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import StatusUtils from '../../utils/StatusUtils';
 
@@ -35,5 +35,5 @@ const styles = EStyleSheet.create({
   statusText: {
     fontSize: 14,
     color: '#929292',
-  }
+  },
 });

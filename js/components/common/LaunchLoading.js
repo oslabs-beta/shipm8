@@ -8,8 +8,8 @@ import {
 import Loading from './Loading';
 
 const LaunchLoading = ({ navigation }) => {
-  const isReady = useSelector(state => state.Clusters.isReady);
-  const clusters = useSelector(state => Object.keys(state.Clusters.byUrl));
+  const isReady = useSelector(state => state.clusters.isReady);
+  const clusters = useSelector(state => Object.keys(state.clusters.byUrl));
 
   useEffect(() => {
     _bootstrap();

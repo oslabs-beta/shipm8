@@ -7,32 +7,32 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { Badge } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-import Loading from '../common/Loading';
-import Regions from '../../data/Regions';
-import { fetchEksClusters } from '../../reducers/AwsSlice';
-import { addCluster, setCurrentProvider } from './ClustersSlice';
 import {
   fetchGkeClusters,
   fetchGcpProjects,
 } from '../../reducers/GoogleCloudSlice';
+import Loading from '../common/Loading';
+import Regions from '../../data/Regions';
+import { fetchEksClusters } from '../../reducers/AwsSlice';
+import { addCluster, setCurrentProvider } from './ClustersSlice';
 
 const AddCluster = ({ navigation }) => {
   const dispatch = useDispatch();
   const [valueSelected, setValueSelected] = useState(false);
 
-  const currentProvider = useSelector(state => state.Clusters.currentProvider);
+  const currentProvider = useSelector(state => state.clusters.currentProvider);
   const isLoading = useSelector(state => state[currentProvider].isLoading);
   const clusters = useSelector(state => state[currentProvider].clusters);
 
   const gcpProjects = useSelector(state => {
-    if (state.Gcp.projects) {
-      return state.Gcp.projects.map(project => {
+    if (state.gcp.projects) {
+      return state.gcp.projects.map(project => {
         return {
           label: project.name,
           value: project.projectId,
@@ -43,23 +43,23 @@ const AddCluster = ({ navigation }) => {
   });
 
   useEffect(() => {
-    currentProvider === 'Gcp' && dispatch(fetchGcpProjects());
+    currentProvider === 'gcp' && dispatch(fetchGcpProjects());
   }, [currentProvider, dispatch]);
 
   const handleDropdownChange = value => {
     setValueSelected(true);
-    currentProvider === 'Aws'
+    currentProvider === 'aws'
       ? dispatch(fetchEksClusters(value))
       : dispatch(fetchGkeClusters(value));
   };
 
   const setDropDownValues = () => {
-    return currentProvider === 'Aws'
+    return currentProvider === 'aws'
       ? Regions
       : gcpProjects || [{ value: 'Loading' }];
   };
 
-  const regionOrProjectLabel = currentProvider === 'Aws' ? 'Region' : 'Project';
+  const regionOrProjectLabel = currentProvider === 'aws' ? 'Region' : 'Project';
 
   const setNoValueSelectedText = () => {
     return `Please select a ${regionOrProjectLabel} to view

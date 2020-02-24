@@ -112,6 +112,7 @@ export default React.memo(Login);
 
 const styles = EStyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',

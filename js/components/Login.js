@@ -4,15 +4,14 @@ import {
   Text,
   Alert,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Input, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-// import { Icon as Icon5 } from 'react-native-vector-icons/FontAwesome5';
-
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
+
 
 import { checkAwsCredentials } from '../reducers/AwsSlice';
 import { setCurrentProvider } from '../components/Clusters/ClustersSlice';

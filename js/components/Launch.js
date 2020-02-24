@@ -10,11 +10,9 @@ const Launch = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container} behavior="padding" enabled>
+    <View style={styles.container}>
       <Image source={require('../../images/SHIPM8.png')} style={styles.logo} />
-      <Text style={styles.bannerLineOne}>Kubernetes Mobile Monitoring</Text>
-      <Text style={styles.bannerLineTwo}>with</Text>
-
+      <Text style={styles.bannerLineOne}>Mobile Kubernetes Monitoring</Text>
       <View style={styles.cloudLogoContainer}>
         <Image
           style={styles.googleCloud}
@@ -41,7 +39,6 @@ const styles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    justifyContent: 'center',
     alignItems: 'center',
   },
   getStartedText: {
@@ -55,66 +52,48 @@ const styles = EStyleSheet.create({
     borderColor: '#151B54',
     borderWidth: '.2rem',
     borderRadius: '.5rem',
-    padding: '1rem',
-    textAlign: 'center',
+    padding: '.7rem',
     backgroundColor: '#1589FF',
-    marginBottom: '5.5rem',
+    marginBottom: '2.5rem',
   },
   bannerLineOne: {
     fontSize: '1.1rem',
     fontWeight: 'bold',
     color: '#151B54',
-    textAlign: 'center',
-  },
-  bannerLineTwo: {
-    fontSize: '1.1rem',
-    fontWeight: 'bold',
-    color: '#151B54',
-    textAlign: 'center',
-    marginBottom: '-1rem',
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: 'white',
-    fontSize: '.3rem',
   },
   cloudLogoContainer: {
     flex: 1,
     flexDirection: 'row',
+    width: '85%',
+    alignItems: 'center',
   },
   textStyle: {
-    textAlign: 'center',
-    alignContent: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
     color: '#151B54',
     fontSize: '1.3rem',
     fontWeight: 'bold',
-    marginTop: '8%',
+    marginBottom: 5,
   },
   logo: {
-    width: '23rem',
-    height: '28rem',
-    alignContent: 'center',
-    alignItems: 'center',
+    flex: 4,
+    width: '85%',
+    height: '60%',
     borderColor: '#151B54',
     borderWidth: '.2rem',
     borderRadius: '.5rem',
     marginTop: '8%',
-    marginBottom: '10%',
+    marginBottom: '5%',
   },
   googleCloud: {
-    width: '37%',
-    height: '27%',
-    backgroundColor: 'white',
-    marginRight: '4%',
-    marginTop: '8.5%',
-    marginLeft: '-.4rem',
+    flex: 1,
+    width: '2.2rem',
+    height: '2.2rem',
+    marginLeft: 15,
+    marginRight: 15,
   },
   awsLogo: {
-    width: '38%',
-    height: '39%',
-    backgroundColor: 'white',
-    marginTop: '1.6rem',
+    flex: 1,
+    width: '100%',
+    height: '50%',
+    // marginBottom: 5,
   },
 });

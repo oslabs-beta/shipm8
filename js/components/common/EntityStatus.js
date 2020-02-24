@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Badge } from 'react-native-elements';
 import EStyleSheet from 'react-native-extended-stylesheet';
+
 import StatusUtils from '../../utils/StatusUtils';
 
 const EntityStatus = ({ status }) => {

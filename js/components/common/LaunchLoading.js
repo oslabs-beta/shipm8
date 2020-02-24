@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import {
   StatusBar,
@@ -13,20 +13,20 @@ const LaunchLoading = ({ navigation }) => {
 
   useEffect(() => {
     _bootstrap();
-  }, [isReady]);
+  }, [_bootstrap, isReady]);
 
-  const _bootstrap = () => {
+  const _bootstrap = useCallback(() => {
     if (isReady) {
-      navigation.navigate(clusters.length > 0 ? 'App' : 'FirstLaunch');
+      navigation.navigate(clusters && clusters.length > 0 ? 'App' : 'FirstLaunch');
     }
-  };
+  }, [clusters, isReady, navigation]);
 
   return (
     <View>
-      <Loading />
       <StatusBar barStyle="default" />
+      <Loading />
     </View>
   );
-}
+};
 
 export default LaunchLoading;

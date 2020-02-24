@@ -38,7 +38,9 @@ export default React.memo(Launch);
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
+    width: '90%',
     backgroundColor: 'white',
+    alignSelf: 'center',
     alignItems: 'center',
   },
   getStartedText: {
@@ -54,7 +56,7 @@ const styles = EStyleSheet.create({
     borderRadius: '.5rem',
     padding: '.7rem',
     backgroundColor: '#1589FF',
-    marginBottom: '2.5rem',
+    marginBottom: '3rem',
   },
   bannerLineOne: {
     fontSize: '1.1rem',
@@ -75,8 +77,8 @@ const styles = EStyleSheet.create({
   },
   logo: {
     flex: 4,
-    width: '85%',
-    height: '60%',
+    justifyContent: 'center',
+    width: '100%',
     borderColor: '#151B54',
     borderWidth: '.2rem',
     borderRadius: '.5rem',
@@ -94,6 +96,5 @@ const styles = EStyleSheet.create({
     flex: 1,
     width: '100%',
     height: '50%',
-    // marginBottom: 5,
   },
 });

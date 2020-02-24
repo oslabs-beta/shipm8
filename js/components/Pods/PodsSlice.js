@@ -4,6 +4,7 @@ import K8sApi from '../../api/K8sApi';
 import AlertUtils from '../../utils/AlertUtils';
 import { getAuthToken } from '../Clusters/ClustersSlice';
 import { startLoading, loadingFailed } from '../../utils/LoadingUtils';
+import { resolve } from '../../utils/aws4';
 
 const Pods = createSlice({
   name: 'Pods',
@@ -61,6 +62,7 @@ export const fetchPods = cluster =>
         podsByUid[pod.metadata.uid] = pod;
       });
       dispatch(fetchPodsSuccess({ cluster, podsByUid }));
+      return Promise.resolve();
     } catch (err) {
       dispatch(fetchPodsFailed(err.toString()));
     }

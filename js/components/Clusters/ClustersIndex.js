@@ -53,6 +53,10 @@ const ClustersIndex = ({ navigation }) => {
     );
   }, [dispatch]);
 
+  const handleRefresh = useCallback(async () => {
+    dispatch(checkClusters());
+  }, [dispatch]);
+
   return (
     <View>
       <SafeAreaView style={styles.safeArea}>
@@ -73,6 +77,7 @@ const ClustersIndex = ({ navigation }) => {
             listData={clusters}
             handleItemPress={handleClusterPress}
             handleDeletePress={handleDeletePress}
+            onRefresh={handleRefresh}
           />
         )}
         {!clusters.length && (

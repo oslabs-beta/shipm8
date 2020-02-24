@@ -8,6 +8,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Launch from './components/Launch';
 import PodInfo from './components/Pods/PodInfo';
 import CloudLogin from './components/CloudLogin';
+import Loading from './components/common/Loading';
 import PodsDisplay from './components/Pods/PodsDisplay';
 import AddCluster from './components/Clusters/AddCluster';
 import LaunchLoading from './components/common/LaunchLoading';
@@ -93,7 +94,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate
-        loading={null}
+        loading={Loading}
         persistor={persistor}>
         <AppContainer />
       </PersistGate>

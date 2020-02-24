@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
   Image,
   Animated,
+  RefreshControl,
   TouchableHighlight,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -14,7 +15,8 @@ import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import EntityStatus from '../common/EntityStatus';
 const iconPod = require('../../../images/pod.png');
 
-const SwipeableList = ({ listData, handleItemPress, handleDeletePress }) => {
+const SwipeableList = ({ listData, handleItemPress, handleDeletePress, onRefresh }) => {
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const rowSwipeAnimatedValues = {};
 
   listData.forEach(item => {
@@ -23,6 +25,12 @@ const SwipeableList = ({ listData, handleItemPress, handleDeletePress }) => {
       : item.metadata.name;
     rowSwipeAnimatedValues[`${name}`] = new Animated.Value(0);
   });
+
+  const handleRefresh = useCallback(async () => {
+    onRefresh && setIsRefreshing(true);
+    onRefresh && await onRefresh();
+    setIsRefreshing(false);
+  }, [onRefresh]);
 
   const onSwipeValueChange = swipeData => {
     const { key, value } = swipeData;
@@ -90,7 +98,7 @@ const SwipeableList = ({ listData, handleItemPress, handleDeletePress }) => {
         >
           <View style={styles.itemContainer}>
             <View style={status ? styles.containerLeft : styles.containerLeftNoStatus}>
-              {data.item.kind === 'Pods' && <Image style={styles.itemIcon} source={iconPod} />}
+              {data.item.kind === 'pods' && <Image style={styles.itemIcon} source={iconPod} />}
               <Text style={styles.itemText} numberOfLines={1}>{name}</Text>
             </View>
             <View style={styles.containerRight}>
@@ -112,6 +120,12 @@ const SwipeableList = ({ listData, handleItemPress, handleDeletePress }) => {
     <SwipeListView
       data={listData}
       renderItem={renderItem}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+        />
+      }
       keyExtractor={item => item.name || item.metadata.name}
     />
   );

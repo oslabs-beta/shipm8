@@ -62,6 +62,10 @@ const PodsDisplay = ({ navigation }) => {
     );
   }, [currentCluster, dispatch]);
 
+  const handleRefresh = useCallback(() => {
+    return dispatch(fetchPods);
+  }, [dispatch]);
+
   const createNamespaceList = namespaces => {
     const namespaceList = namespaces.map(namespace => {
       return { value: namespace };
@@ -97,6 +101,7 @@ const PodsDisplay = ({ navigation }) => {
             listData={pods}
             handleItemPress={handlePodPress}
             handleDeletePress={handleDeletePress}
+            onRefresh={handleRefresh}
           />
         )}
         {pods.length === 0 && !isLoading && (

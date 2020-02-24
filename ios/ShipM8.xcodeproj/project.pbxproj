@@ -690,7 +690,7 @@
 			baseConfigurationReference = B6BB0F1E258A5CBB328990B3 /* Pods-shipm8.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.01;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = V6M6ZM7GTT;
 				INFOPLIST_FILE = shipm8/Info.plist;
@@ -711,7 +711,7 @@
 			baseConfigurationReference = BFF7D2285A9388754BBA38F3 /* Pods-shipm8.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.01;
 				INFOPLIST_FILE = shipm8/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (

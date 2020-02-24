@@ -11,24 +11,26 @@ const Launch = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../../images/SHIPM8.png')} style={styles.logo} />
-      <Text style={styles.bannerLineOne}>Mobile Kubernetes Monitoring</Text>
-      <View style={styles.cloudLogoContainer}>
-        <Image
-          style={styles.googleCloud}
-          source={require('../../images/googleCloud.png')}
-        />
-        <Text style={styles.textStyle}>+</Text>
-        <Image
-          style={styles.awsLogo}
-          source={require('../../images/aws.png')}
-        />
-      </View>
-      <TouchableOpacity style={styles.buttonContainer} onPress={() => getStarted()}>
-        <View >
-          <Text style={styles.getStartedText}>Get Started</Text>
+      <View style={styles.innerContainer}>
+        <Image source={require('../../images/SHIPM8.png')} style={styles.logo} />
+        <Text style={styles.bannerLineOne}>Mobile Kubernetes Monitoring</Text>
+        <View style={styles.cloudLogoContainer}>
+          <Image
+            style={styles.googleCloud}
+            source={require('../../images/googleCloud.png')}
+          />
+          <Text style={styles.textStyle}>+</Text>
+          <Image
+            style={styles.awsLogo}
+            source={require('../../images/aws.png')}
+          />
         </View>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => getStarted()}>
+          <View >
+            <Text style={styles.getStartedText}>Get Started</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -38,9 +40,13 @@ export default React.memo(Launch);
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    width: '90%',
+    width: '100%',
     backgroundColor: 'white',
-    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  innerContainer: {
+    flex: 1,
+    width: '90%',
     alignItems: 'center',
   },
   getStartedText: {

@@ -6,10 +6,7 @@ import Login from './Login';
 
 const CloudLogin = ({ navigation }) => {
   return (
-    <KeyboardAvoidingView
-      // contentContainerStyle={styles.container}
-      style={styles.container}
-      behavior="position">
+    <KeyboardAvoidingView style={styles.container} behavior="position">
       <Login navigation={navigation} />
     </KeyboardAvoidingView>
   );

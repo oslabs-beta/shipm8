@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import AwsApi from '../api/AwsApi'
+import AwsApi from '../api/AwsApi';
 import { startLoading, loadingFailed } from '../utils/LoadingUtils';
 
 const Aws = createSlice({
@@ -30,7 +30,7 @@ const Aws = createSlice({
       state.clusters = clusters;
       state.isLoading = false;
     },
-  }
+  },
 });
 
 export const {
@@ -61,17 +61,17 @@ export const checkAwsCredentials = credentials =>
       dispatch(checkAwsCredentialsFailed());
       return Promise.resolve(err);
     }
-  }
+  };
 
 export const fetchEksClusters = region =>
   async (dispatch, getState) => {
     try {
       dispatch(fetchEksClustersStart());
       const state = getState();
-      const AwsCredentials = state.Aws.credentials;
+      const AwsCredentials = state.aws.credentials;
       const clusters = await AwsApi.describeAllEksClusters(region, AwsCredentials);
       dispatch(fetchEksClustersSuccess(clusters));
     } catch (err) {
       dispatch(fetchEksClustersFailed(err.toString()));
     }
-  }
+  };

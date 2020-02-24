@@ -91,7 +91,7 @@ export default Clusters.reducer;
 export const checkClusters = () =>
   async (dispatch, getState) => {
     const state = getState();
-    const clusters = Object.values(state.Clusters.byUrl);
+    const clusters = Object.values(state.clusters.byUrl);
     return Promise.all(clusters.map(cluster => {
       return dispatch(checkCluster(cluster));
     }));
@@ -124,15 +124,15 @@ export const getAuthToken = cluster =>
       let state = getState();
       let token;
 
-      if (cluster.cloudProvider === 'Aws') {
-        token = AwsApi.getAuthToken(cluster.name, state.Aws.credentials);
-      } else if (cluster.cloudProvider === 'Gcp') {
-        token = await GoogleCloudApi.refreshAccessToken(state.Gcp.user.refreshToken);
+      if (cluster.cloudProvider === 'aws') {
+        token = AwsApi.getAuthToken(cluster.name, state.aws.credentials);
+      } else if (cluster.cloudProvider === 'gcp') {
+        token = await GoogleCloudApi.refreshAccessToken(state.gcp.user.refreshToken);
       }
 
       dispatch(getAuthTokenSuccess({ cluster, token }));
       state = getState();
-      const clusterWithToken = state.Clusters.byUrl[cluster.url];
+      const clusterWithToken = state.clusters.byUrl[cluster.url];
       return Promise.resolve(clusterWithToken);
     } catch (err) {
       dispatch(getAuthTokenFailed(err.toString()));

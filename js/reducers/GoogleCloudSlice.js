@@ -79,7 +79,7 @@ export const googleSignIn = () =>
       const user = await GoogleCloudApi.signIn();
       if (!user) {
         dispatch(googleSignInFailed('Sign in Canceled'));
-        return Promise.resolve('Sign in Canceled')
+        return Promise.resolve('Sign in Canceled');
       }
       dispatch(googleSignInSuccess(user));
       return Promise.resolve(true);
@@ -107,7 +107,7 @@ export const fetchGkeClusters = (projectId, zone) =>
     try {
       const state = getState();
       dispatch(fetchGkeClustersStart());
-      const refreshToken = state.Gcp.user.refreshToken;
+      const refreshToken = state.gcp.user.refreshToken;
       const clusters = await GoogleCloudApi.fetchGkeClusters({ projectId, zone, refreshToken });
       dispatch(fetchGkeClustersSuccess(clusters));
       return Promise.resolve();
@@ -122,7 +122,7 @@ export const fetchGcpProjects = pageToken =>
     try {
       const state = getState();
       dispatch(fetchGcpProjectsStart());
-      const refreshToken = state.Gcp.user.refreshToken;
+      const refreshToken = state.gcp.user.refreshToken;
       const projects = await GoogleCloudApi.fetchProjects({ pageToken, refreshToken });
       if (projects.error) {
         dispatch(fetchGcpProjectsFailed(projects.error.toString()));
@@ -133,7 +133,7 @@ export const fetchGcpProjects = pageToken =>
       return Promise.resolve();
     } catch (err) {
       dispatch(fetchGcpProjectsFailed(err.toString()));
-      return alert(err);
+      return Promise.reject(err);
     }
   }
 
@@ -141,7 +141,8 @@ export const fetchGcpZones = (projectId, pageToken) =>
   async (dispatch, getState) => {
     try {
       dispatch(fetchGcpZonesStart());
-      const refreshToken = state.Gcp.user.refreshToken;
+      const state = getState();
+      const refreshToken = state.gcp.user.refreshToken;
       const zones = await GoogleCloudApi.fetchZones({ projectId, pageToken, refreshToken });
       dispatch(fetchGcpZonesSuccess(zones.zones));
       if (zones.nextPageToken) {
@@ -150,6 +151,6 @@ export const fetchGcpZones = (projectId, pageToken) =>
       return Promise.resolve();
     } catch (err) {
       dispatch(fetchGcpZonesFailed(err.toString()));
-      return Promise.reject(err)
+      return Promise.reject(err);
     }
-  }
+  };

@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  Alert,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Input, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { GoogleSigninButton } from '@react-native-community/google-signin';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import { GoogleSigninButton } from '@react-native-community/google-signin';
+
 
 import { checkAwsCredentials } from '../reducers/AwsSlice';
-import { googleSignIn, fetchGcpProjects } from '../reducers/GoogleCloudSlice';
 import { setCurrentProvider } from '../components/Clusters/ClustersSlice';
+import { googleSignIn, fetchGcpProjects } from '../reducers/GoogleCloudSlice';
 
 // Load FontAwesome icons
 Icon.loadFont();
@@ -28,24 +35,24 @@ const Login = ({ navigation }) => {
         checkAwsCredentials(loginState),
       );
       if (isValidCredentials) {
-        dispatch(setCurrentProvider('Aws'));
+        dispatch(setCurrentProvider('aws'));
         navigation.navigate('Add Cluster');
       } else {
-        alert('The Security Token Included in the Request Is Invalid');
+        Alert.alert('The Security Token Included in the Request Is Invalid');
       }
     } else {
-      alert(`Please Enter Valid AWS Credentials`);
+      Alert.alert('Please Enter Valid AWS Credentials');
     }
   };
 
   const handleGoogleSigninPress = async () => {
     const signInStatus = await dispatch(googleSignIn());
     if (signInStatus === true) {
-      dispatch(setCurrentProvider('Gcp'));
+      dispatch(setCurrentProvider('gcp'));
       dispatch(fetchGcpProjects());
       navigation.navigate('Add Cluster');
     } else {
-      alert(signInStatus);
+      Alert.alert(signInStatus);
     }
   };
 
@@ -75,12 +82,8 @@ const Login = ({ navigation }) => {
             setLoginState({ ...loginState, accessKeyId: text })
           }
           label="Access Key ID"
-          placeholder="   Enter Access Key ID Here"
-          leftIcon={{
-            type: 'font-awesome',
-            name: 'chevron-right',
-            color: 'gray',
-          }}
+          placeholder="Enter Access Key ID Here"
+          leftIcon={<Icon name="chevron-right" size={24} style={styles.icon} />}
         />
       </View>
       <View style={styles.formTwoView}>

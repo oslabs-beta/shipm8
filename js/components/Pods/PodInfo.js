@@ -13,7 +13,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 
 const PodInfo = ({ navigation }) => {
   const currentPod = useSelector(
-    state => state.Pods.byCluster[state.Clusters.current][state.Pods.current],
+    state => state.pods.byCluster[state.clusters.current][state.pods.current],
   );
 
   const checkStatus = text => {

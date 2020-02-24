@@ -12,7 +12,7 @@ const Regions = [
   { value: 'eu-west-2', label: 'Europe (London)' },
   { value: 'eu-west-3', label: 'Europe (Paris)' },
   { value: 'eu-north-1', label: 'Europe (Stockholm)' },
-  { value: 'sa-east-1', label: 'South America (São Paulo)' }
+  { value: 'sa-east-1', label: 'South America (São Paulo)' },
 ];
 
 export default Regions;

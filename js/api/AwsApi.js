@@ -4,7 +4,7 @@ import { sign } from '../utils/aws4';
 class AwsApi {
 
   /**
-   * 
+   *
    * AWS Kubernetes API Authorization from Outside a Cluster:
    * https://github.com/kubernetes-sigs/aws-iam-authenticator#api-authorization-from-outside-a-cluster
    *
@@ -16,7 +16,7 @@ class AwsApi {
       const queryOptions = {
         host: 'sts.amazonaws.com',
         service: 'sts',
-        path: `/?Action=GetCallerIdentity&Version=2011-06-15&X-Amz-Expires=60`,
+        path: '/?Action=GetCallerIdentity&Version=2011-06-15&X-Amz-Expires=60',
         headers: {
           'x-k8s-aws-id': clusterName,
         },
@@ -29,7 +29,7 @@ class AwsApi {
       /* Base64 encode signed URL */
       const encodedURL = Base64.encodeURI(signedURL);
       /* Remove any Base64 encoding padding */
-      const token = encodedURL.replace(/=+$/, ``);
+      const token = encodedURL.replace(/=+$/, '');
       /* Prepend result with required string */
       const authToken = `k8s-aws-v1.${token}`;
       return authToken;
@@ -57,7 +57,7 @@ class AwsApi {
 
   static fetchEksClusterNames = async (region, AwsCredentials) => {
     try {
-      const clusters = await this.eksFetch(region, `/clusters`, AwsCredentials);
+      const clusters = await this.eksFetch(region, '/clusters', AwsCredentials);
       return clusters.clusters;
     }
     catch (err) {
@@ -75,9 +75,9 @@ class AwsApi {
           name: cluster.cluster.name,
           status: cluster.cluster.status,
           createdAt: cluster.cluster.createdAt,
-          cloudProvider: 'Aws',
+          cloudProvider: 'aws',
           namespaces: [],
-        }
+        };
         return newCluster;
       }));
       return clusterList;

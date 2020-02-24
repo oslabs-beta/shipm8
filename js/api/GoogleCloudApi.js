@@ -7,7 +7,7 @@ const googleInfo = {
   iosClientId: '535704856722-soaqblnbbcf050at58k7bhbenk9fui5p.apps.googleusercontent.com',
   webClientId: '535704856722-bkjtacpeoclh9is24uuddft3mujs9h5u.apps.googleusercontent.com',
   webClientSecret: 'avRYeo9c9VYDGk9SgGJarvO-',
-}
+};
 
 class GoogleCloudApi {
   static configureGoogleSignin = () => {
@@ -46,17 +46,17 @@ class GoogleCloudApi {
   };
 
   static refreshAccessToken = async refreshToken => {
-    const url = `https://oauth2.googleapis.com/token?` +
+    const url = 'https://oauth2.googleapis.com/token?' +
       `client_id=${googleInfo.webClientId}&` +
       `client_secret=${googleInfo.webClientSecret}&` +
       `refresh_token=${refreshToken}&` +
-      `grant_type=refresh_token`
+      'grant_type=refresh_token';
 
     const newAccessToken = await fetch(url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
     }).then(res => res.json());
 
     return newAccessToken.access_token;
@@ -68,14 +68,14 @@ class GoogleCloudApi {
         `client_id=${googleInfo.webClientId}&` +
         `client_secret=${googleInfo.webClientSecret}&` +
         `code=${serverAuthCode}&` +
-        `grant_type=authorization_code&` +
-        `redirect_uri=`
+        'grant_type=authorization_code&' +
+        'redirect_uri=';
 
       const tokens = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
       }).then(res => res.json());
 
       return tokens;
@@ -90,7 +90,7 @@ class GoogleCloudApi {
       await GoogleSignin.signOut();
       return Promise.resolve();
     } catch (err) {
-      return Promise.reject(err)
+      return Promise.reject(err);
     }
   };
 
@@ -98,8 +98,8 @@ class GoogleCloudApi {
     const accessToken = await this.refreshAccessToken(refreshToken);
 
     const headers = {
-      Authorization: `Bearer ${accessToken}`
-    }
+      Authorization: `Bearer ${accessToken}`,
+    };
 
     const res = await fetch(url, {
       headers,
@@ -113,13 +113,13 @@ class GoogleCloudApi {
   static fetchProjects = async ({ pageToken, refreshToken }) => {
     const url = pageToken
       ? `https://cloudresourcemanager.googleapis.com/v1/projects?pageSize=50&pageToken=${pageToken}`
-      : `https://cloudresourcemanager.googleapis.com/v1/projects?pageSize=50`;
+      : 'https://cloudresourcemanager.googleapis.com/v1/projects?pageSize=50';
 
     try {
       const projects = await this.gcpFetch({ url, refreshToken });
 
       if (projects.error) {
-        return alert(projects.error.message)
+        return alert(projects.error.message);
       }
       return projects;
 
@@ -136,7 +136,7 @@ class GoogleCloudApi {
     try {
       const zones = await this.gcpFetch({ url, refreshToken });
       if (zones.error) {
-        return alert(zones.error.message)
+        return alert(zones.error.message);
       }
       return zones;
 
@@ -147,7 +147,7 @@ class GoogleCloudApi {
 
   static fetchGkeClusters = async ({ projectId, zone = '-', refreshToken }) => {
     try {
-      const url = `https://container.googleapis.com/v1/projects/${projectId}/locations/${zone}/clusters`
+      const url = `https://container.googleapis.com/v1/projects/${projectId}/locations/${zone}/clusters`;
       const clusters = await this.gcpFetch({ url, refreshToken });
       if (!clusters.clusters) { return []; }
       const clusterList = clusters.clusters.map(cluster => {
@@ -156,9 +156,9 @@ class GoogleCloudApi {
           name: cluster.name,
           status: cluster.status,
           createdAt: cluster.createTime,
-          cloudProvider: 'Gcp',
+          cloudProvider: 'gcp',
           namespaces: [],
-        }
+        };
       });
       if (clusters.error) {
         return alert(clusters.error.message);

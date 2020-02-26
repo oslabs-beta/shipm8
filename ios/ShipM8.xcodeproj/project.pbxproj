@@ -8,18 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* shipm8Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* shipm8Tests.m */; };
-		0901DCF64FF4D49A2E5EE5F2 /* libPods-shipm8-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35BF0E385DBA1FD1B92AB62A /* libPods-shipm8-tvOS.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		24B4F036EE404966A34ADF96 /* libPods-ShipM8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24090C9076D0AE9145517ECA /* libPods-ShipM8.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* shipm8Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* shipm8Tests.m */; };
-		2DDFE9781F7E9F8C54C94E7F /* libPods-shipm8Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49857A13F097888D25F94720 /* libPods-shipm8Tests.a */; };
-		F2C41EDB2DCBCD47A11C55BC /* libPods-shipm8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB42AE91D416B98F534E20CC /* libPods-shipm8.a */; };
-		FA583F30C381498611F9F855 /* libPods-shipm8-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90566CE9CD77D0887192FEB1 /* libPods-shipm8-tvOSTests.a */; };
+		5E006E562E94445584AD42EB /* libPods-ShipM8-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F5917B64785FCC5F46A5E5 /* libPods-ShipM8-tvOS.a */; };
+		B703D5AE1C0730B20D3A5687 /* libPods-ShipM8-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E1131B16DFD82F406CD26AF /* libPods-ShipM8-tvOSTests.a */; };
+		D47FBC064B6568541E19C5CB /* libPods-ShipM8Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB6ABB5B8A015B600EF1F513 /* libPods-ShipM8Tests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,20 +51,28 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = shipm8/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = shipm8/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = shipm8/main.m; sourceTree = "<group>"; };
+		1896BA2BE8AE3AA483B0EA26 /* Pods-ShipM8-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShipM8-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ShipM8-tvOS/Pods-ShipM8-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		1B82D7FA7BA5733B30247A93 /* Pods-ShipM8Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShipM8Tests.release.xcconfig"; path = "Target Support Files/Pods-ShipM8Tests/Pods-ShipM8Tests.release.xcconfig"; sourceTree = "<group>"; };
+		24090C9076D0AE9145517ECA /* libPods-ShipM8.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShipM8.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* ShipM8-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ShipM8-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* ShipM8-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ShipM8-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		33E89AADDE5E99C44D7927BD /* Pods-shipm8-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shipm8-tvOS.release.xcconfig"; path = "Target Support Files/Pods-shipm8-tvOS/Pods-shipm8-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		35BF0E385DBA1FD1B92AB62A /* libPods-shipm8-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-shipm8-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		49857A13F097888D25F94720 /* libPods-shipm8Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-shipm8Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		37455ED842C98DD64FBB2331 /* Pods-ShipM8Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShipM8Tests.debug.xcconfig"; path = "Target Support Files/Pods-ShipM8Tests/Pods-ShipM8Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		43F5917B64785FCC5F46A5E5 /* libPods-ShipM8-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShipM8-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C985C7733DC572DCCDFF740 /* Pods-shipm8Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shipm8Tests.debug.xcconfig"; path = "Target Support Files/Pods-shipm8Tests/Pods-shipm8Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		5FF8B2012B598BE7B1E1CCD9 /* Pods-ShipM8.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShipM8.debug.xcconfig"; path = "Target Support Files/Pods-ShipM8/Pods-ShipM8.debug.xcconfig"; sourceTree = "<group>"; };
 		774EB0A4942E4464B4C743F3 /* Pods-shipm8Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shipm8Tests.release.xcconfig"; path = "Target Support Files/Pods-shipm8Tests/Pods-shipm8Tests.release.xcconfig"; sourceTree = "<group>"; };
-		90566CE9CD77D0887192FEB1 /* libPods-shipm8-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-shipm8-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A5138EF5D4DD0938A2CF4EB /* Pods-ShipM8.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShipM8.release.xcconfig"; path = "Target Support Files/Pods-ShipM8/Pods-ShipM8.release.xcconfig"; sourceTree = "<group>"; };
+		9E1131B16DFD82F406CD26AF /* libPods-ShipM8-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShipM8-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB6ABB5B8A015B600EF1F513 /* libPods-ShipM8Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShipM8Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADC339877F9024865A933907 /* Pods-shipm8-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shipm8-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-shipm8-tvOSTests/Pods-shipm8-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B6BB0F1E258A5CBB328990B3 /* Pods-shipm8.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shipm8.debug.xcconfig"; path = "Target Support Files/Pods-shipm8/Pods-shipm8.debug.xcconfig"; sourceTree = "<group>"; };
 		BCEAE927DC5B3C0F0A64C8C6 /* Pods-shipm8-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shipm8-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-shipm8-tvOSTests/Pods-shipm8-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		BFF7D2285A9388754BBA38F3 /* Pods-shipm8.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shipm8.release.xcconfig"; path = "Target Support Files/Pods-shipm8/Pods-shipm8.release.xcconfig"; sourceTree = "<group>"; };
+		C47A29E71B4AB7E5C3191E1A /* Pods-ShipM8-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShipM8-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ShipM8-tvOSTests/Pods-ShipM8-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C514552C4A72E77F3CAC714A /* Pods-shipm8-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shipm8-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-shipm8-tvOS/Pods-shipm8-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		DB42AE91D416B98F534E20CC /* libPods-shipm8.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-shipm8.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8D2DE4536210E4D381670A3 /* Pods-ShipM8-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShipM8-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ShipM8-tvOS/Pods-ShipM8-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		CFC96A3B563EA151FB828AA9 /* Pods-ShipM8-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShipM8-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ShipM8-tvOSTests/Pods-ShipM8-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -74,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DDFE9781F7E9F8C54C94E7F /* libPods-shipm8Tests.a in Frameworks */,
+				D47FBC064B6568541E19C5CB /* libPods-ShipM8Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F2C41EDB2DCBCD47A11C55BC /* libPods-shipm8.a in Frameworks */,
+				24B4F036EE404966A34ADF96 /* libPods-ShipM8.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0901DCF64FF4D49A2E5EE5F2 /* libPods-shipm8-tvOS.a in Frameworks */,
+				5E006E562E94445584AD42EB /* libPods-ShipM8-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA583F30C381498611F9F855 /* libPods-shipm8-tvOSTests.a in Frameworks */,
+				B703D5AE1C0730B20D3A5687 /* libPods-ShipM8-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +141,14 @@
 				BCEAE927DC5B3C0F0A64C8C6 /* Pods-shipm8-tvOSTests.release.xcconfig */,
 				4C985C7733DC572DCCDFF740 /* Pods-shipm8Tests.debug.xcconfig */,
 				774EB0A4942E4464B4C743F3 /* Pods-shipm8Tests.release.xcconfig */,
+				5FF8B2012B598BE7B1E1CCD9 /* Pods-ShipM8.debug.xcconfig */,
+				9A5138EF5D4DD0938A2CF4EB /* Pods-ShipM8.release.xcconfig */,
+				1896BA2BE8AE3AA483B0EA26 /* Pods-ShipM8-tvOS.debug.xcconfig */,
+				C8D2DE4536210E4D381670A3 /* Pods-ShipM8-tvOS.release.xcconfig */,
+				C47A29E71B4AB7E5C3191E1A /* Pods-ShipM8-tvOSTests.debug.xcconfig */,
+				CFC96A3B563EA151FB828AA9 /* Pods-ShipM8-tvOSTests.release.xcconfig */,
+				37455ED842C98DD64FBB2331 /* Pods-ShipM8Tests.debug.xcconfig */,
+				1B82D7FA7BA5733B30247A93 /* Pods-ShipM8Tests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -156,10 +172,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				DB42AE91D416B98F534E20CC /* libPods-shipm8.a */,
-				35BF0E385DBA1FD1B92AB62A /* libPods-shipm8-tvOS.a */,
-				90566CE9CD77D0887192FEB1 /* libPods-shipm8-tvOSTests.a */,
-				49857A13F097888D25F94720 /* libPods-shipm8Tests.a */,
+				24090C9076D0AE9145517ECA /* libPods-ShipM8.a */,
+				43F5917B64785FCC5F46A5E5 /* libPods-ShipM8-tvOS.a */,
+				9E1131B16DFD82F406CD26AF /* libPods-ShipM8-tvOSTests.a */,
+				AB6ABB5B8A015B600EF1F513 /* libPods-ShipM8Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -401,7 +417,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-shipm8-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ShipM8-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -437,7 +453,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-shipm8-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ShipM8-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -450,7 +466,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-shipm8/Pods-shipm8-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-ShipM8/Pods-ShipM8-resources.sh",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
@@ -491,7 +507,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-shipm8/Pods-shipm8-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ShipM8/Pods-ShipM8-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F542B0ED284C7164DE0B6F77 /* [CP] Check Pods Manifest.lock */ = {
@@ -509,7 +525,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-shipm8Tests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ShipM8Tests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -531,7 +547,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-shipm8-tvOSTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ShipM8-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -643,7 +659,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4C985C7733DC572DCCDFF740 /* Pods-shipm8Tests.debug.xcconfig */;
+			baseConfigurationReference = 37455ED842C98DD64FBB2331 /* Pods-ShipM8Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = V6M6ZM7GTT;
@@ -667,7 +683,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 774EB0A4942E4464B4C743F3 /* Pods-shipm8Tests.release.xcconfig */;
+			baseConfigurationReference = 1B82D7FA7BA5733B30247A93 /* Pods-ShipM8Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -687,7 +703,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6BB0F1E258A5CBB328990B3 /* Pods-shipm8.debug.xcconfig */;
+			baseConfigurationReference = 5FF8B2012B598BE7B1E1CCD9 /* Pods-ShipM8.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1.02;
@@ -708,7 +724,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BFF7D2285A9388754BBA38F3 /* Pods-shipm8.release.xcconfig */;
+			baseConfigurationReference = 9A5138EF5D4DD0938A2CF4EB /* Pods-ShipM8.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1.02;
@@ -727,7 +743,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C514552C4A72E77F3CAC714A /* Pods-shipm8-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 1896BA2BE8AE3AA483B0EA26 /* Pods-ShipM8-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -755,7 +771,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 33E89AADDE5E99C44D7927BD /* Pods-shipm8-tvOS.release.xcconfig */;
+			baseConfigurationReference = C8D2DE4536210E4D381670A3 /* Pods-ShipM8-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -783,7 +799,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ADC339877F9024865A933907 /* Pods-shipm8-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = C47A29E71B4AB7E5C3191E1A /* Pods-ShipM8-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -810,7 +826,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BCEAE927DC5B3C0F0A64C8C6 /* Pods-shipm8-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = CFC96A3B563EA151FB828AA9 /* Pods-ShipM8-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;

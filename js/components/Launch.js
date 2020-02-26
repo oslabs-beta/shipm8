@@ -20,10 +20,13 @@ const Launch = ({ navigation }) => {
             source={require('../../images/googleCloud.png')}
           />
           <Text style={styles.textStyle}>+</Text>
-          <Image
-            style={styles.awsLogo}
-            source={require('../../images/aws.png')}
-          />
+          <View style={styles.awsLogoContainer}>
+            <Image
+              style={styles.awsLogo}
+              source={require('../../images/aws_logo.png')}
+              resizeMode="contain"
+            />
+          </View>
         </View>
         <TouchableOpacity style={styles.buttonContainer} onPress={() => getStarted()}>
           <View >
@@ -98,9 +101,14 @@ const styles = EStyleSheet.create({
     marginLeft: 15,
     marginRight: 15,
   },
+  awsLogoContainer: {
+    flex: 1,
+    height: '2.3rem',
+    marginBottom: '1rem',
+  },
   awsLogo: {
     flex: 1,
-    width: '100%',
-    height: '50%',
+    width: undefined,
+    height: undefined,
   },
 });

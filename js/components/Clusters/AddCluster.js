@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
-  Button,
   ScrollView,
   SafeAreaView,
 } from 'react-native';

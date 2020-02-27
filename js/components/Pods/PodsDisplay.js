@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
-  Button,
   ScrollView,
   SafeAreaView,
 } from 'react-native';
@@ -107,13 +106,6 @@ const PodsDisplay = ({ navigation }) => {
               emptyValue={'Pods'}
             />
           )}
-      </View>
-      <View style={styles.signOut}>
-        <Button
-          color="red"
-          title="Sign Out"
-          onPress={() => navigation.navigate('Cloud Login')}
-        />
       </View>
     </SafeAreaView>
   );

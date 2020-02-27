@@ -71,6 +71,7 @@ export const fetchEksClusters = region =>
       const AwsCredentials = state.aws.credentials;
       const clusters = await AwsApi.describeAllEksClusters(region, AwsCredentials);
       dispatch(fetchEksClustersSuccess(clusters));
+      return Promise.resolve();
     } catch (err) {
       dispatch(fetchEksClustersFailed(err.toString()));
     }

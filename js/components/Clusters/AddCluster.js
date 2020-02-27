@@ -128,13 +128,6 @@ const AddCluster = ({ navigation }) => {
               )}
             </View>
           )}
-        < View style={styles.signOut}>
-          <Button
-            color="red"
-            title="Sign Out"
-            onPress={() => navigation.navigate('Cloud Login')}
-          />
-        </View>
       </SafeAreaView>
     </View >
   );

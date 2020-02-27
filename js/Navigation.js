@@ -94,7 +94,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate
-        loading={Loading}
+        loading={<Loading />}
         persistor={persistor}>
         <AppContainer />
       </PersistGate>

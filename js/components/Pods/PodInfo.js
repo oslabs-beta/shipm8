@@ -3,7 +3,6 @@ import {
   View,
   Text,
   Image,
-  Button,
   ScrollView,
   SafeAreaView,
 } from 'react-native';
@@ -92,13 +91,6 @@ const PodInfo = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
-      <View style={styles.signOut}>
-        <Button
-          title="Sign Out"
-          color="red"
-          onPress={() => navigation.navigate('Cloud Login')}
-        />
-      </View>
     </SafeAreaView>
   );
 };
@@ -118,7 +110,7 @@ const styles = EStyleSheet.create({
     borderColor: '#063CB9',
     borderWidth: 2,
     borderRadius: 10,
-    marginTop: '10%',
+    marginTop: '5%',
     marginHorizontal: '0%',
     color: 'white',
   },

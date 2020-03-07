@@ -1,8 +1,6 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
-  Text,
-  Button,
   ScrollView,
   SafeAreaView,
 } from 'react-native';
@@ -18,6 +16,8 @@ import { setCurrentPod, fetchPods, deletePod } from './PodsSlice';
 
 const PodsDisplay = ({ navigation }) => {
   const dispatch = useDispatch();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
   const isLoading = useSelector(state => state.pods.isLoading);
   const currentCluster = useSelector(state =>
     state.clusters.byUrl[state.clusters.current]
@@ -62,9 +62,11 @@ const PodsDisplay = ({ navigation }) => {
     );
   }, [currentCluster, dispatch]);
 
-  const handleRefresh = useCallback(() => {
-    return dispatch(fetchPods);
-  }, [dispatch]);
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    await dispatch(fetchPods(currentCluster));
+    setIsRefreshing(false);
+  }, [currentCluster, dispatch]);
 
   const createNamespaceList = namespaces => {
     const namespaceList = namespaces.map(namespace => {
@@ -91,31 +93,19 @@ const PodsDisplay = ({ navigation }) => {
         />
       </View>
       <View style={styles.podScroll}>
-        {pods.length === 0 && isLoading && (
+        {isLoading && !isRefreshing && !pods.length ? (
           <ScrollView>
             <Loading />
           </ScrollView>
-        )}
-        {pods.length > 0 && (
-          <SwipeableList
-            listData={pods}
-            handleItemPress={handlePodPress}
-            handleDeletePress={handleDeletePress}
-            onRefresh={handleRefresh}
-          />
-        )}
-        {pods.length === 0 && !isLoading && (
-          <ScrollView>
-            <Text style={styles.noPodsFound}>No Pods Found</Text>
-          </ScrollView>
-        )}
-      </View>
-      <View style={styles.signOut}>
-        <Button
-          color="red"
-          title="Sign Out"
-          onPress={() => navigation.navigate('Cloud Login')}
-        />
+        ) : (
+            <SwipeableList
+              listData={pods}
+              onItemPress={handlePodPress}
+              onDeletePress={handleDeletePress}
+              onRefresh={handleRefresh}
+              emptyValue={'Pods'}
+            />
+          )}
       </View>
     </SafeAreaView>
   );

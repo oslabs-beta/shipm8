@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
-  Button,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity,
 } from 'react-native';
-import { Badge } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
@@ -19,16 +15,23 @@ import {
 } from '../../reducers/GoogleCloudSlice';
 import Loading from '../common/Loading';
 import Regions from '../../data/Regions';
+import SwipeableList from '../common/SwipeableList';
 import { fetchEksClusters } from '../../reducers/AwsSlice';
 import { addCluster, setCurrentProvider } from './ClustersSlice';
 
 const AddCluster = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [valueSelected, setValueSelected] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [dropdownValue, setDropdownValue] = useState(null);
 
   const currentProvider = useSelector(state => state.clusters.currentProvider);
   const isLoading = useSelector(state => state[currentProvider].isLoading);
-  const clusters = useSelector(state => state[currentProvider].clusters);
+  const clusters = useSelector(state => {
+    if (state[currentProvider].clusters) {
+      return state[currentProvider].clusters;
+    }
+    return [];
+  });
 
   const gcpProjects = useSelector(state => {
     if (state.gcp.projects) {
@@ -46,20 +49,38 @@ const AddCluster = ({ navigation }) => {
     currentProvider === 'gcp' && dispatch(fetchGcpProjects());
   }, [currentProvider, dispatch]);
 
-  const handleDropdownChange = value => {
-    setValueSelected(true);
-    currentProvider === 'aws'
-      ? dispatch(fetchEksClusters(value))
-      : dispatch(fetchGkeClusters(value));
+  const fetchClusters = async value => {
+    if (!value) { value = dropdownValue; }
+    return currentProvider === 'aws'
+      ? await dispatch(fetchEksClusters(value))
+      : await dispatch(fetchGkeClusters(value));
   };
 
-  const setDropDownValues = () => {
+  const handleClusterPress = useCallback(cluster => {
+    dispatch(addCluster(cluster));
+    dispatch(setCurrentProvider(cluster.cloudProvider));
+    navigation.navigate('ShipM8');
+  }, [dispatch, navigation]);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchClusters();
+    setIsRefreshing(false);
+  };
+
+  const handleDropdownChange = value => {
+    setDropdownValue(value);
+    fetchClusters(value);
+  };
+
+  const setDropdownValues = () => {
     return currentProvider === 'aws'
       ? Regions
       : gcpProjects || [{ value: 'Loading' }];
   };
 
-  const regionOrProjectLabel = currentProvider === 'aws' ? 'Region' : 'Project';
+  const regionOrProjectLabel = currentProvider === 'aws'
+    ? 'Region' : 'Project';
 
   const setNoValueSelectedText = () => {
     return `Please select a ${regionOrProjectLabel} to view
@@ -70,93 +91,44 @@ const AddCluster = ({ navigation }) => {
     return `Select a ${regionOrProjectLabel}`;
   };
 
-  const handleClusterPress = cluster => {
-    dispatch(addCluster(cluster));
-    dispatch(setCurrentProvider(cluster.cloudProvider));
-    navigation.navigate('ShipM8');
-  };
-
-  const checkStatus = text => {
-    if (text === 'ACTIVE' || text === 'RUNNING') {
-      return 'success';
-    } else if (text === 'CREATING') {
-      return 'warning';
-    } else {
-      return 'error';
-    }
-  };
-
-  const clusterList =
-    clusters && clusters.length > 0
-      ? clusters.map((cluster, idx) => {
-        return (
-          <TouchableOpacity
-            key={cluster.name + idx}
-            style={styles.clusterContainer}
-            activeOpacity={0.7}
-            cluster={cluster.name}
-            onPress={() => handleClusterPress(cluster)}>
-            <Text numberOfLines={1} style={styles.clusterText}>
-              {cluster.name}
-            </Text>
-            <Text style={styles.statusText}>{cluster.status}</Text>
-            <Badge
-              status={checkStatus(cluster.status)}
-              badgeStyle={styles.badge}
-            />
-            <Icon
-              name="chevron-right"
-              size={15}
-              color="gray"
-              style={styles.arrow}
-            />
-          </TouchableOpacity>
-        );
-      })
-      : null;
-
   return (
     <View>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.dropDownView}>
           <Dropdown
             label={setDropdownLabel()}
-            data={setDropDownValues()}
+            data={setDropdownValues()}
             itemCount={4}
             dropdownPosition={0}
             dropdownOffset={styles.dropDownOffset}
             style={styles.dropDown}
-            onChangeText={text => handleDropdownChange(text)}
+            onChangeText={handleDropdownChange}
           />
         </View>
-        <ScrollView style={styles.scrollView}>
-          {isLoading ? (
-            <ScrollView style={styles.clusterScroll}>
-              <Loading />
-            </ScrollView>
-          ) : (
-              <ScrollView style={styles.clusterScroll}>
-                {valueSelected && clusterList}
-                {valueSelected && !clusterList && (
-                  <Text style={styles.noContentText}>No Clusters Found</Text>
-                )}
-                {!valueSelected && (
-                  <Text style={styles.noContentText}>
-                    {setNoValueSelectedText()}
-                  </Text>
-                )}
-              </ScrollView>
-            )}
-        </ScrollView>
-        <View style={styles.signOut}>
-          <Button
-            color="red"
-            title="Sign Out"
-            onPress={() => navigation.navigate('Cloud Login')}
-          />
-        </View>
+        {isLoading && !isRefreshing ? (
+          <ScrollView>
+            <Loading />
+          </ScrollView>
+        ) : (
+            <View style={styles.clusterScroll}>
+              {dropdownValue && (
+                <SwipeableList
+                  listData={clusters}
+                  onRefresh={handleRefresh}
+                  onItemPress={handleClusterPress}
+                  onDeletePress={null}
+                  emptyValue={'Clusters'}
+                />
+              )}
+              {!dropdownValue && (
+                <Text style={styles.noContentText}>
+                  {setNoValueSelectedText()}
+                </Text>
+              )}
+            </View>
+          )}
       </SafeAreaView>
-    </View>
+    </View >
   );
 };
 

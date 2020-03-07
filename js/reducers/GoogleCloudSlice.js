@@ -48,7 +48,7 @@ const GoogleCloud = createSlice({
       state.user = null;
       state.isLoading = false;
     },
-  }
+  },
 });
 
 export const {
@@ -87,7 +87,7 @@ export const googleSignIn = () =>
       dispatch(googleSignInFailed(err.toString()));
       return Promise.reject(err);
     }
-  }
+  };
 
 export const googleSignOut = () =>
   async dispatch => {
@@ -100,7 +100,7 @@ export const googleSignOut = () =>
       dispatch(googleSignOutFailed(err.toString()));
       return Promise.reject(err);
     }
-  }
+  };
 
 export const fetchGkeClusters = (projectId, zone) =>
   async (dispatch, getState) => {
@@ -115,7 +115,7 @@ export const fetchGkeClusters = (projectId, zone) =>
       dispatch(fetchGkeClustersFailed(err.toString()));
       return Promise.reject(err);
     }
-  }
+  };
 
 export const fetchGcpProjects = pageToken =>
   async (dispatch, getState) => {
@@ -135,7 +135,7 @@ export const fetchGcpProjects = pageToken =>
       dispatch(fetchGcpProjectsFailed(err.toString()));
       return Promise.reject(err);
     }
-  }
+  };
 
 export const fetchGcpZones = (projectId, pageToken) =>
   async (dispatch, getState) => {

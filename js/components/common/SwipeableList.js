@@ -4,6 +4,7 @@ import {
   Text,
   Image,
   Animated,
+  ScrollView,
   RefreshControl,
   TouchableHighlight,
 } from 'react-native';
@@ -13,9 +14,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 
 import EntityStatus from '../common/EntityStatus';
+
 const iconPod = require('../../../images/pod.png');
 
-const SwipeableList = ({ listData, handleItemPress, handleDeletePress, onRefresh }) => {
+const SwipeableList = ({ listData, onItemPress, onDeletePress, onRefresh, emptyValue }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const rowSwipeAnimatedValues = {};
 
@@ -27,17 +29,19 @@ const SwipeableList = ({ listData, handleItemPress, handleDeletePress, onRefresh
   });
 
   const handleRefresh = useCallback(async () => {
-    onRefresh && setIsRefreshing(true);
-    onRefresh && await onRefresh();
-    setIsRefreshing(false);
+    if (onRefresh) {
+      setIsRefreshing(true);
+      await onRefresh();
+      setIsRefreshing(false);
+    }
   }, [onRefresh]);
 
-  const onSwipeValueChange = swipeData => {
+  const onSwipeValueChange = useCallback(swipeData => {
     const { key, value } = swipeData;
     rowSwipeAnimatedValues[key].setValue(Math.abs(value));
-  };
+  }, [rowSwipeAnimatedValues]);
 
-  const renderItem = data => {
+  const renderItem = useCallback(data => {
     const status = typeof data.item.status === 'string'
       ? data.item.status
       : data.item.status.phase
@@ -48,8 +52,10 @@ const SwipeableList = ({ listData, handleItemPress, handleDeletePress, onRefresh
       ? data.item.name
       : data.item.metadata.name;
 
+    const Container = onDeletePress ? SwipeRow : View;
+
     return (
-      <SwipeRow
+      <Container
         style={styles.btnContainer}
         disableRightSwipe
         rightOpenValue={-75}
@@ -58,42 +64,44 @@ const SwipeableList = ({ listData, handleItemPress, handleDeletePress, onRefresh
         swipeKey={name}
         onSwipeValueChange={onSwipeValueChange}
       >
-        <TouchableOpacity
-          onPress={() => handleDeletePress(data.item)}
-          style={[styles.listItemButton, styles.backRightBtn]}
-        >
-          <Animated.View
-            style={[
-              styles.trash,
-              {
-                transform: [
-                  {
-                    scale: rowSwipeAnimatedValues[
-                      name
-                    ].interpolate({
-                      inputRange: [
-                        0,
-                        75,
-                      ],
-                      outputRange: [0, 1],
-                      extrapolate:
-                        'clamp',
-                    }),
-                  },
-                ],
-              },
-            ]}
+        {onDeletePress && (
+          <TouchableOpacity
+            onPress={() => onDeletePress(data.item)}
+            style={[styles.listItemButton, styles.backRightBtn]}
           >
-            <Image
-              source={require('../../../images/trash.png')}
-              style={styles.trash}
-            />
-          </Animated.View>
-        </TouchableOpacity>
+            <Animated.View
+              style={[
+                styles.trash,
+                {
+                  transform: [
+                    {
+                      scale: rowSwipeAnimatedValues[
+                        name
+                      ].interpolate({
+                        inputRange: [
+                          0,
+                          75,
+                        ],
+                        outputRange: [0, 1],
+                        extrapolate:
+                          'clamp',
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
+              <Image
+                source={require('../../../images/trash.png')}
+                style={styles.trash}
+              />
+            </Animated.View>
+          </TouchableOpacity>
+        )}
         <TouchableHighlight
           style={styles.listItemButton}
           underlayColor={'#AAA'}
-          onPress={() => handleItemPress(data.item)}
+          onPress={() => onItemPress(data.item)}
           key={name}
         >
           <View style={styles.itemContainer}>
@@ -112,9 +120,24 @@ const SwipeableList = ({ listData, handleItemPress, handleDeletePress, onRefresh
             </View>
           </View>
         </TouchableHighlight>
-      </SwipeRow>
+      </Container>
     );
-  };
+  }, [onDeletePress, onItemPress, onSwipeValueChange, rowSwipeAnimatedValues]);
+
+  if (listData.length === 0) {
+    return (
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+          />
+        }
+      >
+        <Text style={styles.noContentText}>No {`${emptyValue || 'Items'}`} Found</Text>
+      </ScrollView>
+    );
+  }
 
   return (
     <SwipeListView
@@ -136,6 +159,12 @@ export default React.memo(SwipeableList);
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
+  },
+  noContentText: {
+    textAlign: 'center',
+    marginTop: '9rem',
+    fontSize: '1.3rem',
+    color: 'gray',
   },
   arrow: {
     marginLeft: '.4rem',

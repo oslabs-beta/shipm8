@@ -1,11 +1,9 @@
 import React, { useEffect, useCallback } from 'react';
 import {
   View,
-  Text,
-  ScrollView,
+  Button,
   SafeAreaView,
   TouchableOpacity,
-  Button,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -25,7 +23,10 @@ import CloudProviders from '../../data/CloudProviders';
 
 const ClustersIndex = ({ navigation }) => {
   const dispatch = useDispatch();
-  const currentProvider = useSelector(state => state.clusters.currentProvider);
+
+  const currentProvider = useSelector(state =>
+    state.clusters.currentProvider
+  );
 
   const clusters = useSelector(state => {
     return Object.values(state.clusters.byUrl)
@@ -54,7 +55,7 @@ const ClustersIndex = ({ navigation }) => {
   }, [dispatch]);
 
   const handleRefresh = useCallback(async () => {
-    dispatch(checkClusters());
+    return await dispatch(checkClusters());
   }, [dispatch]);
 
   return (
@@ -72,19 +73,13 @@ const ClustersIndex = ({ navigation }) => {
             onChangeText={handleProviderChange}
           />
         </View>
-        {clusters.length > 0 && (
-          <SwipeableList
-            listData={clusters}
-            handleItemPress={handleClusterPress}
-            handleDeletePress={handleDeletePress}
-            onRefresh={handleRefresh}
-          />
-        )}
-        {!clusters.length && (
-          <ScrollView style={styles.clusterScroll}>
-            <Text style={styles.noContentText}>No Clusters Found</Text>
-          </ScrollView>
-        )}
+        <SwipeableList
+          listData={clusters}
+          onItemPress={handleClusterPress}
+          onDeletePress={handleDeletePress}
+          onRefresh={handleRefresh}
+          emptyValue={'Clusters'}
+        />
         < View >
           <TouchableOpacity onPress={() => navigation.navigate('Add Cluster')}>
             <Icon

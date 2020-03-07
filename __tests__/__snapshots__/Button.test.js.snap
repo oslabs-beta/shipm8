@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button renders correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityStates={Array []}
+  accessible={true}
+  focusable={false}
+  isTVSelectable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "opacity": 1,
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {},
+      ]
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#007AFF",
+            "fontSize": 18,
+            "padding": 8,
+            "textAlign": "center",
+          },
+        ]
+      }
+    >
+      this must be a string
+    </Text>
+  </View>
+</View>
+`;

@@ -11,33 +11,42 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.7.1",
+    "@react-native-community/google-signin": "^3.0.4",
     "@react-native-community/masked-view": "^0.1.6",
+    "@reduxjs/toolkit": "^1.2.3",
     "js-base64": "^2.5.1",
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-elements": "^1.2.7",
+    "react-native-extended-stylesheet": "^0.12.0",
     "react-native-gesture-handler": "^1.5.3",
     "react-native-material-dropdown": "^0.11.1",
     "react-native-safe-area-context": "^0.6.2",
+    "react-native-screens": "^2.0.0-beta.4",
+    "react-native-swipe-list-view": "^2.1.3",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^2.0.16",
     "react-redux": "^7.1.3",
-    "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
     "rn-fetch-blob": "^0.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
     "@babel/runtime": "^7.6.2",
-    "@react-native-community/eslint-config": "^0.0.5",
     "babel-jest": "^24.9.0",
     "eslint": "^6.5.1",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "eslint-plugin-react-hooks": "^2.3.0",
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
     "react-test-renderer": "16.9.0"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@react-native-community|react-native|react-navigation|react-native-elements|react-native-vector-icons|react-redux))"
+    ]
   }
 }

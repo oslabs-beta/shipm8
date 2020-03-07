@@ -1,36 +1,29 @@
-// React and React-Native are imported for future develoment
 import React from 'react';
-import { View } from 'react-native';
-// import navigation tools so we can render new pages (Container: Used to bundle and set Nav settings, Stack: Used to build Nav settings)
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import { Provider } from 'react-redux';
-import reducers from './reducers/index';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { store, persistor } from './store/configureStore';
+import { PersistGate } from 'redux-persist/integration/react';
+import { createStackNavigator } from 'react-navigation-stack';
 
-import LandingPage from './components/LandingPage';
-import ClustersList from './components/ClustersList';
 import Launch from './components/Launch';
-import Pods from './components/Pods';
-import PodInfo from './components/PodInfo';
+import PodInfo from './components/Pods/PodInfo';
+import CloudLogin from './components/CloudLogin';
+import Loading from './components/common/Loading';
+import PodsDisplay from './components/Pods/PodsDisplay';
+import AddCluster from './components/Clusters/AddCluster';
+import LaunchLoading from './components/common/LaunchLoading';
+import ClustersIndex from './components/Clusters/ClustersIndex';
 
-const store = createStore(reducers, composeWithDevTools());
-
-const MainNavigator = createStackNavigator(
+const InitialStack = createStackNavigator(
   {
-    ShipM8: Launch,
-    Login: LandingPage, // Login Page
-    Clusters: ClustersList, // Landing Page
-    Pods: Pods,
-    Details: PodInfo,
+    'Welcome to ShipM8!': Launch,
+    'Cloud Login': CloudLogin,
+    'Add Cluster': AddCluster,
   },
   {
-    initialRouteName: 'ShipM8',
-
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: '#1589FF',
+        backgroundColor: '#151B54',
       },
       headerTintColor: 'white',
       headerTitleStyle: {
@@ -40,12 +33,71 @@ const MainNavigator = createStackNavigator(
     },
   },
 );
-const AppContainer = createAppContainer(MainNavigator);
+
+const AddClusterStack = createStackNavigator(
+  {
+    'Cloud Login': CloudLogin,
+    'Add Cluster': AddCluster,
+  },
+  {
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#151B54',
+      },
+      headerTintColor: 'white',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 20,
+      },
+    },
+  },
+);
+
+const AppStack = createStackNavigator(
+  {
+    ShipM8: ClustersIndex,
+    Pods: PodsDisplay,
+    'Pod Details': PodInfo,
+  },
+  {
+    initialRouteName: 'ShipM8',
+
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#151B54',
+      },
+      headerTintColor: 'white',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 20,
+      },
+    },
+  },
+);
+
+const AppContainer = createAppContainer(
+  createSwitchNavigator(
+    {
+      Loading: LaunchLoading,
+      App: AppStack,
+      FirstLaunch: InitialStack,
+      AddCluster: AddClusterStack,
+    },
+    {
+      initialRouteName: 'Loading',
+    }
+  )
+);
 
 const App = () => {
+
   return (
     <Provider store={store}>
-      <AppContainer />
+      <PersistGate
+        loading={<Loading />}
+        persistor={persistor}>
+        <AppContainer />
+      </PersistGate>
     </Provider>
   );
 };

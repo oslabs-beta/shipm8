@@ -1,37 +1,38 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-// Load FontAwesome icons
-Icon.loadFont();
+EStyleSheet.build();
 
 const Launch = ({ navigation }) => {
   const getStarted = () => {
-    navigation.navigate('Login');
+    navigation.navigate('Cloud Login');
   };
-  return (
-    <View style={styles.container} behavior="padding" enabled>
-      <Text style={styles.banner}>WELCOME</Text>
 
-      <Image
-        source={require('../../assets/shipm8_logo.png')}
-        style={styles.logo}
-      />
-      <View style={styles.logoContainer}>
-        <Text style={styles.textStyle}>
-          Monitor Your K8s Clusters Anywhere!
-        </Text>
-        <View style={styles.formContainer} />
-        <View style={{ paddingTop: 5 }}>
-          <TouchableOpacity
-            style={styles.buttonContainer}
-            activeOpacity={.7}
-            behavior="padding"
-            enabled
-            onPress={getStarted}>
-            <Text style={styles.buttonText}>Get Started</Text>
-          </TouchableOpacity>
+  return (
+    <View style={styles.container}>
+      <View style={styles.innerContainer}>
+        <Image source={require('../../images/SHIPM8.png')} style={styles.logo} />
+        <Text style={styles.bannerLineOne}>Mobile Kubernetes Monitoring</Text>
+        <View style={styles.cloudLogoContainer}>
+          <Image
+            style={styles.googleCloud}
+            source={require('../../images/googleCloud.png')}
+          />
+          <Text style={styles.textStyle}>+</Text>
+          <View style={styles.awsLogoContainer}>
+            <Image
+              style={styles.awsLogo}
+              source={require('../../images/aws_logo.png')}
+              resizeMode="contain"
+            />
+          </View>
         </View>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => getStarted()}>
+          <View >
+            <Text style={styles.getStartedText}>Get Started</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -39,54 +40,75 @@ const Launch = ({ navigation }) => {
 
 export default React.memo(Launch);
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
     backgroundColor: 'white',
-    justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 60,
+  },
+  innerContainer: {
+    flex: 1,
+    width: '90%',
+    alignItems: 'center',
+  },
+  getStartedText: {
+    fontSize: '1.2rem',
+    color: 'white',
   },
   buttonContainer: {
+    alignItems: 'center',
+    width: '70%',
+    borderStyle: 'solid',
+    borderColor: '#151B54',
+    borderWidth: '.2rem',
+    borderRadius: '.5rem',
+    padding: '.7rem',
     backgroundColor: '#1589FF',
-    paddingVertical: 15,
-    borderRadius: 5,
-    marginTop: 10,
+    marginBottom: '3rem',
   },
-  banner: {
-    fontSize: 50,
-    marginBottom: 50,
+  bannerLineOne: {
+    fontSize: '1.1rem',
     fontWeight: 'bold',
     color: '#151B54',
   },
-  buttonText: {
-    textAlign: 'center',
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
+  cloudLogoContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    width: '85%',
+    alignItems: 'center',
   },
   textStyle: {
-    textAlign: 'center',
-    alignContent: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
     color: '#151B54',
-    fontSize: 18,
+    fontSize: '1.3rem',
     fontWeight: 'bold',
-    marginTop: 5,
+    marginBottom: 5,
   },
   logo: {
-    width: 315,
-    height: 315,
-    alignContent: 'center',
-    alignItems: 'center',
-    borderColor: '#151B54',
-    borderWidth: 3,
-    marginBottom: 25,
-  },
-  formContainer: {
-    paddingVertical: 25,
+    flex: 4,
     justifyContent: 'center',
-    alignItems: 'center',
+    width: '100%',
+    borderColor: '#151B54',
+    borderWidth: '.2rem',
+    borderRadius: '.5rem',
+    marginTop: '8%',
+    marginBottom: '5%',
+  },
+  googleCloud: {
+    flex: 1,
+    width: '2.2rem',
+    height: '2.2rem',
+    marginLeft: 15,
+    marginRight: 15,
+  },
+  awsLogoContainer: {
+    flex: 1,
+    height: '2.3rem',
+    marginBottom: '1rem',
+  },
+  awsLogo: {
+    flex: 1,
+    width: undefined,
+    height: undefined,
   },
 });

@@ -14,7 +14,7 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface shipm8Tests : XCTestCase
+@interface ShipM8Tests : XCTestCase
 
 @end
 

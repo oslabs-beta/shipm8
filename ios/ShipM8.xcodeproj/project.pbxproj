@@ -113,13 +113,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* shipm8Tests */ = {
+		00E356EF1AD99517003FC87E /* ShipM8Tests */ = {
 			isa = PBXGroup;
 			children = (
 				00E356F21AD99517003FC87E /* shipm8Tests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = shipm8Tests;
+			path = ShipM8Tests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -153,7 +153,7 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* shipm8 */ = {
+		13B07FAE1A68108700A75B9A /* ShipM8 */ = {
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -164,7 +164,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = shipm8;
+			name = ShipM8;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -197,9 +197,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* shipm8 */,
+				13B07FAE1A68108700A75B9A /* ShipM8 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* shipm8Tests */,
+				00E356EF1AD99517003FC87E /* ShipM8Tests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				11E9AE352839A05CB822F1E1 /* Pods */,
@@ -728,6 +728,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1.02;
+				DEVELOPMENT_TEAM = V6M6ZM7GTT;
 				INFOPLIST_FILE = shipm8/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (

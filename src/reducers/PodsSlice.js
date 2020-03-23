@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import K8sApi from '../../api/K8sApi';
-import AlertUtils from '../../utils/AlertUtils';
-import { getAuthToken } from '../Clusters/ClustersSlice';
-import { startLoading, loadingFailed } from '../../utils/LoadingUtils';
-import { resolve } from '../../utils/aws4';
+import K8sApi from '../api/K8sApi';
+import AlertUtils from '../utils/AlertUtils';
+import { getAuthToken } from './ClustersSlice';
+import { startLoading, loadingFailed } from '../utils/LoadingUtils';
 
 const Pods = createSlice({
   name: 'Pods',

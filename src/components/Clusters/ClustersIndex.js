@@ -16,7 +16,7 @@ import {
   fetchNamespaces,
   setCurrentCluster,
   setCurrentProvider,
-} from './ClustersSlice';
+} from '../../reducers/ClustersSlice';
 import AlertUtils from '../../utils/AlertUtils';
 import SwipeableList from '../common/SwipeableList';
 import CloudProviders from '../../data/CloudProviders';

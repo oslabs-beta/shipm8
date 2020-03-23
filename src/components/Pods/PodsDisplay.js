@@ -11,8 +11,8 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Loading from '../common/Loading';
 import AlertUtils from '../../utils/AlertUtils';
 import SwipeableList from '../common/SwipeableList';
-import { setCurrentNamespace } from '../Clusters/ClustersSlice';
-import { setCurrentPod, fetchPods, deletePod } from './PodsSlice';
+import { setCurrentNamespace } from '../../reducers/ClustersSlice';
+import { setCurrentPod, fetchPods, deletePod } from '../../reducers/PodsSlice';
 
 const PodsDisplay = ({ navigation }) => {
   const dispatch = useDispatch();

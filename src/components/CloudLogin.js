@@ -15,7 +15,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
 
 import { checkAwsCredentials } from '../reducers/AwsSlice';
-import { setCurrentProvider } from '../components/Clusters/ClustersSlice';
+import { setCurrentProvider } from '../reducers/ClustersSlice';
 import { googleSignIn, fetchGcpProjects } from '../reducers/GoogleCloudSlice';
 
 Icon.loadFont();

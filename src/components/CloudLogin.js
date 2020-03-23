@@ -64,7 +64,7 @@ const CloudLogin = ({ navigation }) => {
         <Text style={styles.textStyle}>Add Cluster from Provider</Text>
         <View style={styles.googleLogoContainer}>
           <Image
-            source={require('../../images/google.png')}
+            source={require('../assets/google.png')}
             style={styles.googleLogo}
           />
         </View>
@@ -79,7 +79,7 @@ const CloudLogin = ({ navigation }) => {
           <Divider />
         </View>
         <View style={styles.awsLogoContainer}>
-          <Image source={require('../../images/aws_logo.png')} style={styles.awsLogo} />
+          <Image source={require('../assets/aws_logo.png')} style={styles.awsLogo} />
         </View>
         <View style={styles.awsInputView}>
           <View style={styles.accessKeyIdInput}>

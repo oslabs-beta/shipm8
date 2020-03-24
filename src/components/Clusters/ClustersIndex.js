@@ -65,7 +65,7 @@ const ClustersIndex = ({ navigation }) => {
           <Dropdown
             label={'Select Cloud Provider'}
             data={CloudProviders}
-            value={currentProvider}
+            value={currentProvider || 'gcp'}
             itemCount={4}
             dropdownPosition={0}
             dropdownOffset={styles.dropDownOffset}

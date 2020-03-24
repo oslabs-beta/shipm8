@@ -208,7 +208,4 @@ const styles = EStyleSheet.create({
     marginTop: '.37rem',
     marginRight: '.2rem',
   },
-  signOut: {
-    marginTop: '4rem',
-  },
 });

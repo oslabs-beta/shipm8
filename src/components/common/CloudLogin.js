@@ -14,9 +14,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
 
-import { checkAwsCredentials } from '../reducers/AwsSlice';
-import { setCurrentProvider } from '../reducers/ClustersSlice';
-import { googleSignIn, fetchGcpProjects } from '../reducers/GoogleCloudSlice';
+import { checkAwsCredentials } from '../../reducers/AwsSlice';
+import { setCurrentProvider } from '../../reducers/ClustersSlice';
+import { googleSignIn, fetchGcpProjects } from '../../reducers/GoogleCloudSlice';
 
 Icon.loadFont();
 EStyleSheet.build();
@@ -64,7 +64,7 @@ const CloudLogin = ({ navigation }) => {
         <Text style={styles.textStyle}>Add Cluster from Provider</Text>
         <View style={styles.googleLogoContainer}>
           <Image
-            source={require('../assets/google.png')}
+            source={require('../../assets/google.png')}
             style={styles.googleLogo}
           />
         </View>
@@ -79,7 +79,7 @@ const CloudLogin = ({ navigation }) => {
           <Divider />
         </View>
         <View style={styles.awsLogoContainer}>
-          <Image source={require('../assets/aws_logo.png')} style={styles.awsLogo} />
+          <Image source={require('../../assets/aws_logo.png')} style={styles.awsLogo} />
         </View>
         <View style={styles.awsInputView}>
           <View style={styles.accessKeyIdInput}>

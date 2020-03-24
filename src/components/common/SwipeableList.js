@@ -52,10 +52,8 @@ const SwipeableList = ({ listData, onItemPress, onDeletePress, onRefresh, emptyV
       ? data.item.name
       : data.item.metadata.name;
 
-    const Container = onDeletePress ? SwipeRow : View;
-
     return (
-      <Container
+      <SwipeRow
         style={styles.btnContainer}
         disableRightSwipe
         rightOpenValue={-75}
@@ -120,7 +118,7 @@ const SwipeableList = ({ listData, onItemPress, onDeletePress, onRefresh, emptyV
             </View>
           </View>
         </TouchableHighlight>
-      </Container>
+      </SwipeRow>
     );
   }, [onDeletePress, onItemPress, onSwipeValueChange, rowSwipeAnimatedValues]);
 

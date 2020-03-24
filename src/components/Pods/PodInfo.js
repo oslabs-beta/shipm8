@@ -127,7 +127,7 @@ const styles = EStyleSheet.create({
   },
   outerTextView: {
     marginHorizontal: '3%',
-    marginTop: '6%',
+    marginTop: '2%',
   },
   innerTextView: {
     backgroundColor: 'white',

@@ -61,7 +61,7 @@ const CloudLogin = ({ navigation }) => {
   return (
     <KeyboardAvoidingView behavior="position" style={styles.container}>
       <View style={styles.innerContainer}>
-        <Text style={styles.textStyle}>Add Cluster from Provider</Text>
+        <Text style={styles.textStyle}>Add Cluster from Cloud Provider</Text>
         <View style={styles.googleLogoContainer}>
           <Image
             source={require('../../assets/google.png')}

@@ -71,6 +71,11 @@ const RootStackScreen = ({ navigation, route }) => {
         options={{
           title: 'Add Cluster',
           ...TransitionPresets.ModalSlideFromBottomIOS,
+          headerBackImage: () => null,
+          headerBackTitle: 'Cancel',
+          headerBackTitleStyle: {
+            marginLeft: 25,
+          },
         }}
       />
       <RootStack.Screen name="Pods" component={PodsDisplay} />

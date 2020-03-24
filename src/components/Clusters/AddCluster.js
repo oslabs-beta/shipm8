@@ -59,7 +59,10 @@ const AddCluster = ({ navigation }) => {
   const handleClusterPress = useCallback(cluster => {
     dispatch(addCluster(cluster));
     dispatch(setCurrentProvider(cluster.cloudProvider));
-    navigation.navigate('ShipM8');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'ShipM8' }],
+    });
   }, [dispatch, navigation]);
 
   const handleRefresh = async () => {

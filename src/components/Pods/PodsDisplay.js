@@ -195,9 +195,4 @@ const styles = EStyleSheet.create({
     marginLeft: '.4rem',
     marginTop: '.2rem',
   },
-  signOut: {
-    marginTop: '1.2rem',
-    width: '30%',
-    alignSelf: 'center',
-  },
 });

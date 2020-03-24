@@ -146,10 +146,4 @@ const styles = EStyleSheet.create({
     alignSelf: 'center',
     marginTop: '-1rem',
   },
-  signOut: {
-    marginTop: '1.2rem',
-    backgroundColor: 'white',
-    width: '30%',
-    alignSelf: 'center',
-  },
 });

@@ -93,7 +93,7 @@ const ClustersIndex = ({ navigation }) => {
         <Button
           color="red"
           title="Sign Out"
-          onPress={() => navigation.navigate('Cloud Login')}
+          onPress={() => navigation.reset({ routes: [{ name: 'Cloud Login' }] })}
         />
       </View>
     </SafeAreaView>

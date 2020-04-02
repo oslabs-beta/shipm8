@@ -9,6 +9,8 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { StackActions } from '@react-navigation/native';
+
 import { Input, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EStyleSheet from 'react-native-extended-stylesheet';
@@ -23,7 +25,7 @@ EStyleSheet.build();
 
 const { height, width } = Dimensions.get('window');
 
-const CloudLogin = ({ navigation }) => {
+const CloudLogin = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
   const [loginState, setLoginState] = useState({
@@ -53,6 +55,14 @@ const CloudLogin = ({ navigation }) => {
       dispatch(setCurrentProvider('gcp'));
       dispatch(fetchGcpProjects());
       navigation.navigate('Add Cluster');
+      // Wait for screen animation before replacing Cloud Login screen
+      // with ShipM8 screen in navigation stack
+      setTimeout(() => {
+        navigation.dispatch({
+          ...StackActions.replace('ShipM8'),
+          source: route.key,
+        });
+      }, 500);
     } else {
       Alert.alert(signInStatus);
     }

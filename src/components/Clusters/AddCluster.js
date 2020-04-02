@@ -17,7 +17,7 @@ import Loading from '../common/Loading';
 import Regions from '../../data/Regions';
 import SwipeableList from '../common/SwipeableList';
 import { fetchEksClusters } from '../../reducers/AwsSlice';
-import { addCluster, setCurrentProvider } from './ClustersSlice';
+import { addCluster, setCurrentProvider } from '../../reducers/ClustersSlice';
 
 const AddCluster = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const AddCluster = ({ navigation }) => {
   const handleClusterPress = useCallback(cluster => {
     dispatch(addCluster(cluster));
     dispatch(setCurrentProvider(cluster.cloudProvider));
-    navigation.navigate('ShipM8');
+    navigation.goBack();
   }, [dispatch, navigation]);
 
   const handleRefresh = async () => {
@@ -204,8 +204,5 @@ const styles = EStyleSheet.create({
     marginLeft: '.4rem',
     marginTop: '.37rem',
     marginRight: '.2rem',
-  },
-  signOut: {
-    marginTop: '4rem',
   },
 });

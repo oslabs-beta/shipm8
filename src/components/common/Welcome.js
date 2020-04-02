@@ -4,31 +4,34 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 
 EStyleSheet.build();
 
-const Launch = ({ navigation }) => {
-  const getStarted = () => {
-    navigation.navigate('Cloud Login');
-  };
-
+const Welcome = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
-        <Image source={require('../../images/SHIPM8.png')} style={styles.logo} />
+        <Image source={require('../../assets/shipm8.png')} style={styles.logo} />
         <Text style={styles.bannerLineOne}>Mobile Kubernetes Monitoring</Text>
         <View style={styles.cloudLogoContainer}>
           <Image
             style={styles.googleCloud}
-            source={require('../../images/googleCloud.png')}
+            source={require('../../assets/googleCloud.png')}
           />
           <Text style={styles.textStyle}>+</Text>
           <View style={styles.awsLogoContainer}>
             <Image
               style={styles.awsLogo}
-              source={require('../../images/aws_logo.png')}
+              source={require('../../assets/aws_logo.png')}
               resizeMode="contain"
             />
           </View>
         </View>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => getStarted()}>
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={() => {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Cloud Login' }],
+            });
+          }}>
           <View >
             <Text style={styles.getStartedText}>Get Started</Text>
           </View>
@@ -38,7 +41,7 @@ const Launch = ({ navigation }) => {
   );
 };
 
-export default React.memo(Launch);
+export default React.memo(Welcome);
 
 const styles = EStyleSheet.create({
   container: {

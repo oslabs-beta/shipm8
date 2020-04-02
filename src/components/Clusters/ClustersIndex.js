@@ -16,7 +16,7 @@ import {
   fetchNamespaces,
   setCurrentCluster,
   setCurrentProvider,
-} from './ClustersSlice';
+} from '../../reducers/ClustersSlice';
 import AlertUtils from '../../utils/AlertUtils';
 import SwipeableList from '../common/SwipeableList';
 import CloudProviders from '../../data/CloudProviders';
@@ -59,46 +59,44 @@ const ClustersIndex = ({ navigation }) => {
   }, [dispatch]);
 
   return (
-    <View>
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.dropDownView}>
-          <Dropdown
-            label={'Select Cloud Provider'}
-            data={CloudProviders}
-            value={currentProvider}
-            itemCount={4}
-            dropdownPosition={0}
-            dropdownOffset={styles.dropDownOffset}
-            style={styles.dropDown}
-            onChangeText={handleProviderChange}
-          />
-        </View>
-        <SwipeableList
-          listData={clusters}
-          onItemPress={handleClusterPress}
-          onDeletePress={handleDeletePress}
-          onRefresh={handleRefresh}
-          emptyValue={'Clusters'}
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.dropDownView}>
+        <Dropdown
+          label={'Select Cloud Provider'}
+          data={CloudProviders}
+          value={currentProvider || 'gcp'}
+          itemCount={4}
+          dropdownPosition={0}
+          dropdownOffset={styles.dropDownOffset}
+          style={styles.dropDown}
+          onChangeText={handleProviderChange}
         />
-        < View >
-          <TouchableOpacity onPress={() => navigation.navigate('Add Cluster')}>
-            <Icon
-              style={styles.addClusterIcon}
-              name="plus-circle"
-              size={50}
-              color="#1589FF"
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.signOut}>
-          <Button
-            color="red"
-            title="Sign Out"
-            onPress={() => navigation.navigate('Cloud Login')}
+      </View>
+      <SwipeableList
+        listData={clusters}
+        onItemPress={handleClusterPress}
+        onDeletePress={handleDeletePress}
+        onRefresh={handleRefresh}
+        emptyValue={'Clusters'}
+      />
+      < View >
+        <TouchableOpacity onPress={() => navigation.navigate('Add Cluster')}>
+          <Icon
+            style={styles.addClusterIcon}
+            name="plus-circle"
+            size={50}
+            color="#1589FF"
           />
-        </View>
-      </SafeAreaView>
-    </View >
+        </TouchableOpacity>
+      </View>
+      <View style={styles.signOut}>
+        <Button
+          color="red"
+          title="Sign Out"
+          onPress={() => navigation.reset({ routes: [{ name: 'Cloud Login' }] })}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 

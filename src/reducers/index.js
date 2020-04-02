@@ -5,8 +5,8 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 
 import awsReducer from './AwsSlice';
 import gcpReducer from './GoogleCloudSlice';
-import podsReducer from '../components/Pods/PodsSlice';
-import clustersReducer from '../components/Clusters/ClustersSlice';
+import podsReducer from './PodsSlice';
+import clustersReducer from './ClustersSlice';
 
 const awsPersistConfig = {
   key: 'aws',

@@ -31,7 +31,7 @@ const PodInfo = ({ navigation }) => {
         <View style={styles.outerTextView}>
           <View style={styles.innerTextView}>
             <Image
-              source={require('../../../images/pod.png')}
+              source={require('../../assets/pod.png')}
               style={styles.podLogo}
             />
             <View style={{ flexDirection: 'column' }}>
@@ -127,7 +127,7 @@ const styles = EStyleSheet.create({
   },
   outerTextView: {
     marginHorizontal: '3%',
-    marginTop: '6%',
+    marginTop: '2%',
   },
   innerTextView: {
     backgroundColor: 'white',
@@ -145,11 +145,5 @@ const styles = EStyleSheet.create({
     height: '7rem',
     alignSelf: 'center',
     marginTop: '-1rem',
-  },
-  signOut: {
-    marginTop: '1.2rem',
-    backgroundColor: 'white',
-    width: '30%',
-    alignSelf: 'center',
   },
 });

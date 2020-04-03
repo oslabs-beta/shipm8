@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import AwsApi from '../../api/AwsApi';
-import K8sApi from '../../api/K8sApi';
-import GoogleCloudApi from '../../api/GoogleCloudApi';
-import { startLoading, loadingFailed } from '../../utils/LoadingUtils';
+import AwsApi from '../api/AwsApi';
+import K8sApi from '../api/K8sApi';
+import GoogleCloudApi from '../api/GoogleCloudApi';
+import { startLoading, loadingFailed } from '../utils/LoadingUtils';
 
 const Clusters = createSlice({
   name: 'Clusters',

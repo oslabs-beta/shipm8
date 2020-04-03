@@ -9,21 +9,23 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { StackActions } from '@react-navigation/native';
+
 import { Input, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
 
-import { checkAwsCredentials } from '../reducers/AwsSlice';
-import { setCurrentProvider } from '../components/Clusters/ClustersSlice';
-import { googleSignIn, fetchGcpProjects } from '../reducers/GoogleCloudSlice';
+import { checkAwsCredentials } from '../../reducers/AwsSlice';
+import { setCurrentProvider } from '../../reducers/ClustersSlice';
+import { googleSignIn, fetchGcpProjects } from '../../reducers/GoogleCloudSlice';
 
 Icon.loadFont();
 EStyleSheet.build();
 
 const { height, width } = Dimensions.get('window');
 
-const CloudLogin = ({ navigation }) => {
+const CloudLogin = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
   const [loginState, setLoginState] = useState({
@@ -53,6 +55,14 @@ const CloudLogin = ({ navigation }) => {
       dispatch(setCurrentProvider('gcp'));
       dispatch(fetchGcpProjects());
       navigation.navigate('Add Cluster');
+      // Wait for screen animation before replacing Cloud Login screen
+      // with ShipM8 screen in navigation stack
+      setTimeout(() => {
+        navigation.dispatch({
+          ...StackActions.replace('ShipM8'),
+          source: route.key,
+        });
+      }, 500);
     } else {
       Alert.alert(signInStatus);
     }
@@ -61,10 +71,10 @@ const CloudLogin = ({ navigation }) => {
   return (
     <KeyboardAvoidingView behavior="position" style={styles.container}>
       <View style={styles.innerContainer}>
-        <Text style={styles.textStyle}>Add Cluster from Provider</Text>
+        <Text style={styles.textStyle}>Add Cluster from Cloud Provider</Text>
         <View style={styles.googleLogoContainer}>
           <Image
-            source={require('../../images/google.png')}
+            source={require('../../assets/google.png')}
             style={styles.googleLogo}
           />
         </View>
@@ -79,7 +89,7 @@ const CloudLogin = ({ navigation }) => {
           <Divider />
         </View>
         <View style={styles.awsLogoContainer}>
-          <Image source={require('../../images/aws_logo.png')} style={styles.awsLogo} />
+          <Image source={require('../../assets/aws_logo.png')} style={styles.awsLogo} />
         </View>
         <View style={styles.awsInputView}>
           <View style={styles.accessKeyIdInput}>

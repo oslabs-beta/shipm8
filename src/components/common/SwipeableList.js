@@ -15,7 +15,7 @@ import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 
 import EntityStatus from '../common/EntityStatus';
 
-const iconPod = require('../../../images/pod.png');
+const iconPod = require('../../assets/pod.png');
 
 const SwipeableList = ({ listData, onItemPress, onDeletePress, onRefresh, emptyValue }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -52,10 +52,8 @@ const SwipeableList = ({ listData, onItemPress, onDeletePress, onRefresh, emptyV
       ? data.item.name
       : data.item.metadata.name;
 
-    const Container = onDeletePress ? SwipeRow : View;
-
     return (
-      <Container
+      <SwipeRow
         style={styles.btnContainer}
         disableRightSwipe
         rightOpenValue={-75}
@@ -92,7 +90,7 @@ const SwipeableList = ({ listData, onItemPress, onDeletePress, onRefresh, emptyV
               ]}
             >
               <Image
-                source={require('../../../images/trash.png')}
+                source={require('../../assets/trash.png')}
                 style={styles.trash}
               />
             </Animated.View>
@@ -120,7 +118,7 @@ const SwipeableList = ({ listData, onItemPress, onDeletePress, onRefresh, emptyV
             </View>
           </View>
         </TouchableHighlight>
-      </Container>
+      </SwipeRow>
     );
   }, [onDeletePress, onItemPress, onSwipeValueChange, rowSwipeAnimatedValues]);
 

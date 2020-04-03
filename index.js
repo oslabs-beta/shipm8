@@ -3,12 +3,9 @@
  */
 
 import { AppRegistry } from 'react-native';
-import AppContainer from './js/Navigation';
+import App from './App';
 import { name as appName } from './app.json';
-import EStyleSheet from 'react-native-extended-stylesheet';
-import { YellowBox } from 'react-native';
 
-YellowBox.ignoreWarnings(['Warning:']);
-AppRegistry.registerComponent(appName, () => AppContainer);
+console.disableYellowBox = true;
 
-EStyleSheet.build();
+AppRegistry.registerComponent(appName, () => App);
